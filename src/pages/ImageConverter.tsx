@@ -301,7 +301,7 @@ export default function ImageConverter() {
                                 onClick={handleReset}
                                 className="text-sm font-semibold text-gray-500 hover:text-gray-900 border border-gray-200 hover:border-gray-300 bg-white px-6 py-2.5 rounded-full transition-all shadow-sm"
                             >
-                                Clear & Start Over
+                                Convert Another File
                             </button>
                         </div>
                     )}
