@@ -263,7 +263,7 @@ export default function BatchConversionList({
                                             <RefreshCw className="w-4 h-4 animate-spin" />
                                             {item.progress}%
                                         </span>
-                                    ) : item.status === 'done' && item.result ? (
+                                    ) : item.status === 'done' && item.result && batch.length > 1 ? (
                                         <button
                                             onClick={() => downloadResult(item.result!, profile)}
                                             className="text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 px-4 py-1.5 rounded-lg transition-colors"

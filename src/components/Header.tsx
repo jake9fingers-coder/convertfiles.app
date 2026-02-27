@@ -19,8 +19,8 @@ export default function Header() {
         >
             <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
                 <Link to="/" className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <span className="text-indigo-500">⚡</span>
-                    Convertly
+                    <img src="/favicon.png" alt="Logo" className="w-5 h-5 object-contain" />
+                    convertfiles.app
                 </Link>
 
                 <div className="hidden md:flex items-center gap-1 bg-gray-100/50 p-1 rounded-full border border-gray-200/50">

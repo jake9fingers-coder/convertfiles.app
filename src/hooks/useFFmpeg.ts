@@ -3,6 +3,8 @@ import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
 import type { ConversionMode, ConversionOptions } from '../lib/conversionProfiles'
 import { PROFILES } from '../lib/conversionProfiles'
+import type { ImageConversionMode } from '../lib/imageConversionProfiles'
+import { IMAGE_PROFILES } from '../lib/imageConversionProfiles'
 
 export type FFmpegStatus = 'idle' | 'loading' | 'ready' | 'converting' | 'done' | 'error'
 
@@ -22,6 +24,7 @@ export interface UseFFmpegReturn {
     error: string | null
     load: () => Promise<void>
     convert: (file: File, mode: ConversionMode, options: ConversionOptions) => Promise<ConversionResult>
+    convertImage: (file: File, mode: ImageConversionMode) => Promise<ConversionResult>
     cancel: () => void
     reset: () => void
 }
@@ -83,6 +86,7 @@ export function useFFmpeg(): UseFFmpegReturn {
         await loadingRef.current
     }, [appendLog])
 
+    // ---- Video / Audio Conversion ----
     const convert = useCallback(async (file: File, mode: ConversionMode, options: ConversionOptions): Promise<ConversionResult> => {
         if (!ffmpegRef.current) await load()
         if (!ffmpegRef.current) throw new Error("FFmpeg failed to load")
@@ -123,7 +127,7 @@ export function useFFmpeg(): UseFFmpegReturn {
             const baseName = file.name.replace(/\.[^/.]+$/, '')
             const conversionResult: ConversionResult = {
                 blob, url,
-                filename: `${baseName}_convertly.${profile.outputExtension}`,
+                filename: `${baseName}_convertfiles.${profile.outputExtension}`,
                 originalSize: file.size,
                 outputSize: blob.size,
             }
@@ -135,6 +139,83 @@ export function useFFmpeg(): UseFFmpegReturn {
             return conversionResult
         } catch (err) {
             const msg = err instanceof Error ? err.message : 'Conversion failed'
+            if (msg.includes('abort') || msg.includes('cancel') || msg.includes('terminated')) {
+                setStatus('ready')
+                appendLog('Cancelled.')
+                throw new Error('Cancelled')
+            }
+            setError(msg)
+            setStatus('error')
+            appendLog(`Error: ${msg}`)
+            throw err
+        }
+    }, [load, appendLog])
+
+
+    // ---- Standard Image Conversion (No complex options needed, FFmpeg handles defaults perfectly) ----
+    const convertImage = useCallback(async (file: File, mode: ImageConversionMode): Promise<ConversionResult> => {
+        if (!ffmpegRef.current) await load()
+        if (!ffmpegRef.current) throw new Error("FFmpeg failed to load")
+
+        const ffmpeg = ffmpegRef.current
+        const profile = IMAGE_PROFILES[mode]
+
+        setStatus('converting')
+        setProgress(0)
+        setResult(null)
+        setError(null)
+
+        try {
+            const inputExt = (file.name.split('.').pop() || 'jpg').toLowerCase()
+            const inputName = `input.${inputExt}`
+            const outputName = `output.${profile.outputExtension}`
+
+            appendLog(`Reading image ${file.name} (${(file.size / 1024).toFixed(0)} KB)...`)
+            const fileData = await fetchFile(file)
+            await ffmpeg.writeFile(inputName, fileData)
+
+            // For images, an empty option args array is usually perfectly fine, it infers everything.
+            // GIF needs some special handling for looping if it's animated, but simple conversions are fine.
+            let args: string[] = ['-i', inputName]
+
+            if (mode === 'gif') {
+                // simple quick palette check for standard gif conversion
+                args = ['-i', inputName, '-vf', 'split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse', outputName]
+            } else if (mode === 'webp') {
+                args = ['-i', inputName, '-c:v', 'libwebp', '-q:v', '75', outputName]
+            } else {
+                args = ['-i', inputName, outputName]
+            }
+
+            appendLog(`Running image conversion: ffmpeg ${args.join(' ')}`)
+            await ffmpeg.exec(args)
+
+            appendLog('Reading output...')
+            const data = await ffmpeg.readFile(outputName)
+            const bytes = data instanceof Uint8Array
+                ? data.slice()
+                : new Uint8Array(data as unknown as ArrayBuffer).slice()
+            const blob = new Blob([bytes.buffer as ArrayBuffer], { type: profile.mimeType })
+            const url = URL.createObjectURL(blob)
+
+            await ffmpeg.deleteFile(inputName).catch(() => { })
+            await ffmpeg.deleteFile(outputName).catch(() => { })
+
+            const baseName = file.name.replace(/\.[^/.]+$/, '')
+            const conversionResult: ConversionResult = {
+                blob, url,
+                filename: `${baseName}_converted.${profile.outputExtension}`,
+                originalSize: file.size,
+                outputSize: blob.size,
+            }
+
+            setResult(conversionResult)
+            setProgress(100)
+            setStatus('done')
+            appendLog('Done!')
+            return conversionResult
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Image Conversion failed'
             if (msg.includes('abort') || msg.includes('cancel') || msg.includes('terminated')) {
                 setStatus('ready')
                 appendLog('Cancelled.')
@@ -165,5 +246,5 @@ export function useFFmpeg(): UseFFmpegReturn {
         setLogMessages([])
     }, [result])
 
-    return { status, progress, logMessages, result, error, load, convert, cancel, reset }
+    return { status, progress, logMessages, result, error, load, convert, convertImage, cancel, reset }
 }

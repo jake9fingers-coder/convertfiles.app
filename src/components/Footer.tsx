@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex flex-col items-center md:items-start gap-1">
                     <div className="text-lg font-bold text-gray-900 flex items-center gap-1.5">
-                        <span className="text-indigo-500">⚡</span> Convertly
+                        <img src="/favicon.png" alt="Logo" className="w-5 h-5 object-contain" /> convertfiles.app
                     </div>
                     <p className="text-sm text-gray-400">
                         100% private, client-side media conversion.

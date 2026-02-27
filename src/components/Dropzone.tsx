@@ -1,13 +1,23 @@
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, type ReactNode } from 'react'
 import { Upload, Film, FileAudio } from 'lucide-react'
 
 interface DropzoneProps {
     onFiles: (files: File[]) => void
     disabled?: boolean
+    accepts?: string
+    title?: string
+    formats?: string[]
+    icon?: ReactNode
 }
 
-
-export default function Dropzone({ onFiles, disabled = false }: DropzoneProps) {
+export default function Dropzone({
+    onFiles,
+    disabled = false,
+    accepts = "video/*,audio/*",
+    title = "Drop files here",
+    formats = ['MP4', 'MOV', 'AVI', 'WebM', 'MKV', 'MP3', 'M4A'],
+    icon = <Film className="w-8 h-8 text-indigo-500" />
+}: DropzoneProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [dragging, setDragging] = useState(false)
     const [dragError, setDragError] = useState('')
@@ -78,7 +88,7 @@ export default function Dropzone({ onFiles, disabled = false }: DropzoneProps) {
                 ref={inputRef}
                 type="file"
                 multiple
-                accept="video/*,audio/*"
+                accept={accepts}
                 onChange={onInputChange}
                 className="hidden"
                 aria-hidden
@@ -90,7 +100,7 @@ export default function Dropzone({ onFiles, disabled = false }: DropzoneProps) {
           ${dragging ? 'bg-indigo-100 scale-110' : 'bg-white border border-gray-200 shadow-sm'}
         `}>
                     {dragging
-                        ? <Film className="w-8 h-8 text-indigo-500" />
+                        ? icon
                         : dragError
                             ? <span className="text-2xl">⚠️</span>
                             : <Upload className="w-8 h-8 text-gray-400" />
@@ -107,13 +117,13 @@ export default function Dropzone({ onFiles, disabled = false }: DropzoneProps) {
                 ) : (
                     <div>
                         <p className="text-lg font-semibold text-gray-900">
-                            Drop files here
+                            {title}
                         </p>
                         <p className="text-sm text-gray-500 mt-1">
                             or <span className="text-indigo-600 font-medium underline underline-offset-2">click to browse</span>
                         </p>
-                        <div className="flex items-center justify-center gap-3 mt-4">
-                            {['MP4', 'MOV', 'AVI', 'WebM', 'MKV', 'MP3', 'M4A'].map(fmt => (
+                        <div className="flex flex-wrap items-center justify-center gap-2 mt-4 max-w-sm mx-auto">
+                            {formats.map(fmt => (
                                 <span key={fmt} className="text-xs text-gray-400 bg-white border border-gray-100 rounded px-2 py-0.5 font-mono">
                                     {fmt}
                                 </span>

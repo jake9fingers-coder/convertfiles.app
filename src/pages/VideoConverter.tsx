@@ -6,6 +6,7 @@ import { PROFILES } from '../lib/conversionProfiles'
 import Dropzone from '../components/Dropzone'
 import ProgressDisplay from '../components/ProgressDisplay'
 import BatchConversionList from '../components/BatchConversionList'
+import ConversionHistoryList from '../components/ConversionHistoryList'
 
 export interface BatchItem {
     id: string
@@ -25,6 +26,7 @@ export default function VideoConverter() {
     const { status: ffmpegStatus, progress: globalProgress, logMessages, error: globalError, load, convert, cancel, reset } = useFFmpeg()
 
     const [batch, setBatch] = useState<BatchItem[]>([])
+    const [history, setHistory] = useState<BatchItem[]>([])
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [isZipping, setIsZipping] = useState(false)
 
@@ -36,6 +38,11 @@ export default function VideoConverter() {
     }, [globalProgress, isConvertingBatch])
 
     const handleFiles = useCallback((incomingFiles: File[]) => {
+        const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
+        if (finishedItems.length > 0) {
+            setHistory(h => [...finishedItems, ...h])
+        }
+
         reset()
 
         const newBatch = incomingFiles.map(f => ({
@@ -51,7 +58,7 @@ export default function VideoConverter() {
 
         setBatch(newBatch)
         load() // prewarm
-    }, [reset, load])
+    }, [batch, reset, load])
 
     const updateAllItems = useCallback((updates: Partial<BatchItem>) => {
         setBatch(prev => prev.map(p => ({ ...p, ...updates })))
@@ -110,11 +117,31 @@ export default function VideoConverter() {
     }, [batch, convert])
 
     const handleReset = useCallback(() => {
+        const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
+        if (finishedItems.length > 0) {
+            setHistory(h => [...finishedItems, ...h])
+        }
         cancel()
         reset()
         setBatch([])
         setIsConvertingBatch(false)
-    }, [cancel, reset])
+    }, [batch, cancel, reset])
+
+    const handleReuse = useCallback((item: BatchItem) => {
+        setBatch(prev => [
+            {
+                id: crypto.randomUUID(),
+                file: item.file,
+                mode: item.mode,
+                options: item.options,
+                status: 'pending',
+                progress: 0,
+                result: null,
+                error: null
+            },
+            ...prev
+        ])
+    }, [])
 
     const hasFiles = batch.length > 0
     const allDone = hasFiles && batch.every(i => i.status === 'done')
@@ -128,10 +155,10 @@ export default function VideoConverter() {
                 {/* Compact heading above the tool */}
                 <div className="w-full mb-8 flex flex-col items-center text-center">
                     <div className="inline-flex items-center justify-center p-3 bg-indigo-50 rounded-2xl mb-4">
-                        <span className="text-3xl">⚡</span>
+                        <img src="/favicon.png" alt="Logo" className="w-8 h-8 object-contain" />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-2">
-                        Convertly
+                        convertfiles.app
                     </h1>
                     <p className="text-base text-gray-500 max-w-sm">
                         Convert, compress &amp; extract audio — free, instant, private
@@ -188,10 +215,10 @@ export default function VideoConverter() {
                                     if ('showSaveFilePicker' in window) {
                                         try {
                                             const handle = await (window as any).showSaveFilePicker({
-                                                suggestedName: 'convertly_files.zip',
+                                                suggestedName: batch.length === 1 ? batch[0].result?.filename : 'convertfiles.zip',
                                                 types: [{
-                                                    description: 'ZIP Archive',
-                                                    accept: { 'application/zip': ['.zip'] },
+                                                    description: batch.length === 1 ? 'Media File' : 'ZIP Archive',
+                                                    accept: batch.length === 1 && batch[0].result ? { [batch[0].result.blob.type]: [`.${batch[0].result.filename.split('.').pop()}`] } : { 'application/zip': ['.zip'] },
                                                 }],
                                             });
                                             writable = await handle.createWritable();
@@ -216,14 +243,18 @@ export default function VideoConverter() {
 
                                         // 3. Write data.
                                         if (!useFallback && writable) {
-                                            await writable.write(zipBlob);
+                                            if (batch.length === 1 && batch[0].result) {
+                                                await writable.write(batch[0].result.blob);
+                                            } else {
+                                                await writable.write(zipBlob);
+                                            }
                                             await writable.close();
                                         } else {
                                             // Fallback for browsers without showSaveFilePicker
-                                            const url = URL.createObjectURL(zipBlob);
+                                            const url = URL.createObjectURL(batch.length === 1 && batch[0].result ? batch[0].result.blob : zipBlob);
                                             const a = document.createElement('a');
                                             a.href = url;
-                                            a.download = 'convertly_files.zip';
+                                            a.download = batch.length === 1 && batch[0].result ? batch[0].result.filename : 'convertfiles.zip';
                                             document.body.appendChild(a);
                                             a.click();
                                             document.body.removeChild(a);
@@ -243,7 +274,7 @@ export default function VideoConverter() {
                                 disabled={isZipping}
                                 className={`text-sm font-semibold text-white px-6 py-2.5 rounded-full transition-all shadow-md ${isZipping ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800'}`}
                             >
-                                {isZipping ? 'Saving...' : 'Download All'}
+                                {isZipping ? 'Saving...' : batch.length === 1 ? 'Download Target File' : 'Download All as ZIP'}
                             </button>
                             <button
                                 onClick={handleReset}
@@ -260,6 +291,17 @@ export default function VideoConverter() {
                             🔒 Files never leave your device &nbsp;·&nbsp; No account needed &nbsp;·&nbsp; No limits
                         </p>
                     )}
+                </div>
+
+                {/* History Section */}
+                <div className="w-full max-w-xl mx-auto relative z-20">
+                    <ConversionHistoryList
+                        history={history}
+                        onReuse={handleReuse}
+                        onRemove={(id) => setHistory(prev => prev.filter(i => i.id !== id))}
+                        onClearAll={() => setHistory([])}
+                        getProfile={(mode) => PROFILES[mode as ConversionMode]}
+                    />
                 </div>
             </div>
 
