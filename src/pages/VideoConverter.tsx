@@ -181,6 +181,29 @@ export default function VideoConverter() {
                         <div className="w-full flex justify-center gap-4 mt-4 pt-4 border-t border-gray-100">
                             <button
                                 onClick={async () => {
+                                    // 1. Ask user for file location IMMEDIATELY to preserve transient user activation
+                                    let writable: any = null;
+                                    let useFallback = true;
+
+                                    if ('showSaveFilePicker' in window) {
+                                        try {
+                                            const handle = await (window as any).showSaveFilePicker({
+                                                suggestedName: 'convertly_files.zip',
+                                                types: [{
+                                                    description: 'ZIP Archive',
+                                                    accept: { 'application/zip': ['.zip'] },
+                                                }],
+                                            });
+                                            writable = await handle.createWritable();
+                                            useFallback = false;
+                                        } catch (err: any) {
+                                            // User cancelled the prompt, abort completely
+                                            if (err.name === 'AbortError') return;
+                                            // Otherwise security error etc., let it gracefully fallback
+                                        }
+                                    }
+
+                                    // 2. Begin zipping.
                                     setIsZipping(true);
                                     try {
                                         const zip = new JSZip();
@@ -190,17 +213,29 @@ export default function VideoConverter() {
                                             }
                                         });
                                         const zipBlob = await zip.generateAsync({ type: 'blob' });
-                                        const url = URL.createObjectURL(zipBlob);
-                                        const a = document.createElement('a');
-                                        a.href = url;
-                                        a.download = 'convertly_files.zip';
-                                        document.body.appendChild(a);
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                                        // 3. Write data.
+                                        if (!useFallback && writable) {
+                                            await writable.write(zipBlob);
+                                            await writable.close();
+                                        } else {
+                                            // Fallback for browsers without showSaveFilePicker
+                                            const url = URL.createObjectURL(zipBlob);
+                                            const a = document.createElement('a');
+                                            a.href = url;
+                                            a.download = 'convertly_files.zip';
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            document.body.removeChild(a);
+                                            setTimeout(() => URL.revokeObjectURL(url), 1000);
+                                        }
                                     } catch (err) {
-                                        console.error('Failed to zip files:', err);
-                                        alert('Failed to create zip file.');
+                                        console.error('Failed to zip/save files:', err);
+                                        alert('Failed to create or save zip file.');
+                                        if (writable) {
+                                            // Ensure we don't leave lingering open files on error
+                                            try { await writable.abort(); } catch (e) { }
+                                        }
                                     } finally {
                                         setIsZipping(false);
                                     }
@@ -208,7 +243,7 @@ export default function VideoConverter() {
                                 disabled={isZipping}
                                 className={`text-sm font-semibold text-white px-6 py-2.5 rounded-full transition-all shadow-md ${isZipping ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800'}`}
                             >
-                                {isZipping ? 'Zipping...' : 'Download All'}
+                                {isZipping ? 'Saving...' : 'Download All'}
                             </button>
                             <button
                                 onClick={handleReset}
