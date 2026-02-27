@@ -1,0 +1,57 @@
+import ScrollReveal from './ScrollReveal'
+import { Upload, Sliders, Download } from 'lucide-react'
+
+export default function HowItWorks() {
+    const steps = [
+        {
+            icon: <Upload className="w-6 h-6 text-indigo-600" />,
+            number: '01',
+            title: 'Drop your file',
+            description: 'Drag and drop any video or audio file. Any size — there are no upload limits because nothing ever leaves your device.',
+        },
+        {
+            icon: <Sliders className="w-6 h-6 text-indigo-600" />,
+            number: '02',
+            title: 'Choose your output',
+            description: 'Pick a format: animated GIF, compressed MP4, WebM, or extract the audio track. Tune quality to your needs.',
+        },
+        {
+            icon: <Download className="w-6 h-6 text-indigo-600" />,
+            number: '03',
+            title: 'Download instantly',
+            description: 'FFmpeg runs directly in your browser tab via WebAssembly. Hit convert, watch the progress, and download your file.',
+        },
+    ]
+
+    return (
+        <section id="how-it-works" className="py-24 px-6 bg-gray-50 border-y border-gray-100">
+            <div className="max-w-5xl mx-auto">
+                <ScrollReveal className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">
+                        How it works
+                    </h2>
+                    <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
+                        Three steps. No account. No waiting. No ads.
+                    </p>
+                </ScrollReveal>
+
+                <div className="grid md:grid-cols-3 gap-8">
+                    {steps.map((step, i) => (
+                        <ScrollReveal key={step.number} delay={i * 0.12}>
+                            <div className="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                <div className="flex items-start justify-between mb-5">
+                                    <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+                                        {step.icon}
+                                    </div>
+                                    <span className="text-3xl font-bold text-gray-100 select-none">{step.number}</span>
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+                                <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
+                            </div>
+                        </ScrollReveal>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
