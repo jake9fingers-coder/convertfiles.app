@@ -19,7 +19,6 @@ export interface BatchImageItem {
     error: string | null
 }
 
-import HowItWorks from '../components/HowItWorks'
 import Features from '../components/Features'
 
 export default function ImageConverter() {
@@ -166,7 +165,6 @@ export default function ImageConverter() {
         ffmpeg.cancel()
         magick.cancel()
     }, [ffmpeg, magick])
-
     return (
         <div className="w-full flex flex-col items-center">
 
@@ -174,20 +172,23 @@ export default function ImageConverter() {
             <div className="w-full min-h-[calc(100vh-140px)] flex flex-col items-center justify-center pt-8 pb-16">
 
                 {/* Compact heading above the tool */}
-                <div className="w-full mb-8 flex flex-col items-center text-center">
-                    <div className="inline-flex items-center justify-center p-3 bg-indigo-50 rounded-2xl mb-4">
+                <div className="w-full mb-8 flex flex-col items-center text-center animate-fade-in">
+                    <div className="inline-flex items-center justify-center p-3 bg-dark-900 rounded-xl mb-4 animate-slide-up">
                         <img src="/favicon.png" alt="Logo" className="w-8 h-8 object-contain" />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-2">
-                        Image Converter
+                    <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 animate-slide-up-delayed">
+                        convertfiles.app
                     </h1>
-                    <p className="text-base text-gray-500 max-w-sm">
+                    <p className="text-xl font-semibold text-brand-500 mb-2 animate-slide-up-delayed" style={{ animationDelay: '0.15s' }}>
+                        Image Converter
+                    </p>
+                    <p className="text-base text-dark-500 max-w-sm animate-slide-up-delayed" style={{ animationDelay: '0.25s' }}>
                         Convert any image to WebP, JPEG, PNG, HEIC, TIFF, and more.
                     </p>
                 </div>
 
                 {/* The Converter Tool */}
-                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 relative z-20">
+                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 animate-fade-in opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
 
                     {/* Error */}
                     {hasGlobalError && (
@@ -207,7 +208,7 @@ export default function ImageConverter() {
                             accepts="image/*"
                             title="Drop images here"
                             formats={['WebP', 'JPEG', 'PNG', 'GIF', 'HEIC', 'TIFF', 'PSD']}
-                            icon={<svg className="w-8 h-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2v12a2 2 0 002 2z" /></svg>}
+                            icon={<svg className="w-8 h-8 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2v12a2 2 0 002 2z" /></svg>}
                         />
                     )}
 
@@ -233,7 +234,7 @@ export default function ImageConverter() {
 
                     {/* Done Actions */}
                     {allDone && (
-                        <div className="w-full flex justify-center gap-4 mt-4 pt-4 border-t border-gray-100">
+                        <div className="w-full flex justify-center gap-4 mt-4 pt-4 border-t border-dark-100">
                             <button
                                 onClick={async () => {
                                     let writable: any = null;
@@ -293,13 +294,13 @@ export default function ImageConverter() {
                                     }
                                 }}
                                 disabled={isZipping}
-                                className={`text-sm font-semibold text-white px-6 py-2.5 rounded-full transition-all shadow-md ${isZipping ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800'}`}
+                                className={`text-sm font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md ${isZipping ? 'bg-dark-300 text-dark-600 cursor-not-allowed' : 'bg-brand-500 text-dark-900 hover:bg-brand-600 hover:text-white'}`}
                             >
                                 {isZipping ? 'Saving...' : batch.length === 1 ? 'Download Target File' : 'Download All as ZIP'}
                             </button>
                             <button
                                 onClick={handleReset}
-                                className="text-sm font-semibold text-gray-500 hover:text-gray-900 border border-gray-200 hover:border-gray-300 bg-white px-6 py-2.5 rounded-full transition-all shadow-sm"
+                                className="text-sm font-semibold text-dark-600 hover:text-dark-900 border border-dark-200 hover:border-dark-300 bg-dark-50 px-6 py-2.5 rounded-lg transition-all shadow-sm"
                             >
                                 Convert Another File
                             </button>
@@ -308,7 +309,7 @@ export default function ImageConverter() {
 
                     {/* Subtle trust line */}
                     {!hasFiles && (
-                        <p className="text-center text-xs text-gray-400 mt-2">
+                        <p className="text-center text-xs text-dark-400 mt-2">
                             🔒 Files never leave your device &nbsp;·&nbsp; No account needed &nbsp;·&nbsp; No limits
                         </p>
                     )}
@@ -327,8 +328,7 @@ export default function ImageConverter() {
             </div>
 
             {/* Marketing / Explainer Sections */}
-            <div className="w-full bg-white">
-                <HowItWorks />
+            <div className="w-full">
                 <Features />
             </div>
         </div>

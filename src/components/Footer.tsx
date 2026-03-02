@@ -2,13 +2,13 @@ import { Github } from 'lucide-react'
 
 export default function Footer() {
     return (
-        <footer className="w-full py-12 px-6 border-t border-gray-100 bg-white mt-auto">
+        <footer className="w-full py-12 px-6 border-t border-dark-200 bg-white mt-auto">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex flex-col items-center md:items-start gap-1">
-                    <div className="text-lg font-bold text-gray-900 flex items-center gap-1.5">
+                    <div className="text-lg font-bold text-dark-900 flex items-center gap-1.5">
                         <img src="/favicon.png" alt="Logo" className="w-5 h-5 object-contain" /> convertfiles.app
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-dark-400">
                         100% private, client-side media conversion.
                     </p>
                 </div>
@@ -16,7 +16,7 @@ export default function Footer() {
                 <div className="flex items-center gap-6">
                     <a
                         href="#"
-                        className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+                        className="text-sm font-medium text-dark-500 hover:text-dark-900 transition-colors"
                     >
                         Privacy Policy
                     </a>
@@ -24,7 +24,7 @@ export default function Footer() {
                         href="https://github.com/jake9fingers-coder"
                         target="_blank"
                         rel="noreferrer"
-                        className="p-2 -m-2 text-gray-400 hover:text-gray-900 transition-colors"
+                        className="p-2 -m-2 text-dark-400 hover:text-dark-900 transition-colors"
                         aria-label="GitHub Repository"
                     >
                         <Github className="w-5 h-5" />

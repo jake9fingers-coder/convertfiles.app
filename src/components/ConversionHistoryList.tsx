@@ -17,7 +17,7 @@ function FileThumbnail({ file }: { file: File }) {
     }, [file])
 
     if (!url) {
-        return file.type.startsWith('audio') ? <Music className="w-5 h-5 text-gray-400" /> : <FileVideo className="w-5 h-5 text-gray-400" />
+        return file.type.startsWith('audio') ? <Music className="w-5 h-5 text-dark-400" /> : <FileVideo className="w-5 h-5 text-dark-400" />
     }
 
     if (file.type.startsWith('video/')) {
@@ -58,10 +58,7 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                 const ext = profile.outputExtension
                 const handle = await (window as any).showSaveFilePicker({
                     suggestedName: result.filename,
-                    types: [{
-                        description: `${ext.toUpperCase()} file`,
-                        accept: { [result.blob.type]: [`.${ext}`] },
-                    }],
+                    types: [{ description: `${ext.toUpperCase()} file`, accept: { [result.blob.type]: [`.${ext}`] } }],
                 })
                 const writable = await handle.createWritable()
                 await writable.write(result.blob)
@@ -81,40 +78,40 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
 
     return (
         <div className="w-full space-y-4 animate-slide-up mt-12 mb-8">
-            <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50/50">
+            <div className="bg-white border border-dark-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between p-4 border-b border-dark-100 bg-dark-50/50">
                     <span className="flex items-center gap-3">
-                        <span className="text-sm font-semibold text-gray-900">
-                            Conversion History <span className="text-gray-400 font-normal ml-1">({history.length} items)</span>
+                        <span className="text-sm font-semibold text-dark-900">
+                            Conversion History <span className="text-dark-400 font-normal ml-1">({history.length} items)</span>
                         </span>
                     </span>
                     <button
                         onClick={onClearAll}
-                        className="text-xs font-medium text-gray-500 hover:text-red-600 transition-colors"
+                        className="text-xs font-medium text-dark-500 hover:text-red-600 transition-colors"
                     >
                         Clear All
                     </button>
                 </div>
 
-                <div className="space-y-0 divide-y divide-gray-50">
+                <div className="space-y-0 divide-y divide-dark-50">
                     {history.map(item => {
                         const profile = getProfile(item.mode)
                         const isSuccess = item.status === 'done' && item.result
 
                         return (
-                            <div key={item.id} className="p-4 hover:bg-gray-50 transition-colors flex items-center justify-between group">
+                            <div key={item.id} className="p-4 hover:bg-dark-50 transition-colors flex items-center justify-between group">
                                 <div className="flex items-center gap-4 min-w-0">
-                                    <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-gray-100 relative shrink-0 border border-gray-200">
+                                    <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-dark-100 relative shrink-0 border border-dark-200">
                                         <FileThumbnail file={item.file} />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-sm font-medium text-gray-900 truncate" title={item.file.name}>
+                                        <p className="text-sm font-medium text-dark-900 truncate" title={item.file.name}>
                                             {item.file.name}
                                         </p>
-                                        <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
+                                        <div className="flex items-center gap-2 text-xs text-dark-400 mt-0.5">
                                             <span>{formatBytes(item.file.size)}</span>
                                             <span>→</span>
-                                            <span className="font-medium text-indigo-600 truncate">{profile?.label || item.mode}</span>
+                                            <span className="font-medium text-brand-600 truncate">{profile?.label || item.mode}</span>
                                             {item.status === 'error' && (
                                                 <span className="text-red-500 font-medium ml-2 truncate" title={item.error}>Failed</span>
                                             )}
@@ -125,7 +122,7 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                                     {isSuccess && (
                                         <button
                                             onClick={() => downloadResult(item.result, profile)}
-                                            className="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-200 rounded-md transition-colors"
+                                            className="p-1.5 text-dark-500 hover:text-dark-900 hover:bg-dark-200 rounded-md transition-colors"
                                             title="Download again"
                                         >
                                             <Download className="w-4 h-4" />
@@ -133,14 +130,14 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                                     )}
                                     <button
                                         onClick={() => onReuse(item)}
-                                        className="p-1.5 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                                        className="p-1.5 text-dark-500 hover:text-brand-600 hover:bg-brand-50 rounded-md transition-colors"
                                         title="Reuse (Adjust settings & convert again)"
                                     >
                                         <RefreshCw className="w-4 h-4" />
                                     </button>
                                     <button
                                         onClick={() => onRemove(item.id)}
-                                        className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                        className="p-1.5 text-dark-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                                         title="Remove from history"
                                     >
                                         <Trash2 className="w-4 h-4" />

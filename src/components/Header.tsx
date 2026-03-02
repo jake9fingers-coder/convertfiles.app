@@ -13,21 +13,23 @@ export default function Header() {
     return (
         <nav
             className={`fixed w-full z-50 top-0 transition-all duration-300 ${scrolled
-                ? 'bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm py-3'
-                : 'bg-transparent py-4'
+                ? 'bg-dark-900/95 backdrop-blur-md border-b border-dark-800 py-3'
+                : 'bg-dark-900 py-4'
                 }`}
         >
             <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-                <Link to="/" className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Link to="/" className="text-lg font-bold text-white tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <img src="/favicon.png" alt="Logo" className="w-5 h-5 object-contain" />
                     convertfiles.app
                 </Link>
 
-                <div className="hidden md:flex items-center gap-1 bg-gray-100/50 p-1 rounded-full border border-gray-200/50">
+                <div className="hidden md:flex items-center gap-1 bg-dark-800 p-1 rounded-lg border border-dark-700">
                     <NavLink
                         to="/"
                         className={({ isActive }) =>
-                            `px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${isActive ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-900/5' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50'
+                            `px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${isActive
+                                ? 'bg-brand-500 text-dark-900 font-semibold'
+                                : 'text-dark-300 hover:text-white'
                             }`
                         }
                     >
@@ -36,7 +38,9 @@ export default function Header() {
                     <NavLink
                         to="/image-converter"
                         className={({ isActive }) =>
-                            `px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${isActive ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-900/5' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50'
+                            `px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${isActive
+                                ? 'bg-brand-500 text-dark-900 font-semibold'
+                                : 'text-dark-300 hover:text-white'
                             }`
                         }
                     >
@@ -45,7 +49,9 @@ export default function Header() {
                     <NavLink
                         to="/remove-background"
                         className={({ isActive }) =>
-                            `px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${isActive ? 'bg-white text-indigo-600 shadow-sm ring-1 ring-gray-900/5' : 'text-gray-500 hover:text-gray-900 hover:bg-white/50'
+                            `px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${isActive
+                                ? 'bg-brand-500 text-dark-900 font-semibold'
+                                : 'text-dark-300 hover:text-white'
                             }`
                         }
                     >
@@ -54,7 +60,7 @@ export default function Header() {
                 </div>
 
                 <div className="flex items-center">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-xs font-semibold text-emerald-700">
+                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>

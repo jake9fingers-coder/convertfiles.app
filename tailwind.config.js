@@ -9,68 +9,46 @@ export default {
             borderRadius: {
                 'none': '0',
                 'sm': '0.25rem',
-                DEFAULT: '0.25rem',
-                'md': '0.25rem',
-                'lg': '0.25rem',
-                'xl': '0.25rem',
-                '2xl': '0.25rem',
-                '3xl': '0.25rem',
-                'full': '0.25rem',
+                DEFAULT: '0.5rem',
+                'md': '0.5rem',
+                'lg': '0.5rem',
+                'xl': '0.75rem',
+                '2xl': '0.75rem',
+                '3xl': '0.75rem',
+                'full': '9999px',
             },
             colors: {
-                // Override common "AI colors" with grayscale
-                indigo: {
-                    50: '#f9fafb', // gray-50
-                    100: '#f3f4f6', // gray-100
-                    200: '#e5e7eb', // gray-200
-                    300: '#d1d5db', // gray-300
-                    400: '#9ca3af', // gray-400
-                    500: '#4b5563', // gray-600
-                    600: '#111827', // gray-900 (black-ish)
-                    700: '#000000', // black
-                    800: '#000000',
-                    900: '#000000',
+                // Coral/salmon primary — #F58F7C
+                brand: {
+                    50: '#FDF5F3',
+                    100: '#FAEAE6',
+                    200: '#F5D0C8',
+                    300: '#F2C4CE',  // blush pink
+                    400: '#F5A394',
+                    500: '#F58F7C',  // primary coral
+                    600: '#E8735F',
+                    700: '#D05A48',
+                    800: '#A84234',
+                    900: '#7C2F24',
                 },
-                emerald: {
-                    50: '#f9fafb',
-                    100: '#f3f4f6',
-                    200: '#e5e7eb',
-                    300: '#d1d5db',
-                    400: '#9ca3af',
-                    500: '#4b5563',
-                    600: '#111827',
-                    700: '#000000',
-                    800: '#000000',
-                    900: '#000000',
+                // Charcoal dark palette — #2C2B30 / #4F4F51 / #D6D6D6
+                dark: {
+                    900: '#2C2B30',
+                    800: '#3A3940',
+                    700: '#4F4F51',
+                    600: '#636366',
+                    500: '#8E8E93',
+                    400: '#AEAEB2',
+                    300: '#D6D6D6',
+                    200: '#E5E5EA',
+                    100: '#F2F2F7',
+                    50: '#F9F9FB',
                 },
-                blue: {
-                    50: '#f9fafb',
-                    100: '#f3f4f6',
-                    200: '#e5e7eb',
-                    300: '#d1d5db',
-                    400: '#9ca3af',
-                    500: '#4b5563',
-                    600: '#111827',
-                    700: '#000000',
-                    800: '#000000',
-                    900: '#000000',
-                },
-                purple: {
-                    50: '#f9fafb',
-                    100: '#f3f4f6',
-                    200: '#e5e7eb',
-                    300: '#d1d5db',
-                    400: '#9ca3af',
-                    500: '#4b5563',
-                    600: '#111827',
-                    700: '#000000',
-                    800: '#000000',
-                    900: '#000000',
-                }
             },
             animation: {
-                'fade-in': 'fadeIn 0.6s ease-in-out',
-                'slide-up': 'slideUp 0.6s ease-out',
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'slide-up-delayed': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards',
                 'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
                 'shimmer': 'shimmer 1.5s linear infinite',
             },
@@ -80,12 +58,12 @@ export default {
                     '100%': { opacity: '1' },
                 },
                 slideUp: {
-                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '0%': { opacity: '0', transform: 'translateY(30px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
                 pulseGlow: {
-                    '0%, 100%': { boxShadow: '0 0 20px rgba(17,24,39,0.1)' },
-                    '50%': { boxShadow: '0 0 40px rgba(17,24,39,0.3)' },
+                    '0%, 100%': { boxShadow: '0 0 20px rgba(245, 143, 124, 0.2)' },
+                    '50%': { boxShadow: '0 0 40px rgba(245, 143, 124, 0.45)' },
                 },
                 shimmer: {
                     '0%': { backgroundPosition: '-200% 0' },

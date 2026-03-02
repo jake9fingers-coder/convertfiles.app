@@ -22,7 +22,7 @@ function FileThumbnail({ file }: { file: File }) {
     }, [file])
 
     if (!url) {
-        return <ImageIcon className="w-5 h-5 text-gray-400" />
+        return <ImageIcon className="w-5 h-5 text-dark-400" />
     }
 
     return (
@@ -49,23 +49,18 @@ export default function BatchImageConversionList({
 
     const [showMoreOptions, setShowMoreOptions] = useState(false)
 
-    // Separate popular formats to display prominently vs hidden under 'More'
     const popularKeys = ['webp', 'jpeg', 'png', 'gif']
     const allProfilesList = Object.values(IMAGE_PROFILES)
     const popularProfiles = allProfilesList.filter(p => popularKeys.includes(p.id))
     const moreProfiles = allProfilesList.filter(p => !popularKeys.includes(p.id))
 
-    // Download a single result
     const downloadResult = async (result: any, profile: any) => {
         if ('showSaveFilePicker' in window) {
             try {
                 const ext = profile.outputExtension
                 const handle = await (window as any).showSaveFilePicker({
                     suggestedName: result.filename,
-                    types: [{
-                        description: `${ext.toUpperCase()} file`,
-                        accept: { [result.blob.type]: [`.${ext}`] },
-                    }],
+                    types: [{ description: `${ext.toUpperCase()} file`, accept: { [result.blob.type]: [`.${ext}`] } }],
                 })
                 const writable = await handle.createWritable()
                 await writable.write(result.blob)
@@ -87,20 +82,19 @@ export default function BatchImageConversionList({
         <div className="w-full space-y-4 animate-slide-up">
 
             {/* Batch List Header & Global Settings */}
-            <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-6">
-                {/* Only show the Batch Header if there is > 1 file */}
+            <div className="bg-white border border-dark-200 rounded-xl shadow-sm overflow-hidden mb-6">
                 {batch.length > 1 && (
-                    <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50/50">
+                    <div className="flex items-center justify-between p-4 border-b border-dark-100 bg-dark-50/50">
                         <span className="flex items-center gap-3">
-                            <span className="text-sm font-semibold text-gray-900">
-                                Batch Queue <span className="text-gray-400 font-normal ml-1">({batch.length} files)</span>
+                            <span className="text-sm font-semibold text-dark-900">
+                                Batch Queue <span className="text-dark-400 font-normal ml-1">({batch.length} files)</span>
                             </span>
                         </span>
                         {pendingCount > 0 && (
                             <button
                                 onClick={onConvertAll}
                                 disabled={isConvertingBatch}
-                                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 shadow-sm"
+                                className="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-dark-900 hover:text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                             >
                                 {isConvertingBatch ? (
                                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -113,11 +107,11 @@ export default function BatchImageConversionList({
                     </div>
                 )}
 
-                {/* Global Settings Panel (Used for both single and batch) */}
+                {/* Global Settings Panel */}
                 {pendingCount > 0 && !isConvertingBatch && globalMode && (
                     <div className={`flex flex-col gap-4 ${batch.length > 1 ? 'p-4' : 'p-5'}`}>
                         <div className="flex flex-col gap-3">
-                            <span className="text-sm font-medium text-gray-700">Output Format:</span>
+                            <span className="text-sm font-medium text-dark-700">Output Format:</span>
 
                             {/* Format Buttons Group */}
                             <div className="flex flex-wrap items-center gap-2">
@@ -127,39 +121,35 @@ export default function BatchImageConversionList({
                                         onClick={() => updateAllItems({ mode: p.id })}
                                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border shadow-sm
                                             ${globalMode === p.id
-                                                ? 'bg-indigo-600 text-white border-indigo-600'
-                                                : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'}
-                                        `}
+                                                ? 'bg-brand-500 text-dark-900 border-brand-500'
+                                                : 'bg-white text-dark-700 border-dark-200 hover:border-brand-400 hover:bg-brand-50'}`}
                                     >
                                         {p.label}
                                     </button>
                                 ))}
 
-                                {/* 'More' Toggle Button */}
                                 <button
                                     onClick={() => setShowMoreOptions(!showMoreOptions)}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border shadow-sm
-                                        ${showMoreOptions || (moreProfiles.some(m => m.id === globalMode)) // Keep it highlighted if a hidden option is active
-                                            ? 'bg-gray-100 text-gray-900 border-gray-300'
-                                            : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                                        ${showMoreOptions || (moreProfiles.some(m => m.id === globalMode))
+                                            ? 'bg-dark-100 text-dark-900 border-dark-300'
+                                            : 'bg-white text-dark-500 border-dark-200 hover:bg-dark-50'
                                         }`}
                                 >
                                     {showMoreOptions ? 'Less Options -' : 'More Options +'}
                                 </button>
                             </div>
 
-                            {/* Expanded Hidden Options */}
                             {showMoreOptions && (
-                                <div className="flex flex-wrap justify-start items-center gap-2 mt-2 pt-3 border-t border-gray-100 animate-slide-up">
+                                <div className="flex flex-wrap justify-start items-center gap-2 mt-2 pt-3 border-t border-dark-100 animate-slide-up">
                                     {moreProfiles.map(p => (
                                         <button
                                             key={p.id}
                                             onClick={() => updateAllItems({ mode: p.id })}
                                             className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors border shadow-sm
                                                 ${globalMode === p.id
-                                                    ? 'bg-indigo-600 text-white border-indigo-600'
-                                                    : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'}
-                                            `}
+                                                    ? 'bg-brand-500 text-dark-900 border-brand-500'
+                                                    : 'bg-white text-dark-700 border-dark-200 hover:border-brand-400 hover:bg-brand-50'}`}
                                         >
                                             {p.label}
                                         </button>
@@ -168,13 +158,12 @@ export default function BatchImageConversionList({
                             )}
                         </div>
 
-                        {/* Convert / Action Button aligned at the bottom */}
                         {batch.length === 1 && (
-                            <div className="flex justify-end mt-2 pt-4 border-t border-gray-50">
+                            <div className="flex justify-end mt-2 pt-4 border-t border-dark-50">
                                 <button
                                     onClick={onConvertAll}
                                     disabled={isConvertingBatch}
-                                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 shadow-sm"
+                                    className="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-dark-900 hover:text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                                 >
                                     {isConvertingBatch ? (
                                         <RefreshCw className="w-4 h-4 animate-spin" />
@@ -195,12 +184,11 @@ export default function BatchImageConversionList({
                     const profile = IMAGE_PROFILES[item.mode]
 
                     return (
-                        <div key={item.id} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm relative overflow-hidden group">
+                        <div key={item.id} className="bg-white border border-dark-200 rounded-xl p-4 shadow-sm relative overflow-hidden group">
 
-                            {/* Background Progress Bar (if converting) */}
                             {item.status === 'converting' && (
                                 <div
-                                    className="absolute bottom-0 left-0 h-1 bg-indigo-500 transition-all duration-300"
+                                    className="absolute bottom-0 left-0 h-1 bg-brand-500 transition-all duration-300"
                                     style={{ width: `${item.progress}%` }}
                                 />
                             )}
@@ -208,7 +196,7 @@ export default function BatchImageConversionList({
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative ${item.status === 'done' ? 'bg-transparent border border-gray-100 shadow-sm' : 'bg-gray-50 text-gray-400'}`}>
+                                    <div className={`w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative ${item.status === 'done' ? 'bg-transparent border border-dark-200 shadow-sm' : 'bg-dark-50 text-dark-400'}`}>
                                         {item.status === 'done' && item.result ? (
                                             <img
                                                 src={item.result.url}
@@ -219,7 +207,6 @@ export default function BatchImageConversionList({
                                             <FileThumbnail file={item.file} />
                                         )}
 
-                                        {/* Fallback checkmark overlaid for success state on formats where thumbnails might fail to render */}
                                         {item.status === 'done' && (
                                             <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center">
                                                 <CheckCircle className="w-5 h-5 text-emerald-500 drop-shadow-md" />
@@ -227,16 +214,15 @@ export default function BatchImageConversionList({
                                         )}
                                     </div>
                                     <div className="min-w-0 max-w-[200px]">
-                                        <p className="text-sm font-medium text-gray-900 truncate" title={item.file.name}>
+                                        <p className="text-sm font-medium text-dark-900 truncate" title={item.file.name}>
                                             {item.file.name}
                                         </p>
-                                        <div className="flex items-center gap-2 text-xs text-gray-400">
+                                        <div className="flex items-center gap-2 text-xs text-dark-400">
                                             <span>{formatBytes(item.file.size)}</span>
                                             {item.status === 'error' && (
                                                 <span className="text-red-500 font-medium truncate">{item.error}</span>
                                             )}
                                         </div>
-                                        {/* Extension match warning */}
                                         {(item.status === 'pending' || item.status === 'error') && globalMode && (
                                             item.file.name.toLowerCase().endsWith(`.${IMAGE_PROFILES[globalMode].outputExtension.toLowerCase()}`)
                                         ) && (
@@ -247,25 +233,24 @@ export default function BatchImageConversionList({
                                     </div>
                                 </div>
 
-                                {/* Controls */}
                                 <div className="flex items-center gap-3 pl-14 sm:pl-0">
                                     {item.status === 'pending' || item.status === 'error' ? (
                                         <button
                                             onClick={() => removeItem(item.id)}
                                             disabled={isConvertingBatch}
-                                            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
+                                            className="p-1.5 text-dark-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
                                         >
                                             <X className="w-4 h-4" />
                                         </button>
                                     ) : item.status === 'converting' ? (
-                                        <span className="text-sm font-medium text-indigo-600 flex items-center gap-2">
+                                        <span className="text-sm font-medium text-brand-500 flex items-center gap-2">
                                             <RefreshCw className="w-4 h-4 animate-spin" />
                                             {item.progress}%
                                         </span>
                                     ) : item.status === 'done' && item.result && batch.length > 1 ? (
                                         <button
                                             onClick={() => downloadResult(item.result!, profile)}
-                                            className="text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 px-4 py-1.5 rounded-lg transition-colors"
+                                            className="text-sm font-medium text-dark-900 bg-brand-500 hover:bg-brand-600 hover:text-white px-4 py-1.5 rounded-lg transition-colors"
                                         >
                                             Download
                                         </button>
