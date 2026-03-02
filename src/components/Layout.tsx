@@ -4,7 +4,7 @@ import SmoothScroll from './SmoothScroll'
 
 export default function Layout() {
     return (
-        <div className="relative min-h-screen bg-dark-50 font-sans selection:bg-brand-300 selection:text-dark-900 flex flex-col">
+        <div className="relative min-h-screen bg-[#F9F9FB] font-sans selection:bg-brand-300 selection:text-[#2C2B30] flex flex-col">
             <SmoothScroll />
             <Header />
 

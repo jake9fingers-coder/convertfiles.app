@@ -47,7 +47,7 @@ const steps = [
 
 export default function Features() {
     return (
-        <section id="features" className="py-24 px-6 relative overflow-hidden bg-dark-50">
+        <section id="features" className="py-24 px-6 relative overflow-hidden bg-[#F9F9FB]">
             <div className="max-w-5xl mx-auto relative z-10">
                 <ScrollReveal className="text-center mb-20">
                     <h2 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-6">
