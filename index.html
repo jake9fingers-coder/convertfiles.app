@@ -4,20 +4,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- Primary Meta Tags -->
+  <title>convertfiles.app — Free Online File Converter | HEIC to JPG, MP4 to GIF & More</title>
   <meta name="description"
-    content="Convert, compress, and transform video files instantly in your browser. Powered by FFmpeg WebAssembly — your files never leave your device." />
-  <title>convertfiles.app — Free In-Browser Video Converter</title>
+    content="Convert files free online — HEIC to JPG, WebP to PNG, MP4 to GIF, MP4 to MP3 and 30+ formats. Instant, private, no upload. Runs in your browser." />
+  <meta name="keywords"
+    content="file converter, heic to jpg, webp to png, mp4 to gif, mp4 to mp3, image converter, video converter, free converter, online converter, heic converter, webp converter, convert files free" />
 
   <!-- SEO -->
-  <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="convertfiles.app — Free In-Browser Video Converter" />
-  <meta property="og:description"
-    content="Convert video to GIF, MP4, WebM or MP3. 100% free, no upload, no limits. Runs entirely in your browser." />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://convertfiles.app/" />
 
-  <!-- Fonts (Inter, matching Synctile exactly) -->
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://convertfiles.app/" />
+  <meta property="og:title" content="convertfiles.app — Free Online File Converter" />
+  <meta property="og:description"
+    content="Convert HEIC to JPG, WebP to PNG, MP4 to GIF and 30+ formats free. Instant, private, no upload needed." />
+  <meta property="og:image" content="https://convertfiles.app/og-image.png" />
+  <meta property="og:site_name" content="convertfiles.app" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="convertfiles.app — Free Online File Converter" />
+  <meta name="twitter:description"
+    content="Convert HEIC to JPG, WebP to PNG, MP4 to GIF and 30+ formats free. Instant, private, no upload." />
+  <meta name="twitter:image" content="https://convertfiles.app/og-image.png" />
+
+  <!-- Structured Data: WebSite + SearchAction -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "convertfiles.app",
+      "url": "https://convertfiles.app",
+      "description": "Free online file converter supporting 30+ formats. Convert HEIC to JPG, WebP to PNG, MP4 to GIF, and more. 100% private — files never leave your browser.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://convertfiles.app/convert/{search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "convertfiles.app",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any (Web Browser)",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free online file converter supporting 30+ formats including HEIC to JPG, WebP to PNG, MP4 to GIF and MP4 to MP3. 100% private — all processing happens in your browser.",
+      "url": "https://convertfiles.app",
+      "featureList": "HEIC to JPG, WebP to PNG, MP4 to GIF, MP4 to MP3, PNG to JPG, JPG to PNG, MOV to MP4, Video Compression, JSON to CSV, Excel converter"
+    }
+  </script>
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "convertfiles.app",
+      "url": "https://convertfiles.app",
+      "logo": "https://convertfiles.app/favicon.png"
+    }
+  </script>
+
+  <!-- Sitemap reference -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- Fonts (Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"

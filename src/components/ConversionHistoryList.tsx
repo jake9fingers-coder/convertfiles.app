@@ -50,6 +50,15 @@ interface ConversionHistoryListProps {
 }
 
 export default function ConversionHistoryList({ history, onReuse, onRemove, onClearAll, getProfile }: ConversionHistoryListProps) {
+    const [confirmClear, setConfirmClear] = useState(false)
+
+    useEffect(() => {
+        if (confirmClear) {
+            const timer = setTimeout(() => setConfirmClear(false), 3000)
+            return () => clearTimeout(timer)
+        }
+    }, [confirmClear])
+
     if (history.length === 0) return null
 
     const downloadResult = async (result: any, profile: any) => {
@@ -86,10 +95,20 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                         </span>
                     </span>
                     <button
-                        onClick={onClearAll}
-                        className="text-xs font-medium text-dark-500 hover:text-red-600 transition-colors"
+                        onClick={() => {
+                            if (confirmClear) {
+                                onClearAll();
+                                setConfirmClear(false);
+                            } else {
+                                setConfirmClear(true);
+                            }
+                        }}
+                        className={`text-xs font-medium transition-colors px-2 py-1 rounded ${confirmClear
+                                ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                                : 'text-dark-500 hover:text-red-600'
+                            }`}
                     >
-                        Clear All
+                        {confirmClear ? 'Confirm Clear' : 'Clear All'}
                     </button>
                 </div>
 

@@ -19,7 +19,7 @@ export default function PrivacySection() {
                         {[
                             { icon: '🚫', title: 'No uploads', desc: 'Files never touch our (non-existent) servers.' },
                             { icon: '🕵️', title: 'No tracking', desc: 'No analytics, no fingerprinting, no ad pixels.' },
-                            { icon: '💾', title: 'No storage', desc: 'Files vanish when you close the tab.' },
+                            { icon: '💾', title: 'Local storage', desc: 'Files are saved securely in your browser\'s history.' },
                         ].map(item => (
                             <div key={item.title} className="p-5 bg-dark-800/60 rounded-xl border border-dark-700">
                                 <span className="text-2xl block mb-3">{item.icon}</span>

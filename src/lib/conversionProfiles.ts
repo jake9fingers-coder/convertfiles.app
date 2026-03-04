@@ -26,7 +26,7 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         acceptedInputs: ['video/*'],
         buildArgs: ({ gifFps, gifWidth }) => {
             // Fast single-pass generic palette — skips the extremely slow two-pass palettegen
-            // Crucial for performance on single-thread WASM
+            // Crucial for performance on single-thread processing
             const scale = `${gifWidth}:-1:flags=fast_bilinear`
             return ['-vf', `fps=${gifFps},scale=${scale}`, '-loop', '0']
         },
@@ -39,11 +39,13 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         mimeType: 'video/mp4',
         acceptedInputs: ['video/*'],
         buildArgs: ({ quality }) => {
-            const crf = Math.round(18 + (100 - quality) * 0.33)
+            // Aggressive compression: highest quality is 720p (q=4), lowest is 360p (q=12)
+            const q = Math.round(12 - (quality / 100) * 8)
+            const scale = quality > 50 ? '-2:720' : '-2:360'
             return [
-                '-c:v', 'libx264', '-crf', String(crf),
-                '-preset', 'ultrafast',
-                '-c:a', 'aac', '-b:a', '128k',
+                '-c:v', 'mpeg4', '-q:v', String(q),
+                '-vf', `scale=${scale}`,
+                '-c:a', 'aac', '-b:a', '64k',
                 '-movflags', '+faststart',
             ]
         },
@@ -56,10 +58,15 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         mimeType: 'video/webm',
         acceptedInputs: ['video/*'],
         buildArgs: ({ quality }) => {
-            const crf = Math.round(15 + (100 - quality) * 0.48)
+            // Quality mapping: 100% -> 720p, <50% -> 480p max to preserve memory
+            // Using libvpx (VP8) instead of libvpx-vp9 to heavily reduce memory footprint and avoid OOM
+            const scale = quality > 50 ? '-2:720' : '-2:480'
+            const q = Math.round(30 - (quality / 100) * 20) // map 0-100 to crf 30-10
             return [
-                '-c:v', 'libvpx-vp9', '-crf', String(crf), '-b:v', '0',
-                '-c:a', 'libopus',
+                '-c:v', 'libvpx', '-crf', String(q), '-b:v', '1M',
+                '-deadline', 'realtime', '-cpu-used', '8', '-threads', '4',
+                '-vf', `scale=${scale}`,
+                '-c:a', 'libvorbis',
             ]
         },
     },
@@ -67,16 +74,13 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         id: 'mp3',
         label: 'Extract Audio',
         description: 'Pull the audio track from any video',
-        outputExtension: 'mp3',
-        mimeType: 'audio/mpeg',
+        outputExtension: 'm4a',
+        mimeType: 'audio/mp4',
         acceptedInputs: ['video/*', 'audio/*'],
         buildArgs: ({ quality }) => {
-            const vbr = Math.round(9 - quality / 11.1) // 9 (worst) → 0 (best)
-
-            // Note: ffmpeg.wasm often lacks libmp3lame. 
-            // We rely on the core's built-in encoder by just specifying the extension, 
-            // or falling back to simple quality flags.
-            return ['-vn', '-q:a', String(vbr)]
+            // Extraction uses universally supported AAC (.m4a)
+            const b = Math.round(64 + (quality / 100) * 192) // 64k to 256k
+            return ['-vn', '-c:a', 'aac', '-b:a', `${b}k`]
         },
     },
     mp4: {
@@ -87,10 +91,11 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         mimeType: 'video/mp4',
         acceptedInputs: ['video/*'],
         buildArgs: ({ quality }) => {
-            const crf = Math.round(18 + (100 - quality) * 0.33)
+            const q = Math.round(8 - (quality / 100) * 6) // map 0-100 to q:v 8-2
+            const filters = quality === 100 ? [] : ['-vf', quality > 50 ? 'scale=-2:720' : 'scale=-2:480']
             return [
-                '-c:v', 'libx264', '-crf', String(crf),
-                '-preset', 'medium',
+                '-c:v', 'mpeg4', '-q:v', String(q),
+                ...filters,
                 '-c:a', 'aac',
                 '-movflags', '+faststart',
             ]

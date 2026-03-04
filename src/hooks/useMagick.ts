@@ -14,7 +14,7 @@ export function useMagick() {
     const [error, setError] = useState<string | null>(null)
     const [progress, setProgress] = useState(0)
 
-    // We use a ref so we don't accidentally abort if we don't need to, though magick-wasm is synchronous largely.
+    // We use a ref to manage abort state
     const abortRef = useRef<AbortController | null>(null)
 
     const load = useCallback(async () => {
@@ -27,21 +27,20 @@ export function useMagick() {
             setStatus('loading')
             setError(null)
 
-            // Dynamic import to avoid loading the massive WASM on first page load
+            // Dynamic import to avoid loading the massive binary on first page load
             const { initializeImageMagick } = await import('@imagemagick/magick-wasm')
 
-            // Fetch the WASM binary from the public folder
+            // Fetch the binary from the public folder
             const origin = window.location.origin;
             const wasmUrl = new URL(`${origin}/magick/magick.wasm`);
 
-            // Attempt standard initialization with the fetched binary URL.
             await initializeImageMagick(wasmUrl)
 
             magickInitialized = true
             setStatus('ready')
         } catch (err: any) {
-            console.error('Failed to load Magick WASM:', err)
-            setError('Failed to load ImageMagick engine. It might require public WASM serving.')
+            console.error('Failed to load conversion engine:', err)
+            setError('Failed to load the conversion engine. Please refresh and try again.')
             setStatus('idle')
         }
     }, [])
@@ -99,6 +98,9 @@ export function useMagick() {
                     throw new Error('Cancelled')
                 }
 
+                // Preserve maximum quality for all conversions where applicable
+                image.quality = 100;
+
                 // .write() also takes a callback and returns what the callback returns (or Promise)
                 return image.write(targetFormatEnum, (data) => {
                     // Copy the data out of the WebAssembly memory otherwise it gets garbage collected
@@ -132,9 +134,9 @@ export function useMagick() {
             }
 
         } catch (err: any) {
-            console.error('Magick conversion error:', err)
+            console.error('Conversion error:', err)
             const msg = err.message || String(err)
-            if (msg !== 'Cancelled') setError(msg)
+            if (msg !== 'Cancelled') setError(`Conversion failed: ${msg}`)
             throw new Error(msg)
         } finally {
             abortRef.current = null

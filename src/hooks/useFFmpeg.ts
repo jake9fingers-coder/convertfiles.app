@@ -50,31 +50,38 @@ export function useFFmpeg(): UseFFmpegReturn {
         }
 
         setStatus('loading')
-        appendLog('Loading FFmpeg engine...')
+        appendLog('Loading conversion engine...')
 
         const doLoad = async () => {
             const ffmpeg = new FFmpeg()
             ffmpegRef.current = ffmpeg
 
-            ffmpeg.on('log', ({ message }) => appendLog(message))
+            ffmpeg.on('log', ({ message }) => {
+                // Filter out lines that reveal underlying technology
+                const lower = message.toLowerCase()
+                if (lower.includes('ffmpeg') || lower.includes('libav') || lower.includes('built with') ||
+                    lower.includes('configuration:') || lower.includes('gcc') || lower.includes('copyright') ||
+                    lower.includes('github') || lower.includes('wasm')) return
+                appendLog(message)
+            })
             ffmpeg.on('progress', ({ progress: p }) => {
                 setProgress(Math.min(99, Math.round(p * 100)))
             })
 
-            // Single-thread core served from public/ffmpeg/ — reliable, no SharedArrayBuffer needed
+            // Single-thread core served from public/ffmpeg/
             const origin = window.location.origin
-            appendLog('Loading FFmpeg...')
+            appendLog('Initializing...')
             await ffmpeg.load({
                 coreURL: `${origin}/ffmpeg/ffmpeg-core.js`,
                 wasmURL: `${origin}/ffmpeg/ffmpeg-core.wasm`,
             })
 
-            appendLog('FFmpeg ready.')
+            appendLog('Ready.')
             setStatus('ready')
         }
 
         loadingRef.current = doLoad().catch(err => {
-            const msg = err instanceof Error ? err.message : 'Failed to load FFmpeg'
+            const msg = err instanceof Error ? err.message : 'Failed to load conversion engine'
             setError(msg)
             setStatus('error')
             appendLog(`Error: ${msg}`)
@@ -89,7 +96,7 @@ export function useFFmpeg(): UseFFmpegReturn {
     // ---- Video / Audio Conversion ----
     const convert = useCallback(async (file: File, mode: ConversionMode, options: ConversionOptions): Promise<ConversionResult> => {
         if (!ffmpegRef.current) await load()
-        if (!ffmpegRef.current) throw new Error("FFmpeg failed to load")
+        if (!ffmpegRef.current) throw new Error("Conversion engine failed to load")
 
         const ffmpeg = ffmpegRef.current
         const profile = PROFILES[mode]
@@ -110,7 +117,7 @@ export function useFFmpeg(): UseFFmpegReturn {
             await ffmpeg.writeFile(inputName, fileData)
 
             const args = ['-i', inputName, ...profile.buildArgs(options), outputName]
-            appendLog(`Running: ffmpeg ${args.join(' ')}`)
+            appendLog(`Running conversion: ${args.join(' ').replace(/ffmpeg/gi, 'engine')}`)
             await ffmpeg.exec(args)
 
             appendLog('Reading output...')
@@ -155,7 +162,7 @@ export function useFFmpeg(): UseFFmpegReturn {
     // ---- Standard Image Conversion (No complex options needed, FFmpeg handles defaults perfectly) ----
     const convertImage = useCallback(async (file: File, mode: ImageConversionMode): Promise<ConversionResult> => {
         if (!ffmpegRef.current) await load()
-        if (!ffmpegRef.current) throw new Error("FFmpeg failed to load")
+        if (!ffmpegRef.current) throw new Error("Conversion engine failed to load")
 
         const ffmpeg = ffmpegRef.current
         const profile = IMAGE_PROFILES[mode]
@@ -178,16 +185,19 @@ export function useFFmpeg(): UseFFmpegReturn {
             // GIF needs some special handling for looping if it's animated, but simple conversions are fine.
             let args: string[] = ['-i', inputName]
 
-            if (mode === 'gif') {
-                // simple quick palette check for standard gif conversion
-                args = ['-i', inputName, '-vf', 'split[s0][s1];[s0]palettegen=max_colors=256[p];[s1][p]paletteuse', outputName]
-            } else if (mode === 'webp') {
+            if (mode === 'webp') {
                 args = ['-i', inputName, '-c:v', 'libwebp', '-q:v', '75', outputName]
+            } else if (mode === 'jpeg') {
+                // -q:v 2 = near-lossless quality (scale 2-31, lower is better)
+                args = ['-i', inputName, '-q:v', '2', outputName]
+            } else if (mode === 'png') {
+                // PNG is lossless, no quality flag needed but ensure no compression artifacts
+                args = ['-i', inputName, '-compression_level', '3', outputName]
             } else {
                 args = ['-i', inputName, outputName]
             }
 
-            appendLog(`Running image conversion: ffmpeg ${args.join(' ')}`)
+            appendLog(`Running image conversion...`)
             await ffmpeg.exec(args)
 
             appendLog('Reading output...')

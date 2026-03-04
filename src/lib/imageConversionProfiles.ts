@@ -1,7 +1,7 @@
 export type ImageEngine = 'ffmpeg' | 'magick'
 export type ImageConversionMode =
-    | 'webp' | 'jpeg' | 'png' | 'gif' | 'bmp' // Standard formats -> FFmpeg
-    | 'tiff' | 'tga' | 'psd' | 'heic' | 'jxl' | 'avif' | 'eps' // Obscure/pro formats -> Magick
+    | 'webp' | 'jpeg' | 'png' | 'bmp' // Standard formats -> Primary engine
+    | 'tiff' | 'tga' | 'psd' | 'jxl' | 'avif' | 'eps' // Obscure/pro formats -> Magick
 
 export interface ImageConversionProfile {
     id: ImageConversionMode
@@ -14,7 +14,7 @@ export interface ImageConversionProfile {
 }
 
 export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile> = {
-    // ---- FFmpeg Engine (Standard, Fast, Native-feeling for common web formats) ----
+    // ---- Standard formats (fast, native-feeling for common web formats) ----
     webp: {
         id: 'webp',
         engine: 'ffmpeg',
@@ -42,15 +42,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
         mimeType: 'image/png',
         acceptedInputs: ['image/*'],
     },
-    gif: {
-        id: 'gif',
-        engine: 'ffmpeg',
-        label: 'Animated GIF',
-        description: 'Best for simple web animations',
-        outputExtension: 'gif',
-        mimeType: 'image/gif',
-        acceptedInputs: ['image/*', 'video/*'],
-    },
+
     bmp: {
         id: 'bmp',
         engine: 'ffmpeg',
@@ -61,7 +53,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
         acceptedInputs: ['image/*'],
     },
 
-    // ---- Magick Engine (Heavy duty fallback for obscure/professional formats) ----
+    // ---- Professional formats (heavier processing for obscure/pro formats) ----
     tiff: {
         id: 'tiff',
         engine: 'magick',
@@ -89,15 +81,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
         mimeType: 'image/x-tga',
         acceptedInputs: ['image/*'],
     },
-    heic: {
-        id: 'heic',
-        engine: 'magick',
-        label: 'Convert to HEIC',
-        description: 'High-Efficiency Image Container (Apple)',
-        outputExtension: 'heic',
-        mimeType: 'image/heic',
-        acceptedInputs: ['image/*'],
-    },
+
     jxl: {
         id: 'jxl',
         engine: 'magick',

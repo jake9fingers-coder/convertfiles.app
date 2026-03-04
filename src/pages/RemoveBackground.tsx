@@ -1,4 +1,4 @@
-import { ImageOff } from 'lucide-react'
+import { ImageOff, ShieldCheck, Clock } from 'lucide-react'
 
 export default function RemoveBackground() {
     return (
@@ -13,11 +13,13 @@ export default function RemoveBackground() {
                     AI-powered background removal, running entirely in your browser. No uploads. No subscriptions.
                 </p>
                 <div className="mt-8 flex items-center justify-center gap-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-50 border border-brand-200 text-xs font-semibold text-brand-600">
-                        🔒 Client-side only
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-dark-200 text-xs font-semibold text-dark-600 shadow-sm">
+                        <ShieldCheck className="w-4 h-4" />
+                        Client-side only
                     </span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-100 border border-dark-200 text-xs font-semibold text-dark-600">
-                        🚀 In development
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-dark-200 text-xs font-semibold text-dark-600 shadow-sm">
+                        <Clock className="w-4 h-4" />
+                        Coming Soon
                     </span>
                 </div>
             </div>

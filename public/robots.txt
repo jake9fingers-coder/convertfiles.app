@@ -1,0 +1,11 @@
+# robots.txt for convertfiles.app
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://convertfiles.app/sitemap.xml
+
+# Disallow
+Disallow: /api/
+Disallow: /_next/
+Disallow: /node_modules/

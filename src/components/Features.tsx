@@ -15,10 +15,10 @@ const features = [
     {
         icon: <Zap className="w-7 h-7 text-brand-500" />,
         title: 'Instant Conversion',
-        description: 'Powered by WebAssembly. The same engine behind VLC and YouTube.',
+        description: 'Blazing fast processing powered by your own device.',
     },
     {
-        icon: <Shield className="w-7 h-7 text-emerald-400" />,
+        icon: <Shield className="w-7 h-7 text-brand-300" />,
         title: 'No Account Required',
         description: 'No sign-up. Open the page, drop a file, get your output.',
     }
@@ -47,7 +47,7 @@ const steps = [
 
 export default function Features() {
     return (
-        <section id="features" className="py-24 px-6 relative overflow-hidden bg-[#F9F9FB]">
+        <section id="features" className="py-24 px-6 relative overflow-hidden bg-dark-50">
             <div className="max-w-5xl mx-auto relative z-10">
                 <ScrollReveal className="text-center mb-20">
                     <h2 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-6">
@@ -63,7 +63,7 @@ export default function Features() {
                     {steps.map((step, i) => (
                         <ScrollReveal key={step.number} delay={i * 0.12}>
                             <div className="bg-dark-900 rounded-xl p-8 relative group overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                                <div className="absolute -right-4 -top-4 text-9xl font-black text-dark-800 pointer-events-none select-none">
+                                <div className="absolute -right-2 top-0 text-8xl font-black text-dark-800/50 pointer-events-none select-none">
                                     {step.number}
                                 </div>
                                 <div className="relative z-10">

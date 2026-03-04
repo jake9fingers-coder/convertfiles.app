@@ -19,7 +19,7 @@ export default function HowItWorks() {
             icon: <Download className="w-6 h-6 text-brand-500" />,
             number: '03',
             title: 'Download instantly',
-            description: 'FFmpeg runs directly in your browser tab via WebAssembly. Hit convert, watch the progress, and download your file.',
+            description: 'The engine runs directly within your browser. Hit convert, watch the progress, and download your file.',
         },
     ]
 

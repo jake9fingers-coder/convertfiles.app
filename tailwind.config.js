@@ -18,32 +18,58 @@ export default {
                 'full': '9999px',
             },
             colors: {
-                // Coral/salmon primary — #F58F7C
+                // Celadon Blue primary — #457B9D
                 brand: {
-                    50: '#FDF5F3',
-                    100: '#FAEAE6',
-                    200: '#F5D0C8',
-                    300: '#F2C4CE',  // blush pink
-                    400: '#F5A394',
-                    500: '#F58F7C',  // primary coral
-                    600: '#E8735F',
-                    700: '#D05A48',
-                    800: '#A84234',
-                    900: '#7C2F24',
+                    50: '#F2F6F8',
+                    100: '#E0ECF2',
+                    200: '#BAD6E3',
+                    300: '#88B9CF',
+                    400: '#5798B6',
+                    500: '#457B9D', // primary Celadon
+                    600: '#36607C',
+                    700: '#294A61',
+                    800: '#1D3647',
+                    900: '#152733',
                 },
-                // Charcoal dark palette — #2C2B30 / #4F4F51 / #D6D6D6
+                // Prussian Blue dark palette & Honeydew light — #1D3557 / #F1FAEE
                 dark: {
-                    900: '#2C2B30',
-                    800: '#3A3940',
-                    700: '#4F4F51',
-                    600: '#636366',
-                    500: '#8E8E93',
-                    400: '#AEAEB2',
-                    300: '#D6D6D6',
-                    200: '#E5E5EA',
-                    100: '#F2F2F7',
-                    50: '#F9F9FB',
+                    900: '#1D3557', // primary Prussian
+                    800: '#2A4874',
+                    700: '#385E95',
+                    600: '#4A77B8',
+                    500: '#6B91C6',
+                    400: '#8CAAD3',
+                    300: '#ADC3E0',
+                    200: '#D6E3F2',
+                    100: '#E6EEF7',
+                    50: '#F4F7F6',  // neutral premium off-white
                 },
+                // Crimson accent — #E63946
+                accent: {
+                    50: '#FCF4F5',
+                    100: '#F8E6E7',
+                    200: '#F0C4C7',
+                    300: '#E6989D',
+                    400: '#DB666E',
+                    500: '#E63946', // primary Crimson
+                    600: '#C22B36',
+                    700: '#9C2029',
+                    800: '#7A1B22',
+                    900: '#61181E',
+                },
+                // Light Blue soft — #A8DADC
+                soft: {
+                    50: '#F6FBFC',
+                    100: '#E9F6F7',
+                    200: '#CFEAEC',
+                    300: '#A8DADC', // primary Light Blue
+                    400: '#7AC2C5',
+                    500: '#55A8AC',
+                    600: '#428B8E',
+                    700: '#356F72',
+                    800: '#2C5A5D',
+                    900: '#254C4E',
+                }
             },
             animation: {
                 'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
@@ -62,8 +88,8 @@ export default {
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
                 pulseGlow: {
-                    '0%, 100%': { boxShadow: '0 0 20px rgba(245, 143, 124, 0.2)' },
-                    '50%': { boxShadow: '0 0 40px rgba(245, 143, 124, 0.45)' },
+                    '0%, 100%': { boxShadow: '0 0 20px rgba(69, 123, 157, 0.2)' },
+                    '50%': { boxShadow: '0 0 40px rgba(69, 123, 157, 0.45)' },
                 },
                 shimmer: {
                     '0%': { backgroundPosition: '-200% 0' },

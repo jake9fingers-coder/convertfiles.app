@@ -74,18 +74,18 @@ export default function ProgressDisplay({ progress, logMessages, onCancel }: Pro
                     )}
                 </div>
                 <p className="text-xs text-dark-400 mt-1.5">
-                    Large files may take a minute — FFmpeg is running locally in your browser
+                    Large files may take a minute — processing happens locally in your browser
                 </p>
             </div>
 
-            {/* FFmpeg log output */}
+            {/* Conversion log output */}
             <div
                 className="bg-dark-900 rounded-lg p-4 h-28 overflow-y-auto font-mono text-xs text-dark-400 space-y-0.5"
-                aria-label="FFmpeg conversion log"
+                aria-label="Conversion log"
                 aria-live="polite"
             >
                 {logMessages.length === 0 ? (
-                    <span className="text-dark-600">Waiting for FFmpeg…</span>
+                    <span className="text-dark-600">Waiting for engine…</span>
                 ) : (
                     logMessages.map((msg, i) => (
                         <div key={i} className={`leading-relaxed ${i === logMessages.length - 1 ? 'text-dark-200' : ''}`}>

@@ -103,7 +103,7 @@ export default function OutputCard({ result, mode, onReset }: OutputCardProps) {
             <div className="flex gap-3">
                 <button
                     onClick={download}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-5 text-sm font-semibold bg-brand-500 text-dark-900 rounded-lg hover:bg-brand-600 hover:text-white active:scale-[0.98] transition-all duration-150 shadow-sm"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-5 text-sm font-semibold bg-brand-500 text-white rounded-lg hover:bg-brand-600 active:scale-[0.98] transition-all duration-150 shadow-sm"
                     aria-label="Download converted file"
                 >
                     <Download className="w-4 h-4" />

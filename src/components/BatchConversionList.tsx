@@ -101,7 +101,7 @@ export default function BatchConversionList({
                         <button
                             onClick={onConvertAll}
                             disabled={isConvertingBatch}
-                            className="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-dark-900 hover:text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
+                            className="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                         >
                             {isConvertingBatch ? (
                                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -220,21 +220,39 @@ export default function BatchConversionList({
                                             </div>
                                         )}
                                     </div>
-                                    <div className="min-w-0 max-w-[200px]">
+                                    <div className={`min-w-0 ${item.status === 'error' ? 'max-w-[300px]' : 'max-w-[200px]'}`}>
                                         <p className="text-sm font-medium text-dark-900 truncate" title={item.file.name}>
                                             {item.file.name}
                                         </p>
                                         <div className="flex items-center gap-2 text-xs text-dark-400">
                                             <span>{formatBytes(item.file.size)}</span>
-                                            {item.status === 'error' && (
-                                                <span className="text-red-500 font-medium truncate">{item.error}</span>
-                                            )}
                                         </div>
-                                        {(item.status === 'pending' || item.status === 'error') && globalMode && globalMode !== 'compress' && (
-                                            item.file.name.toLowerCase().endsWith(`.${PROFILES[globalMode].outputExtension.toLowerCase()}`)
+                                        {item.status === 'error' && (
+                                            <div className="mt-2 space-y-1">
+                                                <div className="text-red-500 text-xs font-medium pr-2 leading-relaxed whitespace-normal break-words">
+                                                    {item.error}
+                                                </div>
+                                                <div className="flex items-center gap-3 pt-1">
+                                                    <button
+                                                        onClick={() => updateAllItems({ status: 'pending', error: null })}
+                                                        className="text-xs text-red-700 hover:text-red-900 underline font-medium"
+                                                    >
+                                                        Try again
+                                                    </button>
+                                                    <button
+                                                        onClick={() => removeItem(item.id)}
+                                                        className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-md transition-colors text-xs font-semibold"
+                                                    >
+                                                        Try a Different File
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {(item.status === 'pending' || item.status === 'error') && item.mode && item.mode !== 'compress' && (
+                                            item.file.name.toLowerCase().endsWith(`.${PROFILES[item.mode].outputExtension.toLowerCase()}`)
                                         ) && (
                                                 <p className="text-xs text-amber-600 font-medium mt-0.5">
-                                                    Already .{PROFILES[globalMode].outputExtension.toUpperCase()}
+                                                    Already .{PROFILES[item.mode].outputExtension.toUpperCase()}
                                                 </p>
                                             )}
                                     </div>
@@ -258,7 +276,7 @@ export default function BatchConversionList({
                                     ) : item.status === 'done' && item.result && batch.length > 1 ? (
                                         <button
                                             onClick={() => downloadResult(item.result!, profile)}
-                                            className="text-sm font-medium text-dark-900 bg-brand-500 hover:bg-brand-600 hover:text-white px-4 py-1.5 rounded-lg transition-colors"
+                                            className="text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 px-4 py-1.5 rounded-lg transition-colors"
                                         >
                                             Download
                                         </button>

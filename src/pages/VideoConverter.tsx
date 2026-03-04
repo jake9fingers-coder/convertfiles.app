@@ -1,4 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
+import SEOHead from '../components/SEOHead'
+import { SITE_URL } from '../lib/seoConversionData'
 import JSZip from 'jszip'
 import { useFFmpeg, type ConversionResult } from '../hooks/useFFmpeg'
 import type { ConversionMode, ConversionOptions } from '../lib/conversionProfiles'
@@ -7,6 +9,7 @@ import Dropzone from '../components/Dropzone'
 import ProgressDisplay from '../components/ProgressDisplay'
 import BatchConversionList from '../components/BatchConversionList'
 import ConversionHistoryList from '../components/ConversionHistoryList'
+import { saveVideoHistory, loadVideoHistory } from '../lib/db'
 
 export interface BatchItem {
     id: string
@@ -20,14 +23,31 @@ export interface BatchItem {
 }
 
 import Features from '../components/Features'
+import RelatedTools from '../components/RelatedTools'
 
-export default function VideoConverter() {
+export default function VideoConverter({ embedded = false }: { embedded?: boolean }) {
     const { status: ffmpegStatus, progress: globalProgress, logMessages, error: globalError, load, convert, cancel, reset } = useFFmpeg()
 
     const [batch, setBatch] = useState<BatchItem[]>([])
     const [history, setHistory] = useState<BatchItem[]>([])
+    const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [isZipping, setIsZipping] = useState(false)
+
+    // Load history on mount
+    useEffect(() => {
+        loadVideoHistory().then(data => {
+            setHistory(data)
+            setIsHistoryLoaded(true)
+        })
+    }, [])
+
+    // Sync history to IndexedDB when it changes
+    useEffect(() => {
+        if (isHistoryLoaded) {
+            saveVideoHistory(history)
+        }
+    }, [history, isHistoryLoaded])
 
     // Sync ffmpeg progress back to currently converting item
     useEffect(() => {
@@ -83,12 +103,21 @@ export default function VideoConverter() {
                 const outputExt = profile.outputExtension.toLowerCase()
 
                 // Only block if they are doing a straight conversion to the exact same format
-                // (We allow compressing an mp4 to an mp4, for example)
                 if (inputExt === outputExt && item.mode !== 'compress') {
                     setBatch(prev => prev.map(p => p.id === item.id ? {
                         ...p,
                         status: 'error',
                         error: `Already a .${outputExt.toUpperCase()} file`
+                    } : p))
+                    continue
+                }
+
+                // Prevent audio-only inputs from going into video outputs
+                if (item.file.type.startsWith('audio/') && item.mode !== 'mp3') {
+                    setBatch(prev => prev.map(p => p.id === item.id ? {
+                        ...p,
+                        status: 'error',
+                        error: `Cannot convert an audio file to a video format.`
                     } : p))
                     continue
                 }
@@ -147,36 +176,55 @@ export default function VideoConverter() {
 
     return (
         <div className="w-full flex flex-col items-center">
+            <SEOHead
+                title="Free Video & Audio Converter Online — MP4 to GIF, MP3 & More | convertfiles.app"
+                description="Convert video to GIF, MP4, WebM or extract audio to MP3. Free, instant, private — runs in your browser. No upload, no limits, no sign-up."
+                canonical={`${SITE_URL}/`}
+                keywords={['video converter', 'mp4 to gif', 'mp4 to mp3', 'video to gif', 'video to mp3', 'mov to mp4', 'compress video', 'free video converter', 'online video converter']}
+            />
 
             {/* Full viewport container for perfect vertical centering */}
-            <div className="w-full min-h-[calc(100vh-140px)] flex flex-col items-center justify-center pt-8 pb-16">
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] justify-center pt-8 pb-16'}`}>
 
-                {/* Compact heading above the tool */}
-                <div className="w-full mb-8 flex flex-col items-center text-center animate-fade-in">
-                    <div className="inline-flex items-center justify-center p-3 bg-dark-900 rounded-xl mb-4 animate-slide-up">
-                        <img src="/favicon.png" alt="Logo" className="w-8 h-8 object-contain" />
+                {/* Compact heading above the tool — hidden when embedded */}
+                {!embedded && (
+                    <div className="w-full mb-8 flex flex-col items-center text-center">
+                        <div className="inline-flex items-center justify-center mb-4">
+                            <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
+                            convertfiles.app
+                        </h1>
+                        <p className="text-xl font-semibold text-brand-500 mb-2">
+                            Video & Audio Converter
+                        </p>
+                        <p className="text-base text-dark-500 max-w-sm">
+                            Convert, compress &amp; extract audio — free, instant, private
+                        </p>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 animate-slide-up-delayed">
-                        convertfiles.app
-                    </h1>
-                    <p className="text-xl font-semibold text-brand-500 mb-2 animate-slide-up-delayed" style={{ animationDelay: '0.15s' }}>
-                        Video & Audio Converter
-                    </p>
-                    <p className="text-base text-dark-500 max-w-sm animate-slide-up-delayed" style={{ animationDelay: '0.25s' }}>
-                        Convert, compress &amp; extract audio — free, instant, private
-                    </p>
-                </div>
+                )}
 
                 {/* The Converter Tool */}
-                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 animate-fade-in opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4">
 
                     {/* Error */}
                     {globalError && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-center justify-between">
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
                             <span><strong>Error:</strong> {globalError}</span>
-                            <button onClick={handleReset} className="ml-3 underline hover:text-red-900 shrink-0">
-                                Try again
-                            </button>
+                            <div className="flex items-center gap-4 shrink-0 font-medium">
+                                <button
+                                    onClick={() => handleConvertBatch()}
+                                    className="underline hover:text-red-900"
+                                >
+                                    Try again
+                                </button>
+                                <button
+                                    onClick={handleReset}
+                                    className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-md transition-colors font-semibold"
+                                >
+                                    Try a Different File
+                                </button>
+                            </div>
                         </div>
                     )}
 
@@ -274,7 +322,7 @@ export default function VideoConverter() {
                                     }
                                 }}
                                 disabled={isZipping}
-                                className={`text-sm font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md ${isZipping ? 'bg-dark-300 text-dark-600 cursor-not-allowed' : 'bg-brand-500 text-dark-900 hover:bg-brand-600 hover:text-white'}`}
+                                className={`text-sm font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md ${isZipping ? 'bg-dark-300 text-dark-600 cursor-not-allowed' : 'bg-brand-500 text-white hover:bg-brand-600'}`}
                             >
                                 {isZipping ? 'Saving...' : batch.length === 1 ? 'Download Target File' : 'Download All as ZIP'}
                             </button>
@@ -307,10 +355,15 @@ export default function VideoConverter() {
                 </div>
             </div>
 
-            {/* Marketing / Explainer Sections */}
-            <div className="w-full">
-                <Features />
-            </div>
+            {/* Related Tools — hidden when embedded */}
+            {!embedded && <RelatedTools currentTool="video" />}
+
+            {/* Marketing / Explainer Sections — hidden when embedded */}
+            {!embedded && (
+                <div className="w-full">
+                    <Features />
+                </div>
+            )}
         </div>
     )
 }
