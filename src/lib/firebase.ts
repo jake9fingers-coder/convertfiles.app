@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBTWf0POazg2LHVipkK-rvi-S9tgXUTZaY",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "convertfilesapp.firebaseapp.com",
     projectId: "convertfilesapp",
     storageBucket: "convertfilesapp.firebasestorage.app",
