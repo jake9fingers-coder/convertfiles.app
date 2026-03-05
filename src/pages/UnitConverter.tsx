@@ -1,9 +1,12 @@
 import { useState, useMemo, useEffect } from 'react'
+import SEOHead from '../components/SEOHead'
+import { SITE_URL } from '../lib/seoConversionData'
 import { convert } from 'convert'
 import { Search, ArrowRightLeft, Ruler, Scale, Droplet, Thermometer, Database } from 'lucide-react'
 import Select from 'react-select'
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
+import GenericSEOContent from '../components/GenericSEOContent'
 
 export const customSelectStyles = {
     control: (base: any, state: any) => ({
@@ -117,15 +120,22 @@ const COMMON_UNITS = [
     { val: 'TB', label: 'Terabytes', cat: 'data' },
 ]
 
-export default function UnitConverter() {
-    const [activeCategory, setActiveCategory] = useState<UnitCategory>('length')
+interface UnitConverterProps {
+    embedded?: boolean;
+    initialFrom?: string;
+    initialTo?: string;
+    initialCategory?: UnitCategory;
+}
+
+export default function UnitConverter({ embedded = false, initialFrom = 'm', initialTo = 'ft', initialCategory = 'length' }: UnitConverterProps) {
+    const [activeCategory, setActiveCategory] = useState<UnitCategory>(initialCategory)
     const [searchQuery, setSearchQuery] = useState('')
 
     const [fromVal, setFromVal] = useState<string>('1')
-    const [fromUnit, setFromUnit] = useState<string>('m')
+    const [fromUnit, setFromUnit] = useState<string>(initialFrom)
 
     const [toVal, setToVal] = useState<string>('')
-    const [toUnit, setToUnit] = useState<string>('ft')
+    const [toUnit, setToUnit] = useState<string>(initialTo)
 
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
@@ -197,19 +207,30 @@ export default function UnitConverter() {
 
     return (
         <div className="w-full flex flex-col items-center">
-            <div className="w-full min-h-[calc(100vh-140px)] flex flex-col items-center pt-8 pb-16 px-4">
+            <SEOHead
+                title="Free Unit Converter — Length, Mass, Volume, Temp & Data | convertfiles.app"
+                description="Instantly convert between units of length, mass, volume, temperature, and digital data. Precision-engineered offline conversion tool."
+                canonical={`${SITE_URL}/units`}
+                keywords={['unit converter', 'convert units', 'length converter', 'mass converter', 'temperature converter']}
+            />
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4 px-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16 px-4'}`}>
 
-                <div className="w-full mb-8 flex flex-col items-center text-center">
-                    <div className="inline-flex items-center justify-center mb-4 bg-brand-50 p-3 rounded-2xl">
-                        <Scale className="w-8 h-8 text-brand-500" />
+                {!embedded && (
+                    <div className="w-full mb-8 flex flex-col items-center text-center">
+                        <div className="inline-flex items-center justify-center mb-4">
+                            <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
+                            convertfiles.app
+                        </h1>
+                        <p className="text-xl font-semibold text-brand-500 mb-2">
+                            Unit Converter
+                        </p>
+                        <p className="text-base text-dark-500 max-w-sm">
+                            Instantly convert length, mass, volume, temperature, and data offline.
+                        </p>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                        Unit Converter
-                    </h1>
-                    <p className="text-base text-dark-500 max-w-sm">
-                        Instantly convert length, mass, volume, temperature, and data offline.
-                    </p>
-                </div>
+                )}
 
                 <div className="w-full max-w-3xl bg-white border border-dark-200 rounded-2xl shadow-sm p-6 md:p-8 animate-slide-up space-y-8">
 
@@ -313,16 +334,22 @@ export default function UnitConverter() {
                     )}
                 </div>
 
-                <p className="text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
-                    Conversion is performed mathematically offline right in your browser. Precision-engineered formulas ensure pinpoint accuracy. No API calls or tracking.
-                </p>
+                {!embedded && (
+                    <p className="text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
+                        Conversion is performed mathematically offline right in your browser. Precision-engineered formulas ensure pinpoint accuracy. No API calls or tracking.
+                    </p>
+                )}
             </div>
 
-            <RelatedTools currentTool="units" />
+            {!embedded && <RelatedTools currentTool="units" />}
 
-            <div className="w-full">
-                <Features />
-            </div>
+            {!embedded && <GenericSEOContent toolId="units" />}
+
+            {!embedded && (
+                <div className="w-full">
+                    <Features />
+                </div>
+            )}
         </div>
     )
 }

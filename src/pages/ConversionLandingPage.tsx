@@ -4,6 +4,8 @@ import SEOHead from '../components/SEOHead'
 import VideoConverter from './VideoConverter'
 import ImageConverter from './ImageConverter'
 import DataConverter from './DataConverter'
+import CurrencyConverter from './CurrencyConverter'
+import UnitConverter from './UnitConverter'
 import ScrollReveal from '../components/ScrollReveal'
 import Features from '../components/Features'
 import { ArrowRight, ChevronDown, ChevronUp, Zap, Shield, Clock } from 'lucide-react'
@@ -75,14 +77,25 @@ export default function ConversionLandingPage() {
                 structuredData={howToSchema}
             />
 
-            {/* Full viewport top section */}
             <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center pt-20 pb-10">
                 {/* Converter Section */}
                 <section className="px-6 relative z-20">
                     <div className="max-w-5xl mx-auto">
-                        {data.converterType === 'video' && <VideoConverter embedded />}
-                        {data.converterType === 'image' && <ImageConverter embedded />}
-                        {data.converterType === 'data' && <DataConverter embedded />}
+                        {(() => {
+                            const isUnitOrCurrency = data.converterType === 'currency' || data.converterType === 'unit'
+                            const initialFrom = isUnitOrCurrency ? data.converterMode.split('_to_')[0] : undefined
+                            const initialTo = isUnitOrCurrency ? data.converterMode.split('_to_')[1] : undefined
+
+                            return (
+                                <>
+                                    {data.converterType === 'video' && <VideoConverter embedded />}
+                                    {data.converterType === 'image' && <ImageConverter embedded />}
+                                    {data.converterType === 'data' && <DataConverter embedded />}
+                                    {data.converterType === 'currency' && <CurrencyConverter embedded initialFrom={initialFrom} initialTo={initialTo} />}
+                                    {data.converterType === 'unit' && <UnitConverter embedded initialCategory="all" initialFrom={initialFrom} initialTo={initialTo} />}
+                                </>
+                            )
+                        })()}
                     </div>
                 </section>
 
@@ -155,6 +168,40 @@ export default function ConversionLandingPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Fun Facts / Unique Stats Section (for SEO uniqueness) */}
+            {data.funFacts && data.funFacts.length > 0 && (
+                <section className="py-16 px-6 bg-white border-b border-dark-100">
+                    <div className="max-w-5xl mx-auto">
+                        <ScrollReveal>
+                            <div className="text-center mb-12">
+                                <h2 className="text-3xl font-bold text-dark-900 mb-4">
+                                    Did You Know?
+                                </h2>
+                                <p className="text-lg text-dark-500 max-w-2xl mx-auto">
+                                    Interesting facts about {data.sourceFormat} and {data.targetFormat}.
+                                </p>
+                            </div>
+                        </ScrollReveal>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {data.funFacts.map((fact, i) => (
+                                <ScrollReveal key={i} delay={i * 100}>
+                                    <div className="h-full bg-dark-50 rounded-2xl p-6 border border-dark-100 hover:border-brand-200 hover:shadow-sm transition-all">
+                                        <h3 className="text-lg font-bold text-dark-900 mb-3 flex items-center gap-2">
+                                            <span className="text-brand-500 text-xl leading-none">•</span>
+                                            {fact.title}
+                                        </h3>
+                                        <p className="text-dark-600 leading-relaxed text-sm">
+                                            {fact.content}
+                                        </p>
+                                    </div>
+                                </ScrollReveal>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* FAQ Section */}
             {data.faqItems.length > 0 && (

@@ -7,8 +7,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  // No COOP/COEP headers — single-thread FFmpeg doesn't need SharedArrayBuffer,
-  // and these headers break blob URL downloads in Chrome.
   optimizeDeps: {
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util', '@imagemagick/magick-wasm'],
   },

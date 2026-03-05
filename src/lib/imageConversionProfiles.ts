@@ -1,4 +1,4 @@
-export type ImageEngine = 'ffmpeg' | 'magick'
+export type ImageEngine = 'canvas' | 'magick'
 export type ImageConversionMode =
     | 'webp' | 'jpeg' | 'png' | 'bmp' // Standard formats -> Primary engine
     | 'tiff' | 'tga' | 'psd' | 'jxl' | 'avif' | 'eps' // Obscure/pro formats -> Magick
@@ -17,7 +17,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
     // ---- Standard formats (fast, native-feeling for common web formats) ----
     webp: {
         id: 'webp',
-        engine: 'ffmpeg',
+        engine: 'canvas',
         label: 'Convert to WebP',
         description: 'Next-gen web format, great compression',
         outputExtension: 'webp',
@@ -26,7 +26,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
     },
     jpeg: {
         id: 'jpeg',
-        engine: 'ffmpeg',
+        engine: 'canvas',
         label: 'Convert to JPEG',
         description: 'Universal standard for photos',
         outputExtension: 'jpg',
@@ -35,7 +35,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
     },
     png: {
         id: 'png',
-        engine: 'ffmpeg',
+        engine: 'canvas',
         label: 'Convert to PNG',
         description: 'High quality, transparent backgrounds',
         outputExtension: 'png',
@@ -45,7 +45,7 @@ export const IMAGE_PROFILES: Record<ImageConversionMode, ImageConversionProfile>
 
     bmp: {
         id: 'bmp',
-        engine: 'ffmpeg',
+        engine: 'canvas',
         label: 'Convert to BMP',
         description: 'Uncompressed, lossless legacy format',
         outputExtension: 'bmp',

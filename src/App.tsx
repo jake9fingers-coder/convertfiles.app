@@ -7,11 +7,13 @@ import UnitConverter from './pages/UnitConverter'
 import DataConverter from './pages/DataConverter'
 import CurrencyConverter from './pages/CurrencyConverter'
 import ConversionLandingPage from './pages/ConversionLandingPage'
+import ScrollToTop from './components/ScrollToTop'
 
 export default function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<VideoConverter />} />

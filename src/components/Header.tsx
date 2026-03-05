@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X, Sun, Moon } from 'lucide-react'
+import { useDarkMode } from '../hooks/useDarkMode'
 
 const MAIN_LINKS = [
     { to: '/', label: 'Video & Audio' },
@@ -19,6 +20,7 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const moreRef = useRef<HTMLDivElement>(null)
     const location = useLocation()
+    const { isDark, toggle } = useDarkMode()
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -108,6 +110,15 @@ export default function Header() {
                         </span>
                         100% Private
                     </span>
+
+                    {/* Dark Mode Toggle */}
+                    <button
+                        onClick={toggle}
+                        className="p-1.5 text-dark-500 hover:text-dark-900 transition-colors"
+                        aria-label="Toggle dark mode"
+                    >
+                        {isDark ? <Sun className="w-5 h-5 text-brand-500" /> : <Moon className="w-5 h-5" />}
+                    </button>
 
                     {/* Mobile Menu Toggle */}
                     <button

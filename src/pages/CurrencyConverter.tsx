@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ArrowRightLeft, TrendingUp } from 'lucide-react'
 import Select from 'react-select'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useCurrencyRates } from '../hooks/useCurrencyRates'
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
+import GenericSEOContent from '../components/GenericSEOContent'
 
 // Expanded list of global currencies for the searchable dropdown
 const ALL_CURRENCIES = [
@@ -116,10 +117,16 @@ export const customSelectStyles = {
     })
 }
 
-export default function CurrencyConverter() {
+interface CurrencyConverterProps {
+    embedded?: boolean;
+    initialFrom?: string;
+    initialTo?: string;
+}
+
+export default function CurrencyConverter({ embedded = false, initialFrom = 'usd', initialTo = 'inr' }: CurrencyConverterProps) {
     const [amount, setAmount] = useState<string>('1')
-    const [fromCurrency, setFromCurrency] = useState('usd')
-    const [toCurrency, setToCurrency] = useState('inr')
+    const [fromCurrency, setFromCurrency] = useState(initialFrom)
+    const [toCurrency, setToCurrency] = useState(initialTo)
     const [timeframe, setTimeframe] = useState<number>(30)
 
     const { rates, lastUpdate, loading, error } = useCurrencyRates(fromCurrency)
@@ -138,37 +145,77 @@ export default function CurrencyConverter() {
         return new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 }).format(result)
     }, [amount, rates, toCurrency, loading])
 
-    // Generate some fake "historical" data perfectly keyed off the real LIVE current price 
-    // to give the user the graph they requested, since free 10-year historical timeseries APIs are hard to find without keys.
-    const mockChartData = useMemo(() => {
-        if (!rates || !rates[toCurrency]) return []
-        const currentRate = rates[toCurrency]
-        const data = []
+    const [chartData, setChartData] = useState<{ date: string, rate: number }[]>([])
+    const [chartLoading, setChartLoading] = useState(false)
 
-        let baseline = currentRate * (0.95 - (Math.random() * 0.1 * (timeframe / 365)))
-        const volatility = currentRate * 0.02 * Math.max(1, timeframe / 60)
+    useEffect(() => {
+        let isMounted = true
 
-        const now = new Date()
-        const step = Math.max(1, Math.floor(timeframe / 90))
+        const fetchHistoricalData = async () => {
+            if (!rates || !rates[toCurrency]) return
+            setChartLoading(true)
 
-        for (let i = timeframe; i >= 0; i -= step) {
-            const d = new Date(now)
-            d.setDate(d.getDate() - i)
+            try {
+                // Determine step size based on timeframe to limit requests
+                const step = timeframe <= 7 ? 1 : timeframe <= 30 ? 3 : timeframe <= 90 ? 7 : 30
 
-            const change = (Math.random() - 0.45) * volatility
-            let val = baseline + change
+                const promises = []
+                const dates: string[] = []
+                const now = new Date()
 
-            if (i <= step) val = currentRate
+                for (let i = timeframe; i > 0; i -= step) {
+                    const d = new Date(now)
+                    d.setDate(d.getDate() - i)
 
-            baseline = val
+                    const year = d.getFullYear()
+                    const month = String(d.getMonth() + 1).padStart(2, '0')
+                    const day = String(d.getDate()).padStart(2, '0')
+                    const dateStr = `${year}-${month}-${day}`
 
-            data.push({
-                date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-                rate: Number(val.toFixed(4))
-            })
+                    dates.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }))
+
+                    promises.push(
+                        fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${dateStr}/v1/currencies/${fromCurrency}.json`)
+                            .then(res => res.ok ? res.json() : null)
+                            .catch(() => null)
+                    )
+                }
+
+                const results = await Promise.all(promises)
+
+                if (isMounted) {
+                    const data = []
+                    for (let i = 0; i < results.length; i++) {
+                        const res = results[i]
+                        if (res && res[fromCurrency] && res[fromCurrency][toCurrency]) {
+                            data.push({
+                                date: dates[i],
+                                rate: Number(res[fromCurrency][toCurrency].toFixed(4))
+                            })
+                        }
+                    }
+
+                    // Add current live rate as the latest data point
+                    data.push({
+                        date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                        rate: Number(rates[toCurrency].toFixed(4))
+                    })
+
+                    setChartData(data)
+                }
+            } catch (err) {
+                console.error('Failed to fetch historical data for chart', err)
+            } finally {
+                if (isMounted) setChartLoading(false)
+            }
         }
-        return data
-    }, [rates, toCurrency, timeframe])
+
+        fetchHistoricalData()
+
+        return () => {
+            isMounted = false
+        }
+    }, [fromCurrency, toCurrency, timeframe, rates])
 
     const handleSwap = () => {
         setFromCurrency(toCurrency)
@@ -177,19 +224,24 @@ export default function CurrencyConverter() {
 
     return (
         <div className="w-full flex flex-col items-center">
-            <div className="w-full min-h-[calc(100vh-140px)] flex flex-col items-center pt-8 pb-16 px-4">
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4 px-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16 px-4'}`}>
 
-                <div className="w-full mb-8 flex flex-col items-center text-center">
-                    <div className="inline-flex items-center justify-center mb-4 bg-brand-50 p-3 rounded-2xl">
-                        <TrendingUp className="w-8 h-8 text-brand-500" />
+                {!embedded && (
+                    <div className="w-full mb-8 flex flex-col items-center text-center">
+                        <div className="inline-flex items-center justify-center mb-4">
+                            <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
+                            convertfiles.app
+                        </h1>
+                        <p className="text-xl font-semibold text-brand-500 mb-2">
+                            Currency Converter
+                        </p>
+                        <p className="text-base text-dark-500 max-w-sm">
+                            Live exchange rates and 30-day historical trends.
+                        </p>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                        Currency Converter
-                    </h1>
-                    <p className="text-base text-dark-500 max-w-sm">
-                        Live exchange rates and 30-day historical trends.
-                    </p>
-                </div>
+                )}
 
                 <div className="w-full max-w-3xl space-y-4">
 
@@ -279,8 +331,16 @@ export default function CurrencyConverter() {
                     </div>
 
                     {/* Chart Panel */}
-                    {!loading && mockChartData.length > 0 && (
-                        <div className="bg-white border border-dark-200 rounded-2xl shadow-sm p-6 animate-slide-up">
+                    {!loading && chartData.length > 0 && (
+                        <div className="bg-white border border-dark-200 rounded-2xl shadow-sm p-6 animate-slide-up relative">
+                            {chartLoading && (
+                                <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 rounded-2xl flex items-center justify-center">
+                                    <div className="text-brand-500 font-medium flex items-center gap-2">
+                                        <div className="w-5 h-5 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                                        Updating Chart...
+                                    </div>
+                                </div>
+                            )}
                             <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
                                 <h3 className="text-sm font-bold text-dark-700 flex items-center gap-2">
                                     <TrendingUp className="w-4 h-4 text-brand-500" />
@@ -303,7 +363,7 @@ export default function CurrencyConverter() {
                             </div>
                             <div className="h-64 w-full">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={mockChartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
+                                    <LineChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                         <XAxis
                                             dataKey="date"
@@ -340,11 +400,15 @@ export default function CurrencyConverter() {
                 </div>
             </div>
 
-            <RelatedTools currentTool="currency" />
+            {!embedded && <RelatedTools currentTool="currency" />}
 
-            <div className="w-full">
-                <Features />
-            </div>
+            {!embedded && <GenericSEOContent toolId="currency" />}
+
+            {!embedded && (
+                <div className="w-full">
+                    <Features />
+                </div>
+            )}
         </div>
     )
 }

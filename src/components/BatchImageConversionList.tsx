@@ -94,7 +94,7 @@ export default function BatchImageConversionList({
                             <button
                                 onClick={onConvertAll}
                                 disabled={isConvertingBatch}
-                                className="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
+                                className="flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                             >
                                 {isConvertingBatch ? (
                                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -163,7 +163,7 @@ export default function BatchImageConversionList({
                                 <button
                                     onClick={onConvertAll}
                                     disabled={isConvertingBatch}
-                                    className="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
+                                    className="flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                                 >
                                     {isConvertingBatch ? (
                                         <RefreshCw className="w-4 h-4 animate-spin" />
@@ -212,13 +212,13 @@ export default function BatchImageConversionList({
                                     {/* Success header */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <CheckCircle className="w-4 h-4 text-emerald-500" />
+                                            <CheckCircle className="w-4 h-4 text-success-500" />
                                             <span className="text-sm font-semibold text-dark-900">Conversion Complete</span>
                                         </div>
                                         {batch.length > 1 && (
                                             <button
                                                 onClick={() => downloadResult(item.result!, profile)}
-                                                className="text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 px-4 py-1.5 rounded-lg transition-colors"
+                                                className="text-sm font-medium text-white bg-accent-500 hover:bg-accent-600 px-4 py-1.5 rounded-lg transition-colors"
                                             >
                                                 Download
                                             </button>
@@ -262,7 +262,7 @@ export default function BatchImageConversionList({
                                     <div className="flex justify-center">
                                         {isSameFormat ? (
                                             <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${savings > 0
-                                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                                ? 'bg-success-50 text-success-700 border border-success-200'
                                                 : savings < 0
                                                     ? 'bg-amber-50 text-amber-700 border border-amber-200'
                                                     : 'bg-dark-50 text-dark-500 border border-dark-200'

@@ -8,6 +8,7 @@
  * KEY SEO INSIGHT: "jpg" is searched 13.6x more than "jpeg" (246K vs 18.1K).
  * All user-facing content uses "JPG" as the primary term.
  */
+import generatedSeoData from './generatedSeoData.json';
 
 export interface FAQItem {
     question: string
@@ -29,8 +30,8 @@ export interface ConversionSEOData {
     sourceFormat: string
     /** Target format display name */
     targetFormat: string
-    /** Which converter to use: 'video' | 'image' | 'data' */
-    converterType: 'video' | 'image' | 'data'
+    /** Which converter to use: 'video' | 'image' | 'data' | 'currency' | 'unit' */
+    converterType: 'video' | 'image' | 'data' | 'currency' | 'unit'
     /** The converter mode to pre-select */
     converterMode: string
     /** FAQ items for the page */
@@ -39,6 +40,8 @@ export interface ConversionSEOData {
     relatedConversions: string[]
     /** Extra keywords for meta keywords tag */
     keywords: string[]
+    /** Fun facts or stats for unique on-page SEO content */
+    funFacts?: { title: string, content: string }[]
 }
 
 export const SITE_URL = 'https://convertfiles.app'
@@ -66,6 +69,11 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['heic-to-png', 'jpg-to-png', 'webp-to-jpg', 'png-to-jpg'],
         keywords: ['heic to jpg', 'heic to jpeg', 'convert heic to jpg', 'heic converter', 'heic to jpg converter', 'iphone photo to jpg', 'heic jpg converter free', 'convert heic to jpeg', 'heic file to jpg', 'heic to jpg online', '.heic to .jpg'],
+        funFacts: [
+            { title: 'The Apple Connection', content: 'Apple adopted HEIC in iOS 11 (2017) to replace JPG. If you take a photo on a modern iPhone, it\'s almost certainly a HEIC file.' },
+            { title: 'Massive Space Savings', content: 'HEIC files take up about 50% less space than JPG files of the exact same quality, which is how modern smartphones can hold tens of thousands of high-resolution photos.' },
+            { title: 'Hidden Capabilities', content: 'Unlike traditional JPGs, a single HEIC file can actually contain multiple images. This is how Apple\'s "Live Photos" and burst modes work behind the scenes.' }
+        ]
     },
     {
         slug: 'heic-to-jpeg',
@@ -84,6 +92,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['heic-to-jpg', 'heic-to-png', 'jpg-to-png', 'png-to-jpg'],
         keywords: ['heic to jpeg', 'convert heic to jpeg', 'heic jpeg converter', 'heic to jpeg online free', '.heic to .jpeg'],
+        funFacts: [
+            { title: 'JPG vs JPEG: A Windows Legacy', content: 'Early versions of Windows only supported 3-character file extensions, so ".jpeg" was shortened to ".jpg". The format itself is identical — the naming convention is purely a historical artifact from the 1990s.' },
+            { title: 'HEIC Saves Billions in Storage', content: 'Apple\'s switch to HEIC saves an estimated 50% storage per photo. Across billions of iPhones worldwide, this has saved exabytes of global storage demand since 2017.' },
+        ]
     },
     {
         slug: 'heic-to-png',
@@ -102,6 +114,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['heic-to-jpg', 'png-to-jpg', 'webp-to-png', 'jpg-to-png'],
         keywords: ['heic to png', 'convert heic to png', 'heic png converter', 'heic to png online', 'heic to png free', 'iphone heic to png'],
+        funFacts: [
+            { title: 'PNG Was Born From a Patent War', content: 'PNG was created in 1996 as a free, open-source alternative to GIF after Unisys controversially enforced patent royalties on GIF\'s LZW compression algorithm. The name originally stood for "PNG\'s Not GIF."' },
+            { title: 'Lossless by Design', content: 'Every single pixel in a PNG file is stored perfectly — no approximation, no compression artifacts. This makes HEIC to PNG ideal when you need guaranteed pixel-perfect fidelity for graphic design or screenshots.' },
+        ]
     },
 
     // ============================================================
@@ -124,6 +140,11 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['webp-to-jpg', 'png-to-jpg', 'heic-to-png', 'png-to-webp'],
         keywords: ['webp to png', 'convert webp to png', 'webp to png converter', 'webp to png online', 'webp to png free', '.webp to .png'],
+        funFacts: [
+            { title: 'Google\'s Brainchild', content: 'WebP was developed by Google in 2010 specifically to make the web faster. Today, it\'s the default format served by almost all major websites, including YouTube and Facebook.' },
+            { title: 'The Transparency Advantage', content: 'While WebP supports transparency just like PNG, converting WebP to PNG ensures the transparent background is properly preserved for use in older software like legacy Photoshop versions or Microsoft Word.' },
+            { title: 'Lossless Guarantee', content: 'Converting WebP to PNG is mathematically lossless. You are essentially just repackaging the pixel data without throwing away a single color or detail.' }
+        ]
     },
     {
         slug: 'webp-to-jpg',
@@ -142,6 +163,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['webp-to-png', 'jpg-to-webp', 'heic-to-jpg', 'png-to-jpg'],
         keywords: ['webp to jpg', 'webp to jpeg', 'convert webp to jpg', 'webp to jpg converter', 'webp to jpg online', 'webp to jpg free'],
+        funFacts: [
+            { title: 'WebP Dominates the Web', content: 'As of 2024, WebP is used on over 95% of the top 10,000 websites globally. However, when you download or right-click save these images, many programs still can\'t open them — hence the need for WebP to JPG conversion.' },
+            { title: 'JPG: The Universal Standard', content: 'The JPEG format was standardized in 1992 and is supported by literally every image-viewing device ever made — from flip phones to spacecraft cameras. It remains the best choice for universal sharing.' },
+        ]
     },
 
     // ============================================================
@@ -164,6 +189,11 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-gif', 'mov-to-mp4', 'mp4-to-webm', 'video-to-mp3'],
         keywords: ['mp4 to mp3', 'mp4 to mp3 converter', 'extract audio from video', 'video to audio', 'mp4 to mp3 free', 'mp4 to mp3 online'],
+        funFacts: [
+            { title: 'The MP3 Revolution', content: 'The MP3 format was released in 1993 and revolutionized the music industry by shrinking audio files to 1/10th their original size without a noticeable drop in human-perceived quality.' },
+            { title: 'Faster Than Real-Time', content: 'Because our converter extracts the audio stream directly rather than "playing" the video, extracting an MP3 from a 10-minute MP4 video usually takes less than a few seconds locally in your browser.' },
+            { title: 'Podcast Essential', content: 'MP4 to MP3 conversion is the most common workflow for podcasters who record video interviews but distribute audio-only formats to Spotify and Apple Podcasts.' }
+        ]
     },
     {
         slug: 'mp4-to-gif',
@@ -182,6 +212,11 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-mp3', 'mov-to-mp4', 'mp4-to-webm', 'video-to-gif'],
         keywords: ['mp4 to gif', 'mp4 to gif converter', 'video to gif', 'make gif from video', 'mp4 to gif free', 'mp4 to gif online', 'create gif'],
+        funFacts: [
+            { title: 'Older Than the Web', content: 'The GIF format was invented by CompuServe in 1987, making it older than the World Wide Web itself! It was originally designed to download color images over slow modem connections.' },
+            { title: 'The Silent Loop', content: 'By definition, GIFs cannot contain audio. When you convert an MP4 to a GIF, the audio track is automatically discarded, making GIFs perfect for silent auto-playing memes on platforms like Reddit and Discord.' },
+            { title: '256 Color Limit', content: 'A true GIF can only display 256 colors at a time. Our modern MP4 to GIF converter uses advanced "palette generation" to analyze the video and pick the best 256 colors so the animation still looks smooth and vibrant.' }
+        ]
     },
     {
         slug: 'mov-to-mp4',
@@ -200,6 +235,11 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-gif', 'mp4-to-mp3', 'mp4-to-webm', 'video-to-mp3'],
         keywords: ['mov to mp4', 'convert mov to mp4', 'mov to mp4 converter', 'mov to mp4 free', 'mov to mp4 online', 'quicktime to mp4', 'iphone video to mp4'],
+        funFacts: [
+            { title: 'Apple\'s Signature', content: 'MOV is the proprietary format developed by Apple for its QuickTime framework. If you record a video on an iPhone or iPad, it is saved natively as a .mov file.' },
+            { title: 'Under the Hood', content: 'Both MOV and MP4 are technically "container" formats, and they are incredibly similar. In many cases, converting MOV to MP4 doesn\'t even re-encode the video—it just changes the wrapper, meaning the conversion is mathematically lossless and lightning fast.' },
+            { title: 'The Compatibility King', content: 'While MOV is great on Apple devices, MP4 is universally recognized. Smart TVs, Android devices, older Windows PCs, and almost every web browser prioritize MP4 over MOV for flawless playback.' }
+        ]
     },
     {
         slug: 'mp4-to-webm',
@@ -218,6 +258,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-gif', 'mp4-to-mp3', 'mov-to-mp4', 'webm-to-mp4'],
         keywords: ['mp4 to webm', 'convert mp4 to webm', 'mp4 to webm converter', 'mp4 to webm free', 'mp4 to webm online'],
+        funFacts: [
+            { title: 'Open Source Video', content: 'WebM was created by Google as a royalty-free, open-source video format. Unlike MP4 (which uses patented H.264/H.265 codecs), anyone can use WebM without licensing fees — making it the ethical choice for open web projects.' },
+            { title: 'VP9 Powers YouTube', content: 'YouTube serves the majority of its videos in WebM format using the VP9 codec. When you watch a 4K YouTube video, you\'re almost certainly watching a WebM file, not an MP4.' },
+        ]
     },
     {
         slug: 'video-to-mp3',
@@ -236,6 +280,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-mp3', 'mp4-to-gif', 'mov-to-mp4', 'video-to-gif'],
         keywords: ['video to mp3', 'extract audio from video', 'video to audio converter', 'video to mp3 free', 'video to mp3 online'],
+        funFacts: [
+            { title: 'Audio Is Just a Wrapper Away', content: 'Most video files store audio and video as completely separate streams inside a "container." Extracting audio doesn\'t require re-encoding the video at all — it\'s like pulling one file out of a ZIP archive.' },
+            { title: 'Billions of Extractions Daily', content: '"Video to MP3" is one of the most searched conversion queries in the world. It\'s estimated that hundreds of millions of audio extractions happen globally every single day.' },
+        ]
     },
     {
         slug: 'video-to-gif',
@@ -253,6 +301,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-gif', 'mp4-to-mp3', 'mov-to-mp4', 'video-to-mp3'],
         keywords: ['video to gif', 'video to gif converter', 'make gif from video', 'video to gif free', 'video to gif online', 'create gif from video'],
+        funFacts: [
+            { title: 'GIF Pronunciation War', content: 'The inventor of GIF, Steve Wilhite, insisted it\'s pronounced "jif" (like the peanut butter). But most of the internet says "gif" with a hard G. The debate has raged since 1987 and will probably never be resolved.' },
+            { title: 'The Meme Machine', content: 'GIFs experienced a massive cultural resurgence around 2012 when Tumblr popularized reaction GIFs. Today, platforms like GIPHY serve over 10 billion GIFs per day across messaging apps worldwide.' },
+        ]
     },
 
     // ============================================================
@@ -275,6 +327,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['jpg-to-png', 'png-to-webp', 'heic-to-jpg', 'webp-to-jpg'],
         keywords: ['png to jpg', 'png to jpeg', 'convert png to jpg', 'png to jpg converter', 'png to jpg free', 'png to jpg online'],
+        funFacts: [
+            { title: 'Size Matters', content: 'A typical 12-megapixel PNG photo can be 15-25 MB. The same image as a high-quality JPG? Usually 2-5 MB. That\'s a 5-10x reduction with virtually no visible difference to the human eye.' },
+            { title: 'The Transparency Tradeoff', content: 'The biggest thing you give up when converting PNG to JPG is transparency support. JPG fills transparent areas with solid white. If your image has a transparent background, consider WebP instead.' },
+        ]
     },
     {
         slug: 'jpg-to-png',
@@ -293,6 +349,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['png-to-jpg', 'jpg-to-webp', 'heic-to-png', 'webp-to-png'],
         keywords: ['jpg to png', 'jpeg to png', 'convert jpg to png', 'jpg to png converter', 'jpg to png free', 'jpg to png online'],
+        funFacts: [
+            { title: 'Professional Standard', content: 'Graphic designers almost always work in PNG because it preserves every detail losslessly. Converting JPG to PNG is the first step before editing images in tools like Photoshop, Figma, or Canva.' },
+            { title: 'Screenshots Are PNG', content: 'When you press Print Screen or take a screenshot on almost any operating system, it saves as PNG by default. This is because PNG perfectly captures the sharp text and interface elements without blur.' },
+        ]
     },
     {
         slug: 'png-to-webp',
@@ -310,6 +370,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['webp-to-png', 'png-to-jpg', 'jpg-to-webp', 'webp-to-jpg'],
         keywords: ['png to webp', 'convert png to webp', 'png to webp converter', 'png to webp free', 'png to webp online'],
+        funFacts: [
+            { title: 'Google\'s PageSpeed Secret', content: 'Google\'s Lighthouse and PageSpeed Insights tools specifically recommend converting PNG images to WebP. Sites that switch to WebP typically see a 25-35% reduction in image payload, directly improving their Google search ranking.' },
+            { title: 'Transparency Preserved', content: 'Unlike JPG, WebP fully supports alpha transparency just like PNG. You can convert a PNG logo with a transparent background to WebP and it will look identical — but be significantly smaller.' },
+        ]
     },
     {
         slug: 'jpg-to-webp',
@@ -327,6 +391,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['webp-to-jpg', 'jpg-to-png', 'png-to-webp', 'heic-to-jpg'],
         keywords: ['jpg to webp', 'jpeg to webp', 'convert jpg to webp', 'jpg to webp converter', 'jpg to webp free'],
+        funFacts: [
+            { title: 'The Web\'s New Default', content: 'Major platforms like Facebook, Instagram, and Twitter have silently switched to serving images in WebP format. When you upload a JPG photo to social media, it\'s often converted to WebP behind the scenes to save bandwidth.' },
+            { title: 'Core Web Vitals Booster', content: 'Google\'s Core Web Vitals directly measure page loading performance. Switching from JPG to WebP images is one of the single most impactful changes a website can make to improve its Largest Contentful Paint (LCP) score.' },
+        ]
     },
 
     // ============================================================
@@ -348,6 +416,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-webm', 'mov-to-mp4', 'mp4-to-gif', 'mp4-to-mp3'],
         keywords: ['webm to mp4', 'convert webm to mp4', 'webm to mp4 converter', 'webm to mp4 free', 'webm to mp4 online'],
+        funFacts: [
+            { title: 'Screen Recordings Love WebM', content: 'Many screen recording tools (including Chrome\'s built-in recorder and OBS) save as WebM by default. While great for web use, you\'ll often need to convert to MP4 to share on WhatsApp, iMessage, or upload to social media.' },
+            { title: 'The Container Swap', content: 'WebM and MP4 are both "container" formats that wrap around video and audio streams. Converting between them is largely a re-packaging operation, which is why it\'s so fast.' },
+        ]
     },
     {
         slug: 'compress-mp4',
@@ -365,6 +437,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['mp4-to-gif', 'mp4-to-webm', 'mov-to-mp4', 'mp4-to-mp3'],
         keywords: ['compress mp4', 'mp4 compressor', 'compress video', 'reduce video size', 'compress mp4 free', 'video compressor online', 'compress video for discord'],
+        funFacts: [
+            { title: 'Discord\'s 10MB Wall', content: 'Discord\'s free tier limits file uploads to 10 MB. A single 30-second 1080p MP4 can easily be 50+ MB. Video compression is the #1 reason people search for "compress video for Discord."' },
+            { title: 'Bitrate Is Everything', content: 'Video "quality" is primarily determined by bitrate (kilobits per second). A 1080p video at 8,000 kbps looks great. The same video at 1,000 kbps looks blocky. Our compressor lets you find the sweet spot.' },
+        ]
     },
 
     // ============================================================
@@ -385,6 +461,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['jpg-to-png', 'png-to-jpg', 'jpg-to-webp'],
         keywords: ['jpg to bmp', 'convert jpg to bmp', 'jpeg to bmp', 'jpg to bmp converter'],
+        funFacts: [
+            { title: 'Microsoft\'s Original', content: 'BMP was introduced with Windows 1.0 in 1985, making it one of the oldest image formats still in use. It stores every pixel as raw data with zero compression.' },
+            { title: 'Huge File Sizes', content: 'A 12-megapixel BMP file can be 36 MB or more because it stores every single pixel uncompressed. The same image as a JPG might be only 3 MB. BMP is only useful when you genuinely need raw pixel access.' },
+        ]
     },
     {
         slug: 'png-to-bmp',
@@ -401,6 +481,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['png-to-jpg', 'png-to-webp', 'jpg-to-bmp'],
         keywords: ['png to bmp', 'convert png to bmp', 'png to bmp converter', 'png to bmp free'],
+        funFacts: [
+            { title: 'Embedded Systems Favorite', content: 'BMP remains popular in embedded systems, industrial displays, and microcontroller projects because its simple structure makes it trivial to parse without any decompression library.' },
+            { title: 'No Compression, No Surprises', content: 'Unlike PNG (which uses deflate compression) or JPG (which uses DCT compression), BMP stores pixels exactly as-is. This makes it the most "what you see is what you get" format in existence.' },
+        ]
     },
     {
         slug: 'jpg-to-tiff',
@@ -418,6 +502,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['jpg-to-png', 'png-to-jpg', 'jpg-to-bmp'],
         keywords: ['jpg to tiff', 'convert jpg to tiff', 'jpeg to tiff', 'jpg to tiff converter', 'jpg to tiff free'],
+        funFacts: [
+            { title: 'The Print Industry Standard', content: 'TIFF has been the gold standard for professional printing since the 1980s. When you submit photos to a magazine, newspaper, or high-end print shop, they almost always request TIFF files.' },
+            { title: 'Layers and Metadata', content: 'Unlike JPG, TIFF files can contain multiple image layers, detailed EXIF metadata, and even embedded color profiles (ICC). This makes them essential for professional photography workflows.' },
+        ]
     },
     {
         slug: 'png-to-tiff',
@@ -434,6 +522,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['png-to-jpg', 'jpg-to-tiff', 'png-to-webp'],
         keywords: ['png to tiff', 'convert png to tiff', 'png to tiff converter', 'png to tiff free'],
+        funFacts: [
+            { title: 'Archival Quality', content: 'The Library of Congress and many national archives worldwide use TIFF as their preferred format for digitizing historical documents. Its lossless nature ensures perfect preservation for centuries.' },
+            { title: 'CMYK Color Space', content: 'TIFF is one of the few image formats that natively supports CMYK color (used in printing), while PNG only supports RGB (used on screens). This is why print professionals prefer TIFF over PNG.' },
+        ]
     },
     {
         slug: 'jpg-to-avif',
@@ -451,6 +543,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['jpg-to-webp', 'jpg-to-png', 'png-to-webp'],
         keywords: ['jpg to avif', 'convert jpg to avif', 'jpeg to avif', 'jpg to avif converter', 'jpg to avif free'],
+        funFacts: [
+            { title: 'Netflix\'s Creation', content: 'AVIF is based on the AV1 video codec, which was developed by the Alliance for Open Media — a consortium led by Netflix, Google, Apple, Amazon, and Meta. It\'s designed to be the ultimate free image format.' },
+            { title: '50% Smaller Than JPG', content: 'In head-to-head comparisons, AVIF images are typically 50% smaller than equivalent-quality JPGs and 20% smaller than WebP. It\'s the most efficient image format currently available.' },
+        ]
     },
     {
         slug: 'png-to-avif',
@@ -467,6 +563,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['png-to-webp', 'png-to-jpg', 'jpg-to-avif'],
         keywords: ['png to avif', 'convert png to avif', 'png to avif converter', 'png to avif free'],
+        funFacts: [
+            { title: 'Lossless Mode Available', content: 'Unlike JPG and WebP lossy, AVIF actually supports a true lossless mode similar to PNG. So you can get lossless quality at dramatically smaller file sizes — the best of both worlds.' },
+            { title: 'Slow to Encode, Fast to Decode', content: 'AVIF images take longer to encode than JPG or WebP, but decode (display) extremely fast. This tradeoff is perfect for web publishing: you compress once, but millions of users decode quickly.' },
+        ]
     },
 
     // ============================================================
@@ -488,6 +588,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['csv-to-json', 'json-to-excel', 'csv-to-excel'],
         keywords: ['json to csv', 'convert json to csv', 'json to csv converter', 'json to csv online', 'json to csv free'],
+        funFacts: [
+            { title: 'JSON Was Born From JavaScript', content: 'JSON (JavaScript Object Notation) was formalized by Douglas Crockford in 2001. Despite being derived from JavaScript, JSON is language-independent and is now the #1 data interchange format on the internet.' },
+            { title: 'CSV Predates Personal Computers', content: 'The comma-separated values format has been in use since the early 1970s, predating personal computers. Its simplicity is its strength — any text editor, spreadsheet app, or programming language can read CSV files.' },
+        ]
     },
     {
         slug: 'csv-to-json',
@@ -504,6 +608,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['json-to-csv', 'csv-to-excel', 'json-to-excel'],
         keywords: ['csv to json', 'convert csv to json', 'csv to json converter', 'csv to json online', 'csv to json free'],
+        funFacts: [
+            { title: 'API-Ready Data', content: 'JSON is the lingua franca of modern APIs. Converting your CSV to JSON is typically the first step when building a web application that needs to consume spreadsheet data via a REST or GraphQL endpoint.' },
+            { title: 'No Schema Required', content: 'Unlike XML (which needs a schema definition), JSON is schema-free by default. This flexibility is why JSON overtook XML as the dominant data format around 2012 and never looked back.' },
+        ]
     },
     {
         slug: 'json-to-excel',
@@ -520,6 +628,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['json-to-csv', 'csv-to-excel', 'excel-to-json'],
         keywords: ['json to excel', 'convert json to xlsx', 'json to xlsx', 'json to excel converter', 'json to excel free'],
+        funFacts: [
+            { title: 'XLSX Is Actually a ZIP', content: 'An .xlsx file is actually a ZIP archive containing XML files. If you rename any Excel file to .zip and extract it, you\'ll find folders of XML documents that define the spreadsheet\'s structure, styles, and data.' },
+            { title: 'Data Analyst\'s Best Friend', content: 'Data teams frequently receive API responses in JSON format. Converting directly to Excel lets non-technical stakeholders analyze the data with familiar tools like pivot tables and charts.' },
+        ]
     },
     {
         slug: 'csv-to-excel',
@@ -536,6 +648,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['csv-to-json', 'excel-to-csv', 'json-to-excel'],
         keywords: ['csv to excel', 'convert csv to xlsx', 'csv to xlsx', 'csv to excel converter', 'csv to excel free'],
+        funFacts: [
+            { title: 'The Encoding Problem', content: 'One of the biggest headaches with CSV files is character encoding. Special characters, accents, and emojis often break when opening CSV files directly in Excel. Converting to XLSX properly handles Unicode encoding.' },
+            { title: 'Formatting Preserved', content: 'When you open a CSV in Excel, numbers like "007" become 7, and dates get reformatted. Our converter creates a proper XLSX file that preserves your original data exactly as intended.' },
+        ]
     },
     {
         slug: 'excel-to-csv',
@@ -552,6 +668,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['excel-to-json', 'csv-to-json', 'csv-to-excel'],
         keywords: ['excel to csv', 'xlsx to csv', 'convert excel to csv', 'excel to csv converter', 'excel to csv free'],
+        funFacts: [
+            { title: 'Universal Import Format', content: 'CSV is the most universally accepted import format for databases, CRMs, email marketing tools, and virtually any data system. If a platform says "import data," it almost certainly accepts CSV.' },
+            { title: 'Smaller & Faster', content: 'A CSV file is typically 5-20x smaller than the equivalent XLSX file because it strips out all formatting, formulas, and metadata. This makes CSV ideal for data transfer and automated processing pipelines.' },
+        ]
     },
     {
         slug: 'excel-to-json',
@@ -568,6 +688,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['excel-to-csv', 'json-to-excel', 'csv-to-json'],
         keywords: ['excel to json', 'xlsx to json', 'convert excel to json', 'excel to json converter', 'excel to json free'],
+        funFacts: [
+            { title: 'The Developer Bridge', content: 'Excel to JSON conversion bridges the gap between business teams (who live in spreadsheets) and development teams (who need structured data for APIs and databases). It\'s one of the most common data pipeline operations.' },
+            { title: 'Headers Become Keys', content: 'Our converter intelligently uses the first row of your spreadsheet as JSON property names. So a column called "Email" in Excel becomes the key "Email" in each JSON object — clean, structured, and ready for code.' },
+        ]
     },
 
     // ============================================================
@@ -588,6 +712,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['webp-to-png', 'webp-to-jpg', 'jpg-to-webp'],
         keywords: ['webp to jpeg', 'convert webp to jpeg', 'webp to jpeg converter', 'webp to jpeg free'],
+        funFacts: [
+            { title: 'Right-Click Problem', content: 'When you right-click and "Save Image As" from most modern websites, you\'ll get a WebP file. But many older programs, email clients, and print services can\'t open WebP — making WebP to JPEG conversion a daily necessity for millions.' },
+            { title: 'JPEG/JPG Identical', content: 'JPEG and JPG are literally the same format with different file extension lengths. The .jpg extension was created because early Windows versions required 3-character extensions. Our converter outputs standard .jpg files.' },
+        ]
     },
     {
         slug: 'heif-to-jpg',
@@ -604,8 +732,19 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         ],
         relatedConversions: ['heic-to-jpg', 'heic-to-png', 'jpg-to-png'],
         keywords: ['heif to jpg', 'convert heif to jpg', 'heif converter', 'heif to jpeg', 'heif to jpg free'],
+        funFacts: [
+            { title: 'HEIF vs HEIC: Same Thing', content: 'HEIF stands for High Efficiency Image Format (the standard), while HEIC stands for High Efficiency Image Container (Apple\'s specific implementation). They refer to the exact same thing — your iPhone photos.' },
+            { title: 'Beyond Photos', content: 'HEIF isn\'t just for still images. The format can also store image sequences, depth maps, and audio alongside images. This is the underlying technology behind Apple\'s Portrait Mode depth data and Live Photos.' },
+        ]
     },
 ]
+
+const existingSlugs = new Set(SEO_CONVERSIONS.map(c => c.slug))
+for (const generated of generatedSeoData as ConversionSEOData[]) {
+    if (!existingSlugs.has(generated.slug)) {
+        SEO_CONVERSIONS.push(generated)
+    }
+}
 
 /** Lookup map by slug for O(1) access */
 export const SEO_CONVERSION_MAP: Record<string, ConversionSEOData> = {}

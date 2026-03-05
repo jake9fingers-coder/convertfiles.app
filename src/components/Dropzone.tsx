@@ -8,6 +8,7 @@ interface DropzoneProps {
     title?: string
     formats?: string[]
     icon?: ReactNode
+    maxSizeMB?: number
 }
 
 export default function Dropzone({
@@ -16,7 +17,8 @@ export default function Dropzone({
     accepts = "video/*,audio/*",
     title = "Drop files here",
     formats = ['MP4', 'MOV', 'AVI', 'WebM', 'MKV', 'MP3', 'M4A'],
-    icon = <Film className="w-8 h-8 text-brand-500" />
+    icon = <Film className="w-8 h-8 text-brand-500" />,
+    maxSizeMB
 }: DropzoneProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [dragging, setDragging] = useState(false)
@@ -25,7 +27,13 @@ export default function Dropzone({
     const handleFiles = useCallback((fileList: FileList | File[]) => {
         const validFiles: File[] = []
         for (let i = 0; i < fileList.length; i++) {
-            validFiles.push(fileList[i])
+            const file = fileList[i]
+            if (maxSizeMB && file.size > maxSizeMB * 1024 * 1024) {
+                setDragError(`File too large (Max ${maxSizeMB}MB)`)
+                setTimeout(() => setDragError(''), 3000)
+                return
+            }
+            validFiles.push(file)
         }
         if (validFiles.length === 0) {
             setDragError('Please drop valid files.')
@@ -34,7 +42,7 @@ export default function Dropzone({
         }
         setDragError('')
         onFiles(validFiles)
-    }, [onFiles])
+    }, [onFiles, maxSizeMB])
 
     const onDragOver = (e: React.DragEvent) => {
         e.preventDefault()
@@ -58,14 +66,14 @@ export default function Dropzone({
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
-            className={`
+            className={` group
         relative cursor-pointer rounded-xl border-2 border-dashed p-12 text-center transition-all duration-300
         ${disabled ? 'opacity-40 cursor-not-allowed' : ''}
         ${dragging
-                    ? 'border-brand-500 bg-brand-100 scale-[1.01] shadow-lg shadow-brand-500/10 dropzone-active'
+                    ? 'border-brand-500 bg-soft-100 scale-[1.05] shadow-xl shadow-brand-500/20 dropzone-active'
                     : dragError
-                        ? 'border-red-400 bg-red-50'
-                        : 'border-dark-300 bg-white hover:border-brand-400 hover:bg-brand-50 hover:shadow-md'
+                        ? 'border-red-400 bg-red-50 hover:scale-[1.02] transform'
+                        : 'border-dark-300 bg-white hover:border-brand-400 hover:bg-brand-50 hover:shadow-xl hover:-translate-y-1 transform'
                 }
       `}
             role="button"
@@ -86,7 +94,7 @@ export default function Dropzone({
             <div className="flex flex-col items-center gap-4">
                 <div className={`
           w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300
-          ${dragging ? 'bg-brand-200 scale-110' : 'bg-dark-100 border border-dark-200'}
+          ${dragging ? 'bg-soft-200 scale-125 animate-bounce' : 'bg-dark-100 border border-dark-200 group-hover:bg-soft-100 group-hover:scale-110 group-hover:border-brand-300'}
         `}>
                     {dragging
                         ? icon
@@ -120,7 +128,7 @@ export default function Dropzone({
                         </div>
                         <p className="text-xs text-dark-400 mt-4 flex items-center justify-center gap-1">
                             <FileAudio className="w-3 h-3" />
-                            Any file size · Processed locally · Never uploaded
+                            {maxSizeMB ? `Max file size: ${maxSizeMB}MB` : 'Any file size'} · Processed locally · Never uploaded
                         </p>
                     </div>
                 )}

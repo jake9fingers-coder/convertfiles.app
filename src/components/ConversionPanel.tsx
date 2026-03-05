@@ -127,7 +127,7 @@ export default function ConversionPanel({
             <button
                 onClick={onConvert}
                 disabled={loading}
-                className="w-full py-4 px-6 text-base font-semibold bg-brand-500 text-white rounded-lg hover:bg-brand-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 shadow-sm hover:shadow-md"
+                className="w-full py-4 px-6 text-base font-semibold bg-accent-500 text-white rounded-lg hover:bg-accent-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 shadow-sm hover:shadow-md"
                 aria-label="Start conversion"
             >
                 {loading ? (

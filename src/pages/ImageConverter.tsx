@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import SEOHead from '../components/SEOHead'
 import { SITE_URL } from '../lib/seoConversionData'
 import JSZip from 'jszip'
-import { useFFmpeg, type ConversionResult } from '../hooks/useFFmpeg'
+import { type ConversionResult } from '../hooks/useFFmpeg'
 import { useMagick, type MagickConversionResult } from '../hooks/useMagick'
 import type { ImageConversionMode } from '../lib/imageConversionProfiles'
 import { IMAGE_PROFILES } from '../lib/imageConversionProfiles'
@@ -12,6 +12,7 @@ import BatchImageConversionList from '../components/BatchImageConversionList'
 import ConversionHistoryList from '../components/ConversionHistoryList'
 import { saveImageHistory, loadImageHistory } from '../lib/db'
 import heic2any from 'heic2any'
+import { convertImageWithCanvas, type CanvasConversionResult } from '../lib/canvasConvert'
 
 export interface BatchImageItem {
     id: string
@@ -19,16 +20,16 @@ export interface BatchImageItem {
     mode: ImageConversionMode
     status: 'pending' | 'converting' | 'done' | 'error'
     progress: number
-    result: ConversionResult | MagickConversionResult | null
+    result: ConversionResult | MagickConversionResult | CanvasConversionResult | null
     error: string | null
 }
 
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
+import GenericSEOContent from '../components/GenericSEOContent'
 
 export default function ImageConverter({ embedded = false }: { embedded?: boolean }) {
-    // --- Dual Engines ---
-    const ffmpeg = useFFmpeg()
+    // --- Magick engine for pro formats (TIFF, PSD, etc.) ---
     const magick = useMagick()
 
     const [batch, setBatch] = useState<BatchImageItem[]>([])
@@ -52,8 +53,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
         }
     }, [history, isHistoryLoaded])
 
-    // Sync progress from whichever engine is currently active
-    // We determine the active engine by looking at which item is currently converting
+    // Sync progress from magick engine when active
     useEffect(() => {
         if (isConvertingBatch) {
             setBatch(prev => {
@@ -61,12 +61,12 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                 if (!activeItem) return prev;
 
                 const profile = IMAGE_PROFILES[activeItem.mode]
-                const activeProgress = profile.engine === 'ffmpeg' ? ffmpeg.progress : magick.progress
+                if (profile.engine !== 'magick') return prev;
 
-                return prev.map(p => p.status === 'converting' ? { ...p, progress: activeProgress } : p)
+                return prev.map(p => p.status === 'converting' ? { ...p, progress: magick.progress } : p)
             })
         }
-    }, [ffmpeg.progress, magick.progress, isConvertingBatch])
+    }, [magick.progress, isConvertingBatch])
 
     const handleFiles = useCallback((incomingFiles: File[]) => {
         const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
@@ -74,7 +74,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             setHistory(h => [...finishedItems, ...h])
         }
 
-        ffmpeg.reset()
         magick.reset()
 
         const newBatch = incomingFiles.map(f => ({
@@ -89,10 +88,9 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
 
         setBatch(newBatch)
 
-        // Prewarm both engines if possible
-        ffmpeg.load()
+        // Prewarm magick engine for pro formats
         magick.load()
-    }, [batch, ffmpeg.reset, magick.reset, ffmpeg.load, magick.load])
+    }, [batch, magick.reset, magick.load])
 
     const updateAllItems = useCallback((updates: Partial<BatchImageItem>) => {
         setBatch(prev => prev.map(p => ({ ...p, ...updates })))
@@ -126,21 +124,18 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                 setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'converting', error: null } : p))
 
                 try {
-                    let res: ConversionResult | MagickConversionResult;
+                    let res: ConversionResult | MagickConversionResult | CanvasConversionResult;
                     let fileToConvert = item.file;
 
-                    if ((inputExt === 'heic' || inputExt === 'heif') && profile.engine === 'ffmpeg') {
-                        // Check if browser already considers this file readable (some .heic files
-                        // are JPEG-wrapped and get assigned image/jpeg MIME type by the OS)
+                    // HEIC/HEIF pre-processing: decode to a browser-readable format first
+                    if ((inputExt === 'heic' || inputExt === 'heif') && profile.engine === 'canvas') {
                         const browserMime = (item.file.type || '').toLowerCase();
                         const isBrowserReadable = browserMime.startsWith('image/jpeg') || browserMime.startsWith('image/png') || browserMime.startsWith('image/webp');
 
                         if (isBrowserReadable) {
-                            // Browser can already read this — skip decoding
                             const readableExt = browserMime.includes('jpeg') ? 'jpg' : browserMime.includes('png') ? 'png' : 'webp';
                             const newName = item.file.name.replace(/\.heic$/i, `.${readableExt}`).replace(/\.heif$/i, `.${readableExt}`);
 
-                            // If the target format matches what the browser already sees, return directly — no re-encoding needed
                             if (browserMime === profile.mimeType || (browserMime === 'image/jpeg' && profile.mimeType === 'image/jpeg')) {
                                 const blob = new Blob([item.file], { type: browserMime });
                                 const baseName = item.file.name.replace(/\.[^/.]+$/, '');
@@ -152,16 +147,14 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                     filename: outputName,
                                     originalSize: item.file.size,
                                     outputSize: blob.size,
-                                } as ConversionResult;
+                                } as CanvasConversionResult;
 
                                 setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'done', progress: 100, result: res! } : p));
                                 continue;
                             }
 
-                            // Different target format — rename and let engine convert (e.g. browser-JPEG → WebP)
                             fileToConvert = new File([item.file], newName, { type: browserMime });
                         } else {
-                            // Genuine HEIC — decode first
                             try {
                                 const isJpeg = profile.mimeType === 'image/jpeg';
                                 const toType = isJpeg ? 'image/jpeg' : 'image/png';
@@ -175,8 +168,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                 const blob = Array.isArray(converted) ? converted[0] : converted;
                                 const newName = item.file.name.replace(/\.heic$/i, isJpeg ? '.jpg' : '.png').replace(/\.heif$/i, isJpeg ? '.jpg' : '.png');
 
-                                // If the target format matches, we're done — no need for additional conversion
-                                if (profile.mimeType === toType && (profile.id as string) !== 'webp' && (profile.id as string) !== 'gif' && (profile.id as string) !== 'bmp') {
+                                if (profile.mimeType === toType && (profile.id as string) !== 'webp' && (profile.id as string) !== 'bmp') {
                                     const finalFile = new File([blob], newName, { type: toType });
                                     res = {
                                         file: finalFile,
@@ -185,17 +177,15 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                         filename: newName,
                                         originalSize: item.file.size,
                                         outputSize: finalFile.size
-                                    } as ConversionResult;
+                                    } as CanvasConversionResult;
 
                                     setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'done', progress: 100, result: res! } : p));
                                     continue;
                                 }
 
-                                // For WebP/BMP/etc, use the decoded image and let engine finish
                                 fileToConvert = new File([blob], item.file.name.replace(/\.heic$/i, '.png').replace(/\.heif$/i, '.png'), { type: 'image/png' });
                             } catch (heicErr: any) {
                                 const heicMsg = heicErr.message || String(heicErr);
-                                // If decoder says "already browser readable", just use file as-is
                                 if (heicMsg.includes('already browser readable')) {
                                     const newName = item.file.name.replace(/\.heic$/i, '.jpg').replace(/\.heif$/i, '.jpg');
                                     fileToConvert = new File([item.file], newName, { type: 'image/jpeg' });
@@ -206,9 +196,12 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                         }
                     }
 
-                    if (profile.engine === 'ffmpeg') {
-                        res = await ffmpeg.convertImage(fileToConvert, profile.id)
+                    // Route to the correct engine
+                    if (profile.engine === 'canvas') {
+                        // Instant browser-native conversion via Canvas API
+                        res = await convertImageWithCanvas(fileToConvert, profile.outputExtension, profile.mimeType)
                     } else {
+                        // Pro formats via ImageMagick WASM
                         res = await magick.convert(fileToConvert, profile.outputExtension, profile.mimeType)
                     }
 
@@ -226,20 +219,18 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
         } finally {
             setIsConvertingBatch(false)
         }
-    }, [batch, ffmpeg, magick])
+    }, [batch, magick])
 
     const handleReset = useCallback(() => {
         const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
         if (finishedItems.length > 0) {
             setHistory(h => [...finishedItems, ...h])
         }
-        ffmpeg.cancel()
         magick.cancel()
-        ffmpeg.reset()
         magick.reset()
         setBatch([])
         setIsConvertingBatch(false)
-    }, [batch, ffmpeg, magick])
+    }, [batch, magick])
 
     const handleReuse = useCallback((item: BatchImageItem) => {
         setBatch(prev => [
@@ -258,12 +249,11 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
 
     const hasFiles = batch.length > 0
     const allDone = hasFiles && batch.every(i => i.status === 'done')
-    const hasGlobalError = !!(ffmpeg.error || magick.error)
+    const hasGlobalError = !!magick.error
 
     const handleCancel = useCallback(() => {
-        ffmpeg.cancel()
         magick.cancel()
-    }, [ffmpeg, magick])
+    }, [magick])
     return (
         <div className="w-full flex flex-col items-center">
             <SEOHead
@@ -274,7 +264,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             />
 
             {/* Full viewport container for perfect vertical centering */}
-            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] justify-center pt-8 pb-16'}`}>
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16'}`}>
 
                 {/* Compact heading above the tool — hidden when embedded in a landing page */}
                 {!embedded && (
@@ -300,7 +290,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     {/* Error */}
                     {hasGlobalError && (
                         <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-                            <span><strong>Error:</strong> {ffmpeg.error || magick.error}</span>
+                            <span><strong>Error:</strong> {magick.error}</span>
                             <div className="flex items-center gap-4 shrink-0 font-medium">
                                 <button
                                     onClick={() => handleConvertBatch()}
@@ -322,7 +312,8 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     {!hasFiles && (
                         <Dropzone
                             onFiles={handleFiles}
-                            disabled={magick.status === 'loading'}
+                            disabled={false}
+                            maxSizeMB={50}
                             accepts="image/*"
                             title="Drop images here"
                             formats={['WebP', 'JPEG', 'PNG', 'GIF', 'HEIC', 'TIFF', 'PSD']}
@@ -345,7 +336,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     {isConvertingBatch && (
                         <ProgressDisplay
                             progress={batch.find(p => p.status === 'converting')?.progress || 0}
-                            logMessages={ffmpeg.logMessages.length > 0 ? ffmpeg.logMessages : []}
+                            logMessages={[]}
                             onCancel={handleCancel}
                         />
                     )}
@@ -454,6 +445,9 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
 
             {/* Related Tools — hidden when embedded */}
             {!embedded && <RelatedTools currentTool="image" />}
+
+            {/* Generic SEO Content for Homepage */}
+            {!embedded && <GenericSEOContent toolId="image" />}
 
             {/* Marketing / Explainer Sections — hidden when embedded */}
             {!embedded && (

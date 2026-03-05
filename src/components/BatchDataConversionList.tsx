@@ -63,7 +63,7 @@ export default function BatchDataConversionList({
                             <button
                                 onClick={onConvertAll}
                                 disabled={isConvertingBatch}
-                                className="flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
+                                className="flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                             >
                                 {isConvertingBatch ? (
                                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -102,7 +102,7 @@ export default function BatchDataConversionList({
                                 <button
                                     onClick={onConvertAll}
                                     disabled={isConvertingBatch}
-                                    className="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
+                                    className="flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
                                 >
                                     {isConvertingBatch ? (
                                         <RefreshCw className="w-4 h-4 animate-spin" />
@@ -136,7 +136,7 @@ export default function BatchDataConversionList({
                                         <FileText className="w-5 h-5 text-dark-400" />
                                         {item.status === 'done' && (
                                             <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center">
-                                                <CheckCircle className="w-5 h-5 text-emerald-500 drop-shadow-md" />
+                                                <CheckCircle className="w-5 h-5 text-success-500 drop-shadow-md" />
                                             </div>
                                         )}
                                     </div>
@@ -174,7 +174,7 @@ export default function BatchDataConversionList({
                                     ) : item.status === 'done' && item.result && batch.length > 1 ? (
                                         <button
                                             onClick={() => downloadResult(item.result!, profile)}
-                                            className="text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 px-4 py-1.5 rounded-lg transition-colors"
+                                            className="text-sm font-medium text-white bg-accent-500 hover:bg-accent-600 px-4 py-1.5 rounded-lg transition-colors"
                                         >
                                             Download
                                         </button>

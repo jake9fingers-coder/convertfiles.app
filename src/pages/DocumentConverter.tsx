@@ -1,9 +1,15 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import SEOHead from '../components/SEOHead'
+import { SITE_URL } from '../lib/seoConversionData'
 import type { DocumentConversionMode } from '../lib/documentConversionProfiles'
 import { convertDocumentFile, type DocumentConversionResult } from '../hooks/useDocumentConversion'
 import Dropzone from '../components/Dropzone'
 import Features from '../components/Features'
 import { FileText, Download, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import ConversionHistoryList from '../components/ConversionHistoryList'
+import { saveDocumentHistory, loadDocumentHistory, type DocumentHistoryItem } from '../lib/db'
+import { DOCUMENT_PROFILES } from '../lib/documentConversionProfiles'
+import GenericSEOContent from '../components/GenericSEOContent'
 
 // For this specific UI, since Image -> PDF takes MULTIPLE files to build ONE output
 // And PDF -> Image takes ONE file to build ONE output ZIP, 
@@ -11,13 +17,29 @@ import { FileText, Download, CheckCircle, AlertCircle, Loader2 } from 'lucide-re
 
 type AppState = 'idle' | 'files_selected' | 'converting' | 'done' | 'error'
 
-export default function DocumentConverter() {
+export default function DocumentConverter({ embedded = false }: { embedded?: boolean }) {
     const [files, setFiles] = useState<File[]>([])
     const [mode, setMode] = useState<DocumentConversionMode>('pdf_to_images')
     const [state, setState] = useState<AppState>('idle')
     const [progress, setProgress] = useState(0)
     const [result, setResult] = useState<DocumentConversionResult | null>(null)
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+    const [history, setHistory] = useState<DocumentHistoryItem[]>([])
+    const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
+
+    useEffect(() => {
+        loadDocumentHistory().then(data => {
+            setHistory(data)
+            setIsHistoryLoaded(true)
+        })
+    }, [])
+
+    useEffect(() => {
+        if (isHistoryLoaded) {
+            saveDocumentHistory(history)
+        }
+    }, [history, isHistoryLoaded])
 
     const handleFiles = useCallback((incomingFiles: File[]) => {
         // Auto-detect mode based on first file
@@ -55,10 +77,34 @@ export default function DocumentConverter() {
             setResult(res)
             setProgress(100)
             setState('done')
+
+            const doneItem: DocumentHistoryItem = {
+                id: crypto.randomUUID(),
+                file: files[0],
+                files: files,
+                mode: mode,
+                status: 'done',
+                result: res,
+                error: null,
+                timestamp: Date.now()
+            }
+            setHistory(h => [doneItem, ...h])
         } catch (err: any) {
             console.error("Document conversion failed", err)
             setErrorMsg(err.message || String(err))
             setState('error')
+
+            const errItem: DocumentHistoryItem = {
+                id: crypto.randomUUID(),
+                file: files[0],
+                files: files,
+                mode: mode,
+                status: 'error',
+                result: null,
+                error: err.message || String(err),
+                timestamp: Date.now()
+            }
+            setHistory(h => [errItem, ...h])
         }
     }
 
@@ -80,19 +126,30 @@ export default function DocumentConverter() {
 
     return (
         <div className="w-full flex flex-col items-center">
-            <div className="w-full min-h-[calc(100vh-140px)] flex flex-col items-center justify-center pt-8 pb-16 px-4">
+            <SEOHead
+                title="Free Document Converter — PDF to JPG & Images to PDF | convertfiles.app"
+                description="Convert PDF files to high-quality images or merge multiple images into a single PDF document instantly. Free, private, offline document conversions."
+                canonical={`${SITE_URL}/document-converter`}
+                keywords={['pdf to jpg', 'pdf to image', 'images to pdf', 'jpg to pdf', 'merge to pdf', 'document converter']}
+            />
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4 px-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16 px-4'}`}>
 
-                <div className="w-full mb-8 flex flex-col items-center text-center">
-                    <div className="inline-flex items-center justify-center mb-4 bg-brand-50 p-3 rounded-2xl">
-                        <FileText className="w-8 h-8 text-brand-500" />
+                {!embedded && (
+                    <div className="w-full mb-8 flex flex-col items-center text-center">
+                        <div className="inline-flex items-center justify-center mb-4">
+                            <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
+                            convertfiles.app
+                        </h1>
+                        <p className="text-xl font-semibold text-brand-500 mb-2">
+                            Document Converter
+                        </p>
+                        <p className="text-base text-dark-500 max-w-sm">
+                            Convert PDFs to Images, or Images to PDF securely offline.
+                        </p>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                        Document Converter
-                    </h1>
-                    <p className="text-base text-dark-500 max-w-sm">
-                        Convert PDFs to Images, or Images to PDF securely offline.
-                    </p>
-                </div>
+                )}
 
                 <div className="w-full max-w-2xl mx-auto space-y-4 relative z-20">
 
@@ -213,16 +270,38 @@ export default function DocumentConverter() {
 
                 </div>
 
-                {state === 'idle' && (
+                {/* History Section */}
+                <div className="w-full max-w-2xl mx-auto relative z-20 mt-8">
+                    <ConversionHistoryList
+                        history={history}
+                        onReuse={(item: DocumentHistoryItem) => {
+                            setFiles(item.files)
+                            setMode(item.mode as DocumentConversionMode)
+                            setState('files_selected')
+                            setResult(null)
+                            setErrorMsg(null)
+                            setProgress(0)
+                        }}
+                        onRemove={(id) => setHistory(prev => prev.filter(i => i.id !== id))}
+                        onClearAll={() => setHistory([])}
+                        getProfile={(m) => DOCUMENT_PROFILES[m as DocumentConversionMode]}
+                    />
+                </div>
+
+                {state === 'idle' && !embedded && (
                     <p className="text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
                         🔒 Confidential documents? Conversions happen entirely in your browser memory. No data is ever sent to a server.
                     </p>
                 )}
             </div>
 
-            <div className="w-full relative z-10">
-                <Features />
-            </div>
+            {!embedded && <GenericSEOContent toolId="document" />}
+
+            {!embedded && (
+                <div className="w-full relative z-10">
+                    <Features />
+                </div>
+            )}
         </div>
     )
 }

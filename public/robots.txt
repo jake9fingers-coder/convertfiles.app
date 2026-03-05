@@ -2,8 +2,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap & AI
 Sitemap: https://convertfiles.app/sitemap.xml
+Host: https://convertfiles.app
 
 # Disallow
 Disallow: /api/

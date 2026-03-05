@@ -62,21 +62,9 @@ export default function Footer() {
 
                 {/* Bottom bar */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-dark-100">
-                    <p className="text-sm text-dark-400 font-medium">
+                    <p className="text-sm text-dark-400 font-medium pb-4">
                         © {new Date().getFullYear()} convertfiles.app. All rights reserved.
                     </p>
-
-                    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                        <div className="flex items-center gap-6">
-                            <a href="#" className="text-sm font-medium text-dark-500 hover:text-dark-900 transition-colors">About Us</a>
-                            <a href="#" className="text-sm font-medium text-dark-500 hover:text-dark-900 transition-colors">Contact</a>
-                        </div>
-                        <div className="hidden sm:block w-px h-4 bg-dark-200"></div>
-                        <div className="flex items-center gap-6">
-                            <a href="#" className="text-sm font-medium text-dark-500 hover:text-dark-900 transition-colors">Privacy Policy</a>
-                            <a href="#" className="text-sm font-medium text-dark-500 hover:text-dark-900 transition-colors">Terms of Service</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </footer>

@@ -24,6 +24,7 @@ export interface BatchItem {
 
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
+import GenericSEOContent from '../components/GenericSEOContent';
 
 export default function VideoConverter({ embedded = false }: { embedded?: boolean }) {
     const { status: ffmpegStatus, progress: globalProgress, logMessages, error: globalError, load, convert, cancel, reset } = useFFmpeg()
@@ -184,7 +185,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
             />
 
             {/* Full viewport container for perfect vertical centering */}
-            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] justify-center pt-8 pb-16'}`}>
+            <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16'}`}>
 
                 {/* Compact heading above the tool — hidden when embedded */}
                 {!embedded && (
@@ -357,6 +358,9 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
 
             {/* Related Tools — hidden when embedded */}
             {!embedded && <RelatedTools currentTool="video" />}
+
+            {/* Generic SEO Content for Homepage */}
+            {!embedded && <GenericSEOContent toolId="video" />}
 
             {/* Marketing / Explainer Sections — hidden when embedded */}
             {!embedded && (
