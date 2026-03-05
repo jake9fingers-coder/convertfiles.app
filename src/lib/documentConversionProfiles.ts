@@ -14,7 +14,7 @@ export const DOCUMENT_PROFILES: Record<DocumentConversionMode, DocumentConversio
         mode: 'pdf_to_images',
         label: 'PDF to JPG',
         description: 'Extract all pages as high-quality JPG images',
-        icon: '📄➡️🖼️',
+        icon: '',
         acceptedTypes: '.pdf,application/pdf',
         outputExt: 'zip', // Bundles them
     },
@@ -22,7 +22,7 @@ export const DOCUMENT_PROFILES: Record<DocumentConversionMode, DocumentConversio
         mode: 'images_to_pdf',
         label: 'Images to PDF',
         description: 'Combine multiple images into a single PDF document',
-        icon: '🖼️➡️📄',
+        icon: '',
         acceptedTypes: 'image/*',
         outputExt: 'pdf'
     }

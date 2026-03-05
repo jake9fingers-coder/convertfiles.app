@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { Lock } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
 import { SITE_URL } from '../lib/seoConversionData'
 import { DATA_PROFILES, type DataConversionMode } from '../lib/dataConversionProfiles'
@@ -152,8 +153,8 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
             </div>
 
             {!hasFiles && (
-                <p className="text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
-                    🔒 Confidential data? Conversions happen entirely in your browser memory. No data is ever sent to a server.
+                <p className="flex items-center justify-center text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
+                    <Lock className="w-3 h-3 mr-1.5 shrink-0" /> Confidential data? Conversions happen entirely in your browser memory. No data is ever sent to a server.
                 </p>
             )}
 

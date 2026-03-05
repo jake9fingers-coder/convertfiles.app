@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, type ReactNode } from 'react'
-import { Upload, Film, FileAudio } from 'lucide-react'
+import { Upload, Film, FileAudio, AlertTriangle } from 'lucide-react'
 
 interface DropzoneProps {
     onFiles: (files: File[]) => void
@@ -99,7 +99,7 @@ export default function Dropzone({
                     {dragging
                         ? icon
                         : dragError
-                            ? <span className="text-2xl">⚠️</span>
+                            ? <AlertTriangle className="w-8 h-8 text-red-500" />
                             : <Upload className="w-8 h-8 text-dark-500" />
                     }
                 </div>

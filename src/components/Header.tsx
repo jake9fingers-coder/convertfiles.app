@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
-import { ChevronDown, Menu, X, Sun, Moon } from 'lucide-react'
+import { ChevronDown, Menu, X, Sun, Moon, User, Shield, HelpCircle, Settings } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
+import { ExpandableTabs } from '@/components/ui/expandable-tabs'
 
 const MAIN_LINKS = [
     { to: '/', label: 'Video & Audio' },
@@ -102,19 +103,34 @@ export default function Header() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-soft-100 border border-soft-300 text-xs font-semibold text-brand-700">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                        </span>
-                        100% Private
-                    </span>
+                <div className="flex items-center gap-3">
+                    {/* Expandable Tabs Toolbar */}
+                    <div className="hidden md:block">
+                        <ExpandableTabs
+                            tabs={[
+                                { title: "Profile", icon: User },
+                                { title: "Security", icon: Shield },
+                                { type: "separator" as const },
+                                { title: isDark ? "Light Mode" : "Dark Mode", icon: isDark ? Sun : Moon },
+                                { title: "Help", icon: HelpCircle },
+                                { title: "Settings", icon: Settings },
+                            ]}
+                            activeColor="text-brand-500"
+                            className="border-dark-200 bg-white shadow-sm"
+                            onChange={(index) => {
+                                // Dark mode toggle is at index 3 (after separator)
+                                if (index === 3) {
+                                    toggle()
+                                }
+                                // Profile, Security, Help, Settings can be wired up later
+                            }}
+                        />
+                    </div>
 
-                    {/* Dark Mode Toggle */}
+                    {/* Mobile: just the dark mode toggle + hamburger */}
                     <button
                         onClick={toggle}
-                        className="p-1.5 text-dark-500 hover:text-dark-900 transition-colors"
+                        className="md:hidden p-1.5 text-dark-500 hover:text-dark-900 transition-colors"
                         aria-label="Toggle dark mode"
                     >
                         {isDark ? <Sun className="w-5 h-5 text-brand-500" /> : <Moon className="w-5 h-5" />}

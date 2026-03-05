@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { Lock } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
 import { SITE_URL } from '../lib/seoConversionData'
 import JSZip from 'jszip'
@@ -425,8 +426,8 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
 
                     {/* Subtle trust line */}
                     {!hasFiles && (
-                        <p className="text-center text-xs text-dark-400 mt-2">
-                            🔒 Files never leave your device &nbsp;·&nbsp; No account needed &nbsp;·&nbsp; No limits
+                        <p className="flex items-center justify-center text-center text-xs text-dark-400 mt-2">
+                            <Lock className="w-3 h-3 mr-1.5" /> Files never leave your device &nbsp;·&nbsp; No account needed &nbsp;·&nbsp; No limits
                         </p>
                     )}
                 </div>

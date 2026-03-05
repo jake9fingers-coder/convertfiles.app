@@ -5,7 +5,7 @@ import type { DocumentConversionMode } from '../lib/documentConversionProfiles'
 import { convertDocumentFile, type DocumentConversionResult } from '../hooks/useDocumentConversion'
 import Dropzone from '../components/Dropzone'
 import Features from '../components/Features'
-import { FileText, Download, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { FileText, Download, CheckCircle, AlertCircle, Loader2, Lock } from 'lucide-react'
 import ConversionHistoryList from '../components/ConversionHistoryList'
 import { saveDocumentHistory, loadDocumentHistory, type DocumentHistoryItem } from '../lib/db'
 import { DOCUMENT_PROFILES } from '../lib/documentConversionProfiles'
@@ -289,8 +289,8 @@ export default function DocumentConverter({ embedded = false }: { embedded?: boo
                 </div>
 
                 {state === 'idle' && !embedded && (
-                    <p className="text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
-                        🔒 Confidential documents? Conversions happen entirely in your browser memory. No data is ever sent to a server.
+                    <p className="flex items-center justify-center text-center text-xs text-dark-400 mt-6 max-w-lg mb-12">
+                        <Lock className="w-3 h-3 mr-1.5 shrink-0" /> Confidential documents? Conversions happen entirely in your browser memory. No data is ever sent to a server.
                     </p>
                 )}
             </div>
