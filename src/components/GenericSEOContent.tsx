@@ -11,27 +11,27 @@ interface SEOContentConfig {
 const TOOL_CONTENT: Record<string, SEOContentConfig> = {
     video: {
         h1: 'Free Online Video & Audio Converter',
-        intro: 'Convert video and audio files instantly in your browser. MP4, MOV, WebM, GIF, MP3 — our free mp4 converter handles every format without uploading your files to any server. No limits, no watermarks, no sign-up.',
+        intro: 'Convert video and audio files instantly in your browser. MP4, MOV, WebM, GIF, MP3 - our free mp4 converter handles every format without uploading your files to any server. No limits, no watermarks, no sign-up.',
         whyTitle: 'Why use our video converter?',
         points: [
-            { label: 'Any Format, Any Direction', text: <>From <Link to="/convert/mp4-to-gif" className="text-brand-600 hover:underline font-medium">MP4 to GIF</Link>, <Link to="/convert/mov-to-mp4" className="text-brand-600 hover:underline font-medium">MOV to MP4</Link>, to <Link to="/convert/mp4-to-mp3" className="text-brand-600 hover:underline font-medium">extracting MP3 audio</Link> — our <strong>mp4 converter</strong> and <strong>gif converter</strong> support every common video and audio format. Perfect for Discord, social media, and presentations.</> },
+            { label: 'Any Format, Any Direction', text: <>From <Link to="/convert/mp4-to-gif" className="text-brand-600 hover:underline font-medium">MP4 to GIF</Link>, <Link to="/convert/mov-to-mp4" className="text-brand-600 hover:underline font-medium">MOV to MP4</Link>, to <Link to="/convert/mp4-to-mp3" className="text-brand-600 hover:underline font-medium">extracting MP3 audio</Link> - our <strong>mp4 converter</strong> and <strong>gif converter</strong> support every common video and audio format. Perfect for Discord, social media, and presentations.</> },
             { label: 'Browser-Powered', text: 'Traditional video converters require huge desktop installs or risky server uploads. Ours runs entirely in your browser tab using advanced processing. Your videos never leave your device.' },
             { label: 'Completely Free', text: 'No hidden fees, no "premium" tiers, and no artificial restrictions on file size or number of conversions per day.' },
         ],
     },
     image: {
-        h1: 'Free Online Image Converter — JPG, PNG, WebP, HEIC & More',
+        h1: 'Free Online Image Converter - JPG, PNG, WebP, HEIC & More',
         intro: 'Convert images between any format instantly and for free. Whether you need a reliable jpg converter, a quick HEIC to JPG tool, or a WebP to PNG converter, everything runs privately in your browser. No uploads, no quality loss.',
         whyTitle: 'Why use our image converter?',
         points: [
             { label: 'iPhone Ready', text: <>The #1 use case: <Link to="/convert/heic-to-jpg" className="text-brand-600 hover:underline font-medium">convert HEIC to JPG</Link>. If you've ever tried to share an iPhone photo and got told "unsupported format," this is your fix. Our <strong>online heic to jpg converter</strong> preserves full quality with zero hassle.</> },
-            { label: 'Every Format Covered', text: <>JPG, PNG, WebP, HEIC, BMP, TIFF, AVIF — convert between any combination. Need to <Link to="/convert/webp-to-png" className="text-brand-600 hover:underline font-medium">convert WebP to PNG</Link> or <Link to="/convert/png-to-jpg" className="text-brand-600 hover:underline font-medium">PNG to JPG</Link>? Done in seconds.</> },
+            { label: 'Every Format Covered', text: <>JPG, PNG, WebP, HEIC, BMP, TIFF, AVIF - convert between any combination. Need to <Link to="/convert/webp-to-png" className="text-brand-600 hover:underline font-medium">convert WebP to PNG</Link> or <Link to="/convert/png-to-jpg" className="text-brand-600 hover:underline font-medium">PNG to JPG</Link>? Done in seconds.</> },
             { label: '100% Private', text: 'Your images are processed locally in your browser memory. Nothing is ever uploaded to a server. This is the most private way to convert images online.' },
         ],
     },
     data: {
-        h1: 'Free Online Data Converter — JSON, CSV & Excel',
-        intro: 'Transform data files between JSON, CSV, and Excel (XLSX) formats instantly. Perfect for developers, data analysts, and anyone working with structured data. Everything processes in your browser — your data stays private.',
+        h1: 'Free Online Data Converter - JSON, CSV & Excel',
+        intro: 'Transform data files between JSON, CSV, and Excel (XLSX) formats instantly. Perfect for developers, data analysts, and anyone working with structured data. Everything processes in your browser - your data stays private.',
         whyTitle: 'Why use our data converter?',
         points: [
             { label: 'Developer Friendly', text: <>Instantly convert <Link to="/convert/json-to-csv" className="text-brand-600 hover:underline font-medium">JSON to CSV</Link>, <Link to="/convert/csv-to-json" className="text-brand-600 hover:underline font-medium">CSV to JSON</Link>, or <Link to="/convert/json-to-excel" className="text-brand-600 hover:underline font-medium">JSON to Excel</Link>. Handles nested objects, arrays, and complex data structures intelligently.</> },
@@ -40,27 +40,27 @@ const TOOL_CONTENT: Record<string, SEOContentConfig> = {
         ],
     },
     units: {
-        h1: 'Free Unit Converter — Length, Mass, Volume & More',
-        intro: 'Instantly convert between units of length, mass, volume, temperature, and digital data. Precision-engineered formulas run entirely offline in your browser. No API calls, no tracking — just fast, accurate results.',
+        h1: 'Free Unit Converter - Length, Mass, Volume & More',
+        intro: 'Instantly convert between units of length, mass, volume, temperature, and digital data. Precision-engineered formulas run entirely offline in your browser. No API calls, no tracking - just fast, accurate results.',
         whyTitle: 'Why use our unit converter?',
         points: [
             { label: 'Pinpoint Accuracy', text: 'Our converter uses mathematically precise conversion formulas, not rounded lookup tables. Get results you can trust for engineering, science, and everyday calculations.' },
             { label: 'Works Offline', text: 'Once the page loads, the unit converter works without any internet connection. Perfect for fieldwork, travel, or anywhere you need quick conversions on the go.' },
-            { label: 'All Categories', text: 'Length (km, miles, feet), mass (kg, lbs, oz), volume (liters, gallons, cups), temperature (°C, °F, K), and digital data (bytes to terabytes) — all in one place.' },
+            { label: 'All Categories', text: 'Length (km, miles, feet), mass (kg, lbs, oz), volume (liters, gallons, cups), temperature (°C, °F, K), and digital data (bytes to terabytes) - all in one place.' },
         ],
     },
     currency: {
-        h1: 'Free Currency Converter — Live Exchange Rates',
-        intro: 'Convert between 50+ world currencies and cryptocurrencies with live mid-market exchange rates. View historical trends and make informed decisions — all for free, no sign-up required.',
+        h1: 'Free Currency Converter - Live Exchange Rates',
+        intro: 'Convert between 50+ world currencies and cryptocurrencies with live mid-market exchange rates. View historical trends and make informed decisions - all for free, no sign-up required.',
         whyTitle: 'Why use our currency converter?',
         points: [
-            { label: 'Live Rates', text: 'Our exchange rates are fetched from reliable market data sources and updated regularly. See the exact mid-market rate before you convert — no hidden markups.' },
+            { label: 'Live Rates', text: 'Our exchange rates are fetched from reliable market data sources and updated regularly. See the exact mid-market rate before you convert - no hidden markups.' },
             { label: 'Crypto Included', text: 'Convert between traditional currencies (USD, EUR, GBP) and cryptocurrencies (Bitcoin, Ethereum) plus precious metals (Gold, Silver) all in one tool.' },
             { label: 'Historical Trends', text: 'View 7-day, 30-day, 90-day, and 1-year trend charts to understand how exchange rates have moved over time. Essential for timing international transfers.' },
         ],
     },
     document: {
-        h1: 'Free Document Converter — PDF to JPG & Images to PDF',
+        h1: 'Free Document Converter - PDF to JPG & Images to PDF',
         intro: 'Convert PDF files to high-quality images or merge multiple images into a single PDF document instantly. Everything processes securely inside your browser.',
         whyTitle: 'Why use our document converter?',
         points: [

@@ -6,7 +6,7 @@ import { useCurrencyRates } from '../hooks/useCurrencyRates'
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
 import GenericSEOContent from '../components/GenericSEOContent'
-import { TextRoll } from '@/components/ui/text-roll'
+import { TextRoll } from '../components/ui/text-roll'
 
 // Expanded list of global currencies for the searchable dropdown
 const ALL_CURRENCIES = [

@@ -8,7 +8,7 @@ export interface RelatedTool {
     icon: React.ReactNode
 }
 
-// All tools in the app — pages reference these by key
+// All tools in the app - pages reference these by key
 const ALL_TOOLS: Record<string, RelatedTool> = {
     video: {
         to: '/',

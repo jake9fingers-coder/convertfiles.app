@@ -15,7 +15,7 @@ export interface CanvasConversionResult {
 
 /**
  * Convert an image file to a different format using the browser's native Canvas API.
- * This is instant for standard web formats — no WASM required.
+ * This is instant for standard web formats - no WASM required.
  */
 export async function convertImageWithCanvas(
     file: File,

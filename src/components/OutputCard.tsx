@@ -90,7 +90,7 @@ export default function OutputCard({ result, mode, onReset }: OutputCardProps) {
                 <div className="text-center p-3 bg-emerald-50 rounded-lg">
                     <p className="text-xs text-emerald-600 mb-1">Saved</p>
                     <p className="text-sm font-bold text-emerald-700">
-                        {savings > 0 ? `${savings}%` : savings < 0 ? `+${Math.abs(savings)}%` : '—'}
+                        {savings > 0 ? `${savings}%` : savings < 0 ? `+${Math.abs(savings)}%` : '-'}
                     </p>
                 </div>
                 <div className="text-center p-3 bg-dark-50 rounded-lg">

@@ -28,7 +28,7 @@ export interface BatchImageItem {
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
 import GenericSEOContent from '../components/GenericSEOContent'
-import { TextRoll } from '@/components/ui/text-roll'
+import { TextRoll } from '../components/ui/text-roll'
 
 export default function ImageConverter({ embedded = false }: { embedded?: boolean }) {
     // --- Magick engine for pro formats (TIFF, PSD, etc.) ---
@@ -259,7 +259,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     return (
         <div className="w-full flex flex-col items-center">
             <SEOHead
-                title="Free Image Converter Online — HEIC to JPG, WebP to PNG & More | convertfiles.app"
+                title="Free Image Converter Online - HEIC to JPG, WebP to PNG & More | convertfiles.app"
                 description="Convert images free: HEIC to JPG, WebP to PNG, PNG to JPG, and 10+ formats. Instant, private, no upload. Full quality conversion in your browser."
                 canonical={`${SITE_URL}/image-converter`}
                 keywords={['image converter', 'heic to jpg', 'webp to png', 'png to jpg', 'jpg to png', 'webp to jpg', 'convert heic', 'free image converter', 'online image converter']}
@@ -268,15 +268,13 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             {/* Full viewport container for perfect vertical centering */}
             <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16'}`}>
 
-                {/* Compact heading above the tool — hidden when embedded in a landing page */}
+                {/* Compact heading above the tool - hidden when embedded in a landing page */}
                 {!embedded && (
                     <div className="w-full mb-8 flex flex-col items-center text-center">
                         <div className="inline-flex items-center justify-center mb-4">
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
-                        <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
-                        >
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
                             <TextRoll>
                                 convertfiles.app
                             </TextRoll>
@@ -314,7 +312,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                         </div>
                     )}
 
-                    {/* Dropzone — hidden once there are files queued */}
+                    {/* Dropzone - hidden once there are files queued */}
                     {!hasFiles && (
                         <Dropzone
                             onFiles={handleFiles}
@@ -449,13 +447,13 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                 </div>
             </div>
 
-            {/* Related Tools — hidden when embedded */}
+            {/* Related Tools - hidden when embedded */}
             {!embedded && <RelatedTools currentTool="image" />}
 
             {/* Generic SEO Content for Homepage */}
             {!embedded && <GenericSEOContent toolId="image" />}
 
-            {/* Marketing / Explainer Sections — hidden when embedded */}
+            {/* Marketing / Explainer Sections - hidden when embedded */}
             {!embedded && (
                 <div className="w-full">
                     <Features />

@@ -14,7 +14,7 @@ export default function PrivacySection() {
                         <span className="block text-brand-400 mt-2">Always.</span>
                     </h2>
                     <p className="text-lg text-dark-300 max-w-2xl mx-auto leading-relaxed mb-10">
-                        convertfiles.app processes everything using <strong className="text-white">WebAssembly</strong> — a technology that lets us run FFmpeg directly inside your browser tab. There is no server receiving your files. Nothing is stored. Nothing is logged. You can verify this yourself by opening DevTools → Network while converting.
+                        convertfiles.app processes everything using <strong className="text-white">WebAssembly</strong> - a technology that lets us run FFmpeg directly inside your browser tab. There is no server receiving your files. Nothing is stored. Nothing is logged. You can verify this yourself by opening DevTools → Network while converting.
                     </p>
                     <div className="grid sm:grid-cols-3 gap-4 text-left">
                         {[

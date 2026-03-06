@@ -74,7 +74,7 @@ export default function ProgressDisplay({ progress, logMessages, onCancel }: Pro
                     )}
                 </div>
                 <p className="text-xs text-dark-400 mt-1.5">
-                    Large files may take a minute — processing happens locally in your browser
+                    Large files may take a minute - processing happens locally in your browser
                 </p>
             </div>
 
@@ -97,7 +97,7 @@ export default function ProgressDisplay({ progress, logMessages, onCancel }: Pro
             </div>
 
             <p className="flex justify-center items-center text-xs text-center text-dark-400">
-                <Lock className="w-3 h-3 mr-1.5" /> Processing entirely in your browser — nothing is being uploaded
+                <Lock className="w-3 h-3 mr-1.5" /> Processing entirely in your browser - nothing is being uploaded
             </p>
         </div>
     )

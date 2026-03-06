@@ -25,7 +25,7 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         mimeType: 'image/gif',
         acceptedInputs: ['video/*'],
         buildArgs: ({ gifFps, gifWidth }) => {
-            // Fast single-pass generic palette — skips the extremely slow two-pass palettegen
+            // Fast single-pass generic palette - skips the extremely slow two-pass palettegen
             // Crucial for performance on single-thread processing
             const scale = `${gifWidth}:-1:flags=fast_bilinear`
             return ['-vf', `fps=${gifFps},scale=${scale}`, '-loop', '0']

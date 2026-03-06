@@ -19,7 +19,7 @@ export default {
                 'full': '9999px',
             },
             colors: {
-                // Celadon Blue primary — #457B9D
+                // Celadon Blue primary - #457B9D
                 brand: {
                     50: '#F2F6F8',
                     100: '#E0ECF2',
@@ -32,7 +32,7 @@ export default {
                     800: '#1D3647',
                     900: '#152733',
                 },
-                // Prussian Blue dark palette & Honeydew light — #1D3557 / #F1FAEE
+                // Prussian Blue dark palette & Honeydew light - #1D3557 / #F1FAEE
                 dark: {
                     900: '#1D3557', // primary Prussian
                     800: '#2A4874',
@@ -45,7 +45,7 @@ export default {
                     100: '#E6EEF7',
                     50: '#F4F7F6',  // neutral premium off-white
                 },
-                // Crimson accent — #E63946
+                // Crimson accent - #E63946
                 accent: {
                     50: '#FCF4F5',
                     100: '#F8E6E7',
@@ -58,7 +58,7 @@ export default {
                     800: '#7A1B22',
                     900: '#61181E',
                 },
-                // Emerald success — #10B981
+                // Emerald success - #10B981
                 success: {
                     50: '#ECFDF5',
                     100: '#D1FAE5',
@@ -71,7 +71,7 @@ export default {
                     800: '#065F46',
                     900: '#064E3B',
                 },
-                // Light Blue soft — #A8DADC
+                // Light Blue soft - #A8DADC
                 soft: {
                     50: '#F6FBFC',
                     100: '#E9F6F7',

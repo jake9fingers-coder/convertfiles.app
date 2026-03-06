@@ -4,10 +4,10 @@ import { SITE_URL } from '../lib/seoConversionData'
 import { convert } from 'convert'
 import { Search, ArrowRightLeft, Ruler, Scale, Droplet, Thermometer, Database } from 'lucide-react'
 import Select from 'react-select'
-import Features from '@/components/Features';
-import RelatedTools from '@/components/RelatedTools';
-import GenericSEOContent from '@/components/GenericSEOContent';
-import { TextRoll } from '@/components/ui/text-roll';
+import Features from '../components/Features';
+import RelatedTools from '../components/RelatedTools';
+import GenericSEOContent from '../components/GenericSEOContent';
+import { TextRoll } from '../components/ui/text-roll';
 
 export const customSelectStyles = {
     control: (base: any, state: any) => ({
@@ -209,7 +209,7 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
     return (
         <div className="w-full flex flex-col items-center">
             <SEOHead
-                title="Free Unit Converter — Length, Mass, Volume, Temp & Data | convertfiles.app"
+                title="Free Unit Converter - Length, Mass, Volume, Temp & Data | convertfiles.app"
                 description="Instantly convert between units of length, mass, volume, temperature, and digital data. Precision-engineered offline conversion tool."
                 canonical={`${SITE_URL}/units`}
                 keywords={['unit converter', 'convert units', 'length converter', 'mass converter', 'temperature converter']}
@@ -221,9 +221,7 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
                         <div className="inline-flex items-center justify-center mb-4">
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
-                        <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
-                        >
+                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
                             <TextRoll>
                                 convertfiles.app
                             </TextRoll>

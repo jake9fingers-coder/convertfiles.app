@@ -11,7 +11,7 @@ import ProgressDisplay from '../components/ProgressDisplay'
 import BatchConversionList from '../components/BatchConversionList'
 import ConversionHistoryList from '../components/ConversionHistoryList'
 import { saveVideoHistory, loadVideoHistory } from '../lib/db'
-import { TextRoll } from '@/components/ui/text-roll'
+import { TextRoll } from '../components/ui/text-roll'
 
 export interface BatchItem {
     id: string
@@ -35,7 +35,6 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
     const [history, setHistory] = useState<BatchItem[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
-    const [isZipping, setIsZipping] = useState(false)
 
     // Load history on mount
     useEffect(() => {
@@ -180,8 +179,8 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
     return (
         <div className="w-full flex flex-col items-center">
             <SEOHead
-                title="Free Video & Audio Converter Online — MP4 to GIF, MP3 & More | convertfiles.app"
-                description="Convert video to GIF, MP4, WebM or extract audio to MP3. Free, instant, private — runs in your browser. No upload, no limits, no sign-up."
+                title="Free Video & Audio Converter Online - MP4 to GIF, MP3 & More | convertfiles.app"
+                description="Convert video to GIF, MP4, WebM or extract audio to MP3. Free, instant, private - runs in your browser. No upload, no limits, no sign-up."
                 canonical={`${SITE_URL}/`}
                 keywords={['video converter', 'mp4 to gif', 'mp4 to mp3', 'video to gif', 'video to mp3', 'mov to mp4', 'compress video', 'free video converter', 'online video converter']}
             />
@@ -189,7 +188,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
             {/* Full viewport container for perfect vertical centering */}
             <div className={`w-full flex flex-col items-center ${embedded ? 'pt-2 pb-4' : 'min-h-[calc(100vh-140px)] pt-16 pb-16'}`}>
 
-                {/* Compact heading above the tool — hidden when embedded */}
+                {/* Compact heading above the tool - hidden when embedded */}
                 {!embedded && (
                     <div className="w-full mb-8 flex flex-col items-center text-center">
                         <div className="inline-flex items-center justify-center mb-4">
@@ -206,7 +205,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                             Video & Audio Converter
                         </p>
                         <p className="text-base text-dark-500 max-w-sm">
-                            Convert, compress &amp; extract audio — free, instant, private
+                            Convert, compress &amp; extract audio - free, instant, private
                         </p>
                     </div>
                 )}
@@ -235,7 +234,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                         </div>
                     )}
 
-                    {/* Dropzone — hidden once there are files queued */}
+                    {/* Dropzone - hidden once there are files queued */}
                     {!hasFiles && (
                         <Dropzone onFiles={handleFiles} disabled={ffmpegStatus === 'loading'} />
                     )}
@@ -342,7 +341,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                         </div>
                     )}
 
-                    {/* Subtle trust line — only when idle */}
+                    {/* Subtle trust line - only when idle */}
                     {!hasFiles && (
                         <p className="flex justify-center items-center text-center text-xs text-dark-400 mt-2">
                             <Lock className="w-3 h-3 mr-1.5" /> Files never leave your device &nbsp;·&nbsp; No account needed &nbsp;·&nbsp; No limits
@@ -362,13 +361,13 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                 </div>
             </div>
 
-            {/* Related Tools — hidden when embedded */}
+            {/* Related Tools - hidden when embedded */}
             {!embedded && <RelatedTools currentTool="video" />}
 
             {/* Generic SEO Content for Homepage */}
             {!embedded && <GenericSEOContent toolId="video" />}
 
-            {/* Marketing / Explainer Sections — hidden when embedded */}
+            {/* Marketing / Explainer Sections - hidden when embedded */}
             {!embedded && (
                 <div className="w-full">
                     <Features />

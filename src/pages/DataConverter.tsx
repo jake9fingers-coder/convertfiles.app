@@ -11,7 +11,7 @@ import RelatedTools from '../components/RelatedTools'
 import GenericSEOContent from '../components/GenericSEOContent'
 import ConversionHistoryList from '../components/ConversionHistoryList'
 import { saveDataHistory, loadDataHistory } from '../lib/db'
-import { TextRoll } from '@/components/ui/text-roll'
+import { TextRoll } from '../components/ui/text-roll'
 
 export interface BatchDataItem {
     id: string
@@ -27,13 +27,11 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     const [batch, setBatch] = useState<BatchDataItem[]>([])
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [history, setHistory] = useState<BatchDataItem[]>([])
-    const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
 
     // Load history on mount
     useEffect(() => {
         loadDataHistory().then(data => {
             setHistory(data)
-            setIsHistoryLoaded(true)
         })
     }, [])
 
@@ -106,7 +104,7 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     return (
         <div className="w-full flex flex-col items-center">
             <SEOHead
-                title="Free Data Converter — JSON to CSV, Excel to JSON & More | convertfiles.app"
+                title="Free Data Converter - JSON to CSV, Excel to JSON & More | convertfiles.app"
                 description="Convert JSON to CSV, CSV to Excel, Excel to JSON and more. Free, private, instant data conversion in your browser. No upload needed."
                 canonical={`${SITE_URL}/data-converter`}
                 keywords={['json to csv', 'csv to json', 'json to excel', 'csv to excel', 'excel to csv', 'data converter', 'free data converter']}

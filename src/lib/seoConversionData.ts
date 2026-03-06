@@ -49,14 +49,14 @@ export const SITE_NAME = 'convertfiles.app'
 
 export const SEO_CONVERSIONS: ConversionSEOData[] = [
     // ============================================================
-    // 🔴 HIGHEST PRIORITY — HEIC conversions (246K+ monthly searches)
+    // 🔴 HIGHEST PRIORITY - HEIC conversions (246K+ monthly searches)
     // ============================================================
     {
         slug: 'heic-to-jpg',
-        title: 'Convert HEIC to JPG Free Online — Instant, Full Quality',
-        description: 'Convert HEIC to JPG instantly with zero quality loss. Free, private, no upload needed. Works on iPhone photos — drag, drop, download your JPG files.',
-        h1: 'Convert HEIC to JPG — Free, Instant & Full Quality',
-        intro: 'Convert your iPhone HEIC photos to universally compatible JPG format instantly. Our free HEIC to JPG converter runs entirely in your browser — your files never leave your device. No sign-up, no upload delays, no file size limits. Just drag and drop your .heic files and download perfect JPG images in seconds.',
+        title: 'Convert HEIC to JPG Free Online - Instant, Full Quality',
+        description: 'Convert HEIC to JPG instantly with zero quality loss. Free, private, no upload needed. Works on iPhone photos - drag, drop, download your JPG files.',
+        h1: 'Convert HEIC to JPG - Free, Instant & Full Quality',
+        intro: 'Convert your iPhone HEIC photos to universally compatible JPG format instantly. Our free HEIC to JPG converter runs entirely in your browser - your files never leave your device. No sign-up, no upload delays, no file size limits. Just drag and drop your .heic files and download perfect JPG images in seconds.',
         sourceFormat: 'HEIC',
         targetFormat: 'JPG',
         converterType: 'image',
@@ -77,32 +77,32 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'heic-to-jpeg',
-        title: 'Convert HEIC to JPEG Free — Instant High Quality Converter',
+        title: 'Convert HEIC to JPEG Free - Instant High Quality Converter',
         description: 'Free HEIC to JPEG converter online. Convert iPhone HEIC photos to JPEG format instantly in your browser. No upload, no quality loss, 100% private.',
-        h1: 'Convert HEIC to JPEG — Free & Private',
-        intro: 'Need to convert HEIC files to JPEG? Our free online converter transforms your iPhone photos from HEIC to JPEG format instantly. Everything runs in your browser — no server upload, no waiting, no limits. JPEG (also known as JPG) is the most universally supported image format.',
+        h1: 'Convert HEIC to JPEG - Free & Private',
+        intro: 'Need to convert HEIC files to JPEG? Our free online converter transforms your iPhone photos from HEIC to JPEG format instantly. Everything runs in your browser - no server upload, no waiting, no limits. JPEG (also known as JPG) is the most universally supported image format.',
         sourceFormat: 'HEIC',
         targetFormat: 'JPEG',
         converterType: 'image',
         converterMode: 'jpeg',
         faqItems: [
-            { question: 'What is the difference between JPG and JPEG?', answer: 'JPG and JPEG are exactly the same format. The only difference is the file extension — older Windows systems used the 3-letter ".jpg" extension, while ".jpeg" is the full name. Our converter outputs .jpg files which are universally compatible.' },
+            { question: 'What is the difference between JPG and JPEG?', answer: 'JPG and JPEG are exactly the same format. The only difference is the file extension - older Windows systems used the 3-letter ".jpg" extension, while ".jpeg" is the full name. Our converter outputs .jpg files which are universally compatible.' },
             { question: 'Why do iPhones save photos as HEIC instead of JPEG?', answer: 'Apple adopted HEIC because it produces files roughly half the size of JPEG while maintaining the same visual quality. This saves storage space on your device, but HEIC isn\'t universally supported outside the Apple ecosystem.' },
             { question: 'Can I convert HEIC to JPEG without losing quality?', answer: 'Yes! Our converter uses the highest quality setting when converting HEIC to JPEG, preserving maximum image fidelity. The conversion happens locally in your browser for instant results.' },
         ],
         relatedConversions: ['heic-to-jpg', 'heic-to-png', 'jpg-to-png', 'png-to-jpg'],
         keywords: ['heic to jpeg', 'convert heic to jpeg', 'heic jpeg converter', 'heic to jpeg online free', '.heic to .jpeg'],
         funFacts: [
-            { title: 'JPG vs JPEG: A Windows Legacy', content: 'Early versions of Windows only supported 3-character file extensions, so ".jpeg" was shortened to ".jpg". The format itself is identical — the naming convention is purely a historical artifact from the 1990s.' },
+            { title: 'JPG vs JPEG: A Windows Legacy', content: 'Early versions of Windows only supported 3-character file extensions, so ".jpeg" was shortened to ".jpg". The format itself is identical - the naming convention is purely a historical artifact from the 1990s.' },
             { title: 'HEIC Saves Billions in Storage', content: 'Apple\'s switch to HEIC saves an estimated 50% storage per photo. Across billions of iPhones worldwide, this has saved exabytes of global storage demand since 2017.' },
         ]
     },
     {
         slug: 'heic-to-png',
-        title: 'Convert HEIC to PNG Free — Lossless Quality, Instant',
-        description: 'Convert HEIC to PNG free online. Lossless quality with transparent background support. No upload needed — runs in your browser. Try now!',
-        h1: 'Convert HEIC to PNG — Lossless & Free',
-        intro: 'Convert your HEIC photos to PNG format for lossless quality and transparent background support. PNG is perfect when you need pixel-perfect accuracy or transparency. Our converter runs entirely in your browser — your photos stay private on your device.',
+        title: 'Convert HEIC to PNG Free - Lossless Quality, Instant',
+        description: 'Convert HEIC to PNG free online. Lossless quality with transparent background support. No upload needed - runs in your browser. Try now!',
+        h1: 'Convert HEIC to PNG - Lossless & Free',
+        intro: 'Convert your HEIC photos to PNG format for lossless quality and transparent background support. PNG is perfect when you need pixel-perfect accuracy or transparency. Our converter runs entirely in your browser - your photos stay private on your device.',
         sourceFormat: 'HEIC',
         targetFormat: 'PNG',
         converterType: 'image',
@@ -110,25 +110,25 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         faqItems: [
             { question: 'Should I convert HEIC to PNG or JPG?', answer: 'Choose PNG if you need lossless quality or transparent backgrounds (great for logos, screenshots, graphics). Choose JPG for regular photos where smaller file size matters more. Both conversions are free and instant here.' },
             { question: 'Is HEIC to PNG conversion lossless?', answer: 'Yes! PNG is a lossless format, so converting HEIC to PNG preserves all the original image data without any compression artifacts.' },
-            { question: 'Can I convert multiple HEIC files to PNG at once?', answer: 'Absolutely. Drag and drop as many HEIC files as you need — each one will be converted to PNG individually.' },
+            { question: 'Can I convert multiple HEIC files to PNG at once?', answer: 'Absolutely. Drag and drop as many HEIC files as you need - each one will be converted to PNG individually.' },
         ],
         relatedConversions: ['heic-to-jpg', 'png-to-jpg', 'webp-to-png', 'jpg-to-png'],
         keywords: ['heic to png', 'convert heic to png', 'heic png converter', 'heic to png online', 'heic to png free', 'iphone heic to png'],
         funFacts: [
             { title: 'PNG Was Born From a Patent War', content: 'PNG was created in 1996 as a free, open-source alternative to GIF after Unisys controversially enforced patent royalties on GIF\'s LZW compression algorithm. The name originally stood for "PNG\'s Not GIF."' },
-            { title: 'Lossless by Design', content: 'Every single pixel in a PNG file is stored perfectly — no approximation, no compression artifacts. This makes HEIC to PNG ideal when you need guaranteed pixel-perfect fidelity for graphic design or screenshots.' },
+            { title: 'Lossless by Design', content: 'Every single pixel in a PNG file is stored perfectly - no approximation, no compression artifacts. This makes HEIC to PNG ideal when you need guaranteed pixel-perfect fidelity for graphic design or screenshots.' },
         ]
     },
 
     // ============================================================
-    // 🔴 HIGHEST PRIORITY — WebP conversions (165K+ monthly searches)
+    // 🔴 HIGHEST PRIORITY - WebP conversions (165K+ monthly searches)
     // ============================================================
     {
         slug: 'webp-to-png',
-        title: 'Convert WebP to PNG Free Online — Instant, High Quality',
-        description: 'Convert WebP to PNG free online. Lossless conversion, preserve transparency. No upload — runs in your browser instantly. No limits.',
-        h1: 'Convert WebP to PNG — Free, Instant & Lossless',
-        intro: 'Convert WebP images to PNG format instantly and for free. PNG preserves full quality with lossless compression and supports transparent backgrounds. Our WebP to PNG converter runs entirely in your browser — nothing is uploaded anywhere.',
+        title: 'Convert WebP to PNG Free Online - Instant, High Quality',
+        description: 'Convert WebP to PNG free online. Lossless conversion, preserve transparency. No upload - runs in your browser instantly. No limits.',
+        h1: 'Convert WebP to PNG - Free, Instant & Lossless',
+        intro: 'Convert WebP images to PNG format instantly and for free. PNG preserves full quality with lossless compression and supports transparent backgrounds. Our WebP to PNG converter runs entirely in your browser - nothing is uploaded anywhere.',
         sourceFormat: 'WebP',
         targetFormat: 'PNG',
         converterType: 'image',
@@ -148,10 +148,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'webp-to-jpg',
-        title: 'Convert WebP to JPG Free — Instant Online Converter',
-        description: 'Convert WebP to JPG free online in seconds. High quality, no upload, no limits. Works in your browser — your files stay private.',
-        h1: 'Convert WebP to JPG — Free & Instant',
-        intro: 'Easily convert WebP images to JPG format directly in your browser. JPG is the most widely supported image format across all devices and platforms. Our free WebP to JPG converter processes everything locally — your images never leave your device.',
+        title: 'Convert WebP to JPG Free - Instant Online Converter',
+        description: 'Convert WebP to JPG free online in seconds. High quality, no upload, no limits. Works in your browser - your files stay private.',
+        h1: 'Convert WebP to JPG - Free & Instant',
+        intro: 'Easily convert WebP images to JPG format directly in your browser. JPG is the most widely supported image format across all devices and platforms. Our free WebP to JPG converter processes everything locally - your images never leave your device.',
         sourceFormat: 'WebP',
         targetFormat: 'JPG',
         converterType: 'image',
@@ -164,20 +164,20 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         relatedConversions: ['webp-to-png', 'jpg-to-webp', 'heic-to-jpg', 'png-to-jpg'],
         keywords: ['webp to jpg', 'webp to jpeg', 'convert webp to jpg', 'webp to jpg converter', 'webp to jpg online', 'webp to jpg free'],
         funFacts: [
-            { title: 'WebP Dominates the Web', content: 'As of 2024, WebP is used on over 95% of the top 10,000 websites globally. However, when you download or right-click save these images, many programs still can\'t open them — hence the need for WebP to JPG conversion.' },
-            { title: 'JPG: The Universal Standard', content: 'The JPEG format was standardized in 1992 and is supported by literally every image-viewing device ever made — from flip phones to spacecraft cameras. It remains the best choice for universal sharing.' },
+            { title: 'WebP Dominates the Web', content: 'As of 2024, WebP is used on over 95% of the top 10,000 websites globally. However, when you download or right-click save these images, many programs still can\'t open them - hence the need for WebP to JPG conversion.' },
+            { title: 'JPG: The Universal Standard', content: 'The JPEG format was standardized in 1992 and is supported by literally every image-viewing device ever made - from flip phones to spacecraft cameras. It remains the best choice for universal sharing.' },
         ]
     },
 
     // ============================================================
-    // 🔴 HIGHEST PRIORITY — Video conversions (110K-201K searches)
+    // 🔴 HIGHEST PRIORITY - Video conversions (110K-201K searches)
     // ============================================================
     {
         slug: 'mp4-to-mp3',
-        title: 'Convert MP4 to MP3 Free — Extract Audio Instantly',
+        title: 'Convert MP4 to MP3 Free - Extract Audio Instantly',
         description: 'Extract audio from MP4 videos to MP3 format free. Fast, private, no upload. Works offline in your browser. No limits or sign-up.',
-        h1: 'Convert MP4 to MP3 — Extract Audio Free',
-        intro: 'Extract the audio track from any MP4 video and save it as a high-quality audio file. Perfect for saving music, podcasts, lectures, or any audio content from video files. Everything runs locally in your browser — no upload required.',
+        h1: 'Convert MP4 to MP3 - Extract Audio Free',
+        intro: 'Extract the audio track from any MP4 video and save it as a high-quality audio file. Perfect for saving music, podcasts, lectures, or any audio content from video files. Everything runs locally in your browser - no upload required.',
         sourceFormat: 'MP4',
         targetFormat: 'MP3',
         converterType: 'video',
@@ -197,17 +197,17 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'mp4-to-gif',
-        title: 'Convert MP4 to GIF Free — Create Animated GIFs Instantly',
+        title: 'Convert MP4 to GIF Free - Create Animated GIFs Instantly',
         description: 'Turn any MP4 video into an animated GIF for free. Custom FPS and size. No upload, runs in your browser. Perfect for Discord & social media.',
-        h1: 'Convert MP4 to GIF — Free Animated GIF Creator',
-        intro: 'Create animated GIFs from any MP4 video instantly. Perfect for Discord, Twitter, Slack, Reddit, and social media posts. Customize frame rate and dimensions to get the perfect GIF. No upload needed — everything processes on your device.',
+        h1: 'Convert MP4 to GIF - Free Animated GIF Creator',
+        intro: 'Create animated GIFs from any MP4 video instantly. Perfect for Discord, Twitter, Slack, Reddit, and social media posts. Customize frame rate and dimensions to get the perfect GIF. No upload needed - everything processes on your device.',
         sourceFormat: 'MP4',
         targetFormat: 'GIF',
         converterType: 'video',
         converterMode: 'gif',
         faqItems: [
             { question: 'How do I make a GIF from an MP4 video?', answer: 'Drag and drop your MP4 file, choose "Animated GIF" mode, adjust the FPS and width to your liking, and hit convert. Your GIF will be ready in seconds.' },
-            { question: 'Can I customize the GIF size and quality?', answer: 'Yes! You can adjust the frame rate (FPS) and output width. Higher FPS gives smoother animation, while smaller width reduces file size — perfect for staying under Discord\'s 10MB limit.' },
+            { question: 'Can I customize the GIF size and quality?', answer: 'Yes! You can adjust the frame rate (FPS) and output width. Higher FPS gives smoother animation, while smaller width reduces file size - perfect for staying under Discord\'s 10MB limit.' },
             { question: 'What\'s the maximum video length for GIF conversion?', answer: 'There\'s no hard limit, but shorter clips (5-30 seconds) produce the best GIFs. Longer videos will create very large GIF files.' },
         ],
         relatedConversions: ['mp4-to-mp3', 'mov-to-mp4', 'mp4-to-webm', 'video-to-gif'],
@@ -220,16 +220,16 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'mov-to-mp4',
-        title: 'Convert MOV to MP4 Free — Quick, High Quality',
+        title: 'Convert MOV to MP4 Free - Quick, High Quality',
         description: 'Convert MOV to MP4 free online. Fast, high quality, no upload needed. Convert iPhone videos and QuickTime files to MP4 instantly.',
-        h1: 'Convert MOV to MP4 — Free & High Quality',
+        h1: 'Convert MOV to MP4 - Free & High Quality',
         intro: 'Convert Apple MOV files to universally compatible MP4 format. MOV is the default format for iPhone videos and QuickTime recordings, but MP4 plays everywhere. Our free converter runs in your browser with no uploads required.',
         sourceFormat: 'MOV',
         targetFormat: 'MP4',
         converterType: 'video',
         converterMode: 'mp4',
         faqItems: [
-            { question: 'Why convert MOV to MP4?', answer: 'MP4 is the most universally supported video format. While MOV works great on Apple devices, MP4 plays on virtually every device, player, and platform — including Windows, Android, smart TVs, and all social media.' },
+            { question: 'Why convert MOV to MP4?', answer: 'MP4 is the most universally supported video format. While MOV works great on Apple devices, MP4 plays on virtually every device, player, and platform - including Windows, Android, smart TVs, and all social media.' },
             { question: 'Does MOV to MP4 conversion affect video quality?', answer: 'Our converter maintains high quality during the conversion. At 100% quality setting, the output is virtually indistinguishable from the original MOV file.' },
             { question: 'Can I convert large MOV files?', answer: 'Yes! Since everything processes in your browser, there are no server-imposed file size limits. Convert movies, screen recordings, and any size MOV file.' },
         ],
@@ -237,38 +237,38 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         keywords: ['mov to mp4', 'convert mov to mp4', 'mov to mp4 converter', 'mov to mp4 free', 'mov to mp4 online', 'quicktime to mp4', 'iphone video to mp4'],
         funFacts: [
             { title: 'Apple\'s Signature', content: 'MOV is the proprietary format developed by Apple for its QuickTime framework. If you record a video on an iPhone or iPad, it is saved natively as a .mov file.' },
-            { title: 'Under the Hood', content: 'Both MOV and MP4 are technically "container" formats, and they are incredibly similar. In many cases, converting MOV to MP4 doesn\'t even re-encode the video—it just changes the wrapper, meaning the conversion is mathematically lossless and lightning fast.' },
+            { title: 'Under the Hood', content: 'Both MOV and MP4 are technically "container" formats, and they are incredibly similar. In many cases, converting MOV to MP4 doesn\'t even re-encode the video-it just changes the wrapper, meaning the conversion is mathematically lossless and lightning fast.' },
             { title: 'The Compatibility King', content: 'While MOV is great on Apple devices, MP4 is universally recognized. Smart TVs, Android devices, older Windows PCs, and almost every web browser prioritize MP4 over MOV for flawless playback.' }
         ]
     },
     {
         slug: 'mp4-to-webm',
-        title: 'Convert MP4 to WebM Free — Optimized for Web',
-        description: 'Convert MP4 to WebM free online. Smaller file size, perfect for web playback. No upload — instant browser-based conversion.',
-        h1: 'Convert MP4 to WebM — Free & Web-Optimized',
+        title: 'Convert MP4 to WebM Free - Optimized for Web',
+        description: 'Convert MP4 to WebM free online. Smaller file size, perfect for web playback. No upload - instant browser-based conversion.',
+        h1: 'Convert MP4 to WebM - Free & Web-Optimized',
         intro: 'Convert your MP4 videos to WebM format for optimal web playback. WebM offers excellent compression and is supported by all modern browsers. Ideal for embedding videos on websites, blogs, and web applications.',
         sourceFormat: 'MP4',
         targetFormat: 'WebM',
         converterType: 'video',
         converterMode: 'webm',
         faqItems: [
-            { question: 'What is WebM format?', answer: 'WebM is an open media format designed specifically for the web. It uses VP8/VP9 video codecs and produces smaller files than MP4 while maintaining good quality — perfect for website videos.' },
+            { question: 'What is WebM format?', answer: 'WebM is an open media format designed specifically for the web. It uses VP8/VP9 video codecs and produces smaller files than MP4 while maintaining good quality - perfect for website videos.' },
             { question: 'Is WebM better than MP4 for websites?', answer: 'For web delivery, WebM often produces smaller files with comparable quality. However, MP4 has broader device support. Many web developers offer both formats for maximum compatibility.' },
             { question: 'Does this converter work offline?', answer: 'Yes! Once the page loads, the converter works entirely offline. Your videos are processed locally on your device without any internet connection needed.' },
         ],
         relatedConversions: ['mp4-to-gif', 'mp4-to-mp3', 'mov-to-mp4', 'webm-to-mp4'],
         keywords: ['mp4 to webm', 'convert mp4 to webm', 'mp4 to webm converter', 'mp4 to webm free', 'mp4 to webm online'],
         funFacts: [
-            { title: 'Open Source Video', content: 'WebM was created by Google as a royalty-free, open-source video format. Unlike MP4 (which uses patented H.264/H.265 codecs), anyone can use WebM without licensing fees — making it the ethical choice for open web projects.' },
+            { title: 'Open Source Video', content: 'WebM was created by Google as a royalty-free, open-source video format. Unlike MP4 (which uses patented H.264/H.265 codecs), anyone can use WebM without licensing fees - making it the ethical choice for open web projects.' },
             { title: 'VP9 Powers YouTube', content: 'YouTube serves the majority of its videos in WebM format using the VP9 codec. When you watch a 4K YouTube video, you\'re almost certainly watching a WebM file, not an MP4.' },
         ]
     },
     {
         slug: 'video-to-mp3',
-        title: 'Video to MP3 Converter — Extract Audio Free Online',
+        title: 'Video to MP3 Converter - Extract Audio Free Online',
         description: 'Extract audio from any video to MP3 format free. Supports MP4, MOV, MKV, WebM and more. No upload, instant browser conversion.',
-        h1: 'Video to MP3 — Extract Audio from Any Video',
-        intro: 'Extract audio from any video format — MP4, MOV, MKV, WebM, AVI and more. Get high-quality audio files instantly. Everything processes in your browser so your videos remain completely private.',
+        h1: 'Video to MP3 - Extract Audio from Any Video',
+        intro: 'Extract audio from any video format - MP4, MOV, MKV, WebM, AVI and more. Get high-quality audio files instantly. Everything processes in your browser so your videos remain completely private.',
         sourceFormat: 'Video',
         targetFormat: 'MP3',
         converterType: 'video',
@@ -281,15 +281,15 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         relatedConversions: ['mp4-to-mp3', 'mp4-to-gif', 'mov-to-mp4', 'video-to-gif'],
         keywords: ['video to mp3', 'extract audio from video', 'video to audio converter', 'video to mp3 free', 'video to mp3 online'],
         funFacts: [
-            { title: 'Audio Is Just a Wrapper Away', content: 'Most video files store audio and video as completely separate streams inside a "container." Extracting audio doesn\'t require re-encoding the video at all — it\'s like pulling one file out of a ZIP archive.' },
+            { title: 'Audio Is Just a Wrapper Away', content: 'Most video files store audio and video as completely separate streams inside a "container." Extracting audio doesn\'t require re-encoding the video at all - it\'s like pulling one file out of a ZIP archive.' },
             { title: 'Billions of Extractions Daily', content: '"Video to MP3" is one of the most searched conversion queries in the world. It\'s estimated that hundreds of millions of audio extractions happen globally every single day.' },
         ]
     },
     {
         slug: 'video-to-gif',
-        title: 'Video to GIF Converter — Free, No Upload',
-        description: 'Convert any video to animated GIF free. Custom size & FPS. No upload — private browser conversion. Perfect for memes & social sharing.',
-        h1: 'Video to GIF — Create GIFs from Any Video',
+        title: 'Video to GIF Converter - Free, No Upload',
+        description: 'Convert any video to animated GIF free. Custom size & FPS. No upload - private browser conversion. Perfect for memes & social sharing.',
+        h1: 'Video to GIF - Create GIFs from Any Video',
         intro: 'Turn any video into a shareable animated GIF. Supports MP4, MOV, MKV, WebM, and more. Customize the frame rate and dimensions for perfect Discord, Twitter, and Reddit GIFs. Your videos never leave your device.',
         sourceFormat: 'Video',
         targetFormat: 'GIF',
@@ -308,14 +308,14 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
 
     // ============================================================
-    // 🟡 HIGH PRIORITY — Common image conversions
+    // 🟡 HIGH PRIORITY - Common image conversions
     // ============================================================
     {
         slug: 'png-to-jpg',
-        title: 'Convert PNG to JPG Free — Instant, High Quality',
-        description: 'Convert PNG to JPG free online. Reduce file size while keeping quality. No upload needed — instant browser conversion. No limits.',
-        h1: 'Convert PNG to JPG — Free & Instant',
-        intro: 'Convert PNG images to JPG format to reduce file size while maintaining excellent visual quality. JPG is ideal for photos, web images, and anywhere smaller files are needed. Our converter runs in your browser — fast, free, and private.',
+        title: 'Convert PNG to JPG Free - Instant, High Quality',
+        description: 'Convert PNG to JPG free online. Reduce file size while keeping quality. No upload needed - instant browser conversion. No limits.',
+        h1: 'Convert PNG to JPG - Free & Instant',
+        intro: 'Convert PNG images to JPG format to reduce file size while maintaining excellent visual quality. JPG is ideal for photos, web images, and anywhere smaller files are needed. Our converter runs in your browser - fast, free, and private.',
         sourceFormat: 'PNG',
         targetFormat: 'JPG',
         converterType: 'image',
@@ -334,10 +334,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'jpg-to-png',
-        title: 'Convert JPG to PNG Free — Lossless Quality Online',
-        description: 'Convert JPG to PNG free online. Get lossless quality and transparent background support. No upload — instant browser-based conversion.',
-        h1: 'Convert JPG to PNG — Free & Lossless',
-        intro: 'Convert JPG images to PNG format for lossless quality preservation. PNG supports transparent backgrounds, making it perfect for logos, graphics, and design work. Free, fast, and completely private — everything runs in your browser.',
+        title: 'Convert JPG to PNG Free - Lossless Quality Online',
+        description: 'Convert JPG to PNG free online. Get lossless quality and transparent background support. No upload - instant browser-based conversion.',
+        h1: 'Convert JPG to PNG - Free & Lossless',
+        intro: 'Convert JPG images to PNG format for lossless quality preservation. PNG supports transparent backgrounds, making it perfect for logos, graphics, and design work. Free, fast, and completely private - everything runs in your browser.',
         sourceFormat: 'JPG',
         targetFormat: 'PNG',
         converterType: 'image',
@@ -356,30 +356,30 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'png-to-webp',
-        title: 'Convert PNG to WebP Free — Smaller Files, Same Quality',
+        title: 'Convert PNG to WebP Free - Smaller Files, Same Quality',
         description: 'Convert PNG to WebP free online. Up to 30% smaller files with same quality. Instant browser conversion. No upload, no limits.',
-        h1: 'Convert PNG to WebP — Smaller Files, Same Quality',
+        h1: 'Convert PNG to WebP - Smaller Files, Same Quality',
         intro: 'Convert PNG images to modern WebP format for significantly smaller file sizes without visible quality loss. WebP is the next-gen format supported by all modern browsers. Perfect for optimizing website images.',
         sourceFormat: 'PNG',
         targetFormat: 'WebP',
         converterType: 'image',
         converterMode: 'webp',
         faqItems: [
-            { question: 'How much smaller are WebP files compared to PNG?', answer: 'WebP files are typically 26-34% smaller than PNG files for lossless compression, and even smaller with lossy compression — all while maintaining comparable visual quality.' },
+            { question: 'How much smaller are WebP files compared to PNG?', answer: 'WebP files are typically 26-34% smaller than PNG files for lossless compression, and even smaller with lossy compression - all while maintaining comparable visual quality.' },
             { question: 'Does WebP support transparency?', answer: 'Yes! WebP supports both lossy and lossless transparency (alpha channel), making it a great alternative to PNG for web graphics.' },
         ],
         relatedConversions: ['webp-to-png', 'png-to-jpg', 'jpg-to-webp', 'webp-to-jpg'],
         keywords: ['png to webp', 'convert png to webp', 'png to webp converter', 'png to webp free', 'png to webp online'],
         funFacts: [
             { title: 'Google\'s PageSpeed Secret', content: 'Google\'s Lighthouse and PageSpeed Insights tools specifically recommend converting PNG images to WebP. Sites that switch to WebP typically see a 25-35% reduction in image payload, directly improving their Google search ranking.' },
-            { title: 'Transparency Preserved', content: 'Unlike JPG, WebP fully supports alpha transparency just like PNG. You can convert a PNG logo with a transparent background to WebP and it will look identical — but be significantly smaller.' },
+            { title: 'Transparency Preserved', content: 'Unlike JPG, WebP fully supports alpha transparency just like PNG. You can convert a PNG logo with a transparent background to WebP and it will look identical - but be significantly smaller.' },
         ]
     },
     {
         slug: 'jpg-to-webp',
-        title: 'Convert JPG to WebP Free — Optimize Images for Web',
-        description: 'Convert JPG to WebP free online. Smaller files, faster websites. No upload — instant browser conversion. Modern web format.',
-        h1: 'Convert JPG to WebP — Optimize for the Web',
+        title: 'Convert JPG to WebP Free - Optimize Images for Web',
+        description: 'Convert JPG to WebP free online. Smaller files, faster websites. No upload - instant browser conversion. Modern web format.',
+        h1: 'Convert JPG to WebP - Optimize for the Web',
         intro: 'Convert JPG images to WebP for modern web optimization. WebP delivers noticeably smaller files than JPG with nearly identical visual quality. Essential for web developers, bloggers, and anyone looking to speed up their website.',
         sourceFormat: 'JPG',
         targetFormat: 'WebP',
@@ -398,14 +398,14 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
 
     // ============================================================
-    // 🟡 HIGH PRIORITY — More video conversions
+    // 🟡 HIGH PRIORITY - More video conversions
     // ============================================================
     {
         slug: 'webm-to-mp4',
-        title: 'Convert WebM to MP4 Free — Universal Playback',
-        description: 'Convert WebM to MP4 free online. Plays everywhere — phones, TVs, social media. No upload needed, instant browser conversion.',
-        h1: 'Convert WebM to MP4 — Plays Everywhere',
-        intro: 'Convert WebM videos to universally compatible MP4 format. While WebM is great for web browsers, MP4 plays everywhere — smartphones, smart TVs, social media, and every video player. Free, fast, and private.',
+        title: 'Convert WebM to MP4 Free - Universal Playback',
+        description: 'Convert WebM to MP4 free online. Plays everywhere - phones, TVs, social media. No upload needed, instant browser conversion.',
+        h1: 'Convert WebM to MP4 - Plays Everywhere',
+        intro: 'Convert WebM videos to universally compatible MP4 format. While WebM is great for web browsers, MP4 plays everywhere - smartphones, smart TVs, social media, and every video player. Free, fast, and private.',
         sourceFormat: 'WebM',
         targetFormat: 'MP4',
         converterType: 'video',
@@ -423,9 +423,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'compress-mp4',
-        title: 'Compress MP4 Video Free — Reduce File Size Online',
-        description: 'Compress MP4 videos free. Reduce file size for Discord, WhatsApp & email. No upload — fast browser compression. Keeps quality.',
-        h1: 'Compress MP4 — Reduce Video File Size Free',
+        title: 'Compress MP4 Video Free - Reduce File Size Online',
+        description: 'Compress MP4 videos free. Reduce file size for Discord, WhatsApp & email. No upload - fast browser compression. Keeps quality.',
+        h1: 'Compress MP4 - Reduce Video File Size Free',
         intro: 'Shrink your MP4 videos to fit Discord, WhatsApp, email attachments, and more. Our compressor reduces file size while keeping great visual quality. Adjust the quality slider to find your perfect balance between size and clarity.',
         sourceFormat: 'MP4',
         targetFormat: 'Compressed MP4',
@@ -444,13 +444,13 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
 
     // ============================================================
-    // 🟢 MEDIUM PRIORITY — Professional/niche image formats
+    // 🟢 MEDIUM PRIORITY - Professional/niche image formats
     // ============================================================
     {
         slug: 'jpg-to-bmp',
-        title: 'Convert JPG to BMP Free Online — Uncompressed Quality',
-        description: 'Convert JPG to BMP free online. Uncompressed bitmap format. No upload — instant conversion in your browser. Lossless output.',
-        h1: 'Convert JPG to BMP — Uncompressed Bitmap',
+        title: 'Convert JPG to BMP Free Online - Uncompressed Quality',
+        description: 'Convert JPG to BMP free online. Uncompressed bitmap format. No upload - instant conversion in your browser. Lossless output.',
+        h1: 'Convert JPG to BMP - Uncompressed Bitmap',
         intro: 'Convert JPG images to BMP (Bitmap) format for uncompressed, lossless image files. BMP is useful for legacy applications, embedded systems, and whenever you need raw, uncompressed image data.',
         sourceFormat: 'JPG',
         targetFormat: 'BMP',
@@ -468,9 +468,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'png-to-bmp',
-        title: 'Convert PNG to BMP Free — Raw Bitmap Output',
+        title: 'Convert PNG to BMP Free - Raw Bitmap Output',
         description: 'Convert PNG to BMP format free online. Raw, uncompressed bitmap for legacy apps. No upload, instant browser conversion.',
-        h1: 'Convert PNG to BMP — Raw Bitmap',
+        h1: 'Convert PNG to BMP - Raw Bitmap',
         intro: 'Convert PNG images to BMP format for uncompressed bitmap output. Useful for legacy applications, hardware displays, and systems that require raw pixel data. Free, instant, and private.',
         sourceFormat: 'PNG',
         targetFormat: 'BMP',
@@ -488,9 +488,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'jpg-to-tiff',
-        title: 'Convert JPG to TIFF Free — Professional Print Quality',
-        description: 'Convert JPG to TIFF free online. Professional quality for printing & publishing. No upload needed — instant browser conversion.',
-        h1: 'Convert JPG to TIFF — Professional Print Format',
+        title: 'Convert JPG to TIFF Free - Professional Print Quality',
+        description: 'Convert JPG to TIFF free online. Professional quality for printing & publishing. No upload needed - instant browser conversion.',
+        h1: 'Convert JPG to TIFF - Professional Print Format',
         intro: 'Convert JPG images to TIFF format for professional printing, publishing, and archival purposes. TIFF files preserve maximum quality and are the standard for professional photography and print production.',
         sourceFormat: 'JPG',
         targetFormat: 'TIFF',
@@ -509,9 +509,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'png-to-tiff',
-        title: 'Convert PNG to TIFF Free — Professional Quality Output',
+        title: 'Convert PNG to TIFF Free - Professional Quality Output',
         description: 'Convert PNG to TIFF free online. Professional format for print & publishing. Instant conversion, no upload required.',
-        h1: 'Convert PNG to TIFF — Print-Ready Quality',
+        h1: 'Convert PNG to TIFF - Print-Ready Quality',
         intro: 'Convert PNG images to TIFF format for professional printing and publishing workflows. TIFF is the industry standard for high-quality, lossless image storage.',
         sourceFormat: 'PNG',
         targetFormat: 'TIFF',
@@ -529,9 +529,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'jpg-to-avif',
-        title: 'Convert JPG to AVIF Free — Next-Gen Format',
+        title: 'Convert JPG to AVIF Free - Next-Gen Format',
         description: 'Convert JPG to AVIF free online. 50% smaller files than JPG with the same quality. Future of web images. Instant conversion.',
-        h1: 'Convert JPG to AVIF — Next-Gen Image Format',
+        h1: 'Convert JPG to AVIF - Next-Gen Image Format',
         intro: 'Convert JPG images to AVIF, the cutting-edge image format that delivers up to 50% smaller files than JPG with equivalent visual quality. AVIF is the future of web images, backed by Netflix, Google, and other tech giants.',
         sourceFormat: 'JPG',
         targetFormat: 'AVIF',
@@ -544,15 +544,15 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         relatedConversions: ['jpg-to-webp', 'jpg-to-png', 'png-to-webp'],
         keywords: ['jpg to avif', 'convert jpg to avif', 'jpeg to avif', 'jpg to avif converter', 'jpg to avif free'],
         funFacts: [
-            { title: 'Netflix\'s Creation', content: 'AVIF is based on the AV1 video codec, which was developed by the Alliance for Open Media — a consortium led by Netflix, Google, Apple, Amazon, and Meta. It\'s designed to be the ultimate free image format.' },
+            { title: 'Netflix\'s Creation', content: 'AVIF is based on the AV1 video codec, which was developed by the Alliance for Open Media - a consortium led by Netflix, Google, Apple, Amazon, and Meta. It\'s designed to be the ultimate free image format.' },
             { title: '50% Smaller Than JPG', content: 'In head-to-head comparisons, AVIF images are typically 50% smaller than equivalent-quality JPGs and 20% smaller than WebP. It\'s the most efficient image format currently available.' },
         ]
     },
     {
         slug: 'png-to-avif',
-        title: 'Convert PNG to AVIF Free — Ultra Efficient Format',
+        title: 'Convert PNG to AVIF Free - Ultra Efficient Format',
         description: 'Convert PNG to AVIF free online. Drastically smaller files with lossless quality option. Modern web format, instant conversion.',
-        h1: 'Convert PNG to AVIF — Ultra-Efficient',
+        h1: 'Convert PNG to AVIF - Ultra-Efficient',
         intro: 'Convert PNG images to AVIF for dramatically smaller files. AVIF supports both lossy and lossless compression with transparency, making it useful for all types of web images.',
         sourceFormat: 'PNG',
         targetFormat: 'AVIF',
@@ -564,7 +564,7 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         relatedConversions: ['png-to-webp', 'png-to-jpg', 'jpg-to-avif'],
         keywords: ['png to avif', 'convert png to avif', 'png to avif converter', 'png to avif free'],
         funFacts: [
-            { title: 'Lossless Mode Available', content: 'Unlike JPG and WebP lossy, AVIF actually supports a true lossless mode similar to PNG. So you can get lossless quality at dramatically smaller file sizes — the best of both worlds.' },
+            { title: 'Lossless Mode Available', content: 'Unlike JPG and WebP lossy, AVIF actually supports a true lossless mode similar to PNG. So you can get lossless quality at dramatically smaller file sizes - the best of both worlds.' },
             { title: 'Slow to Encode, Fast to Decode', content: 'AVIF images take longer to encode than JPG or WebP, but decode (display) extremely fast. This tradeoff is perfect for web publishing: you compress once, but millions of users decode quickly.' },
         ]
     },
@@ -574,9 +574,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     // ============================================================
     {
         slug: 'json-to-csv',
-        title: 'Convert JSON to CSV Free — Instant Online Converter',
-        description: 'Convert JSON to CSV free online. Transform JSON arrays into spreadsheet-ready CSV files instantly. No upload — browser-based conversion.',
-        h1: 'Convert JSON to CSV — Free & Instant',
+        title: 'Convert JSON to CSV Free - Instant Online Converter',
+        description: 'Convert JSON to CSV free online. Transform JSON arrays into spreadsheet-ready CSV files instantly. No upload - browser-based conversion.',
+        h1: 'Convert JSON to CSV - Free & Instant',
         intro: 'Convert JSON data to CSV format instantly. Perfect for importing JSON data into Excel, Google Sheets, or any spreadsheet application. Our converter handles nested objects and arrays intelligently.',
         sourceFormat: 'JSON',
         targetFormat: 'CSV',
@@ -590,14 +590,14 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         keywords: ['json to csv', 'convert json to csv', 'json to csv converter', 'json to csv online', 'json to csv free'],
         funFacts: [
             { title: 'JSON Was Born From JavaScript', content: 'JSON (JavaScript Object Notation) was formalized by Douglas Crockford in 2001. Despite being derived from JavaScript, JSON is language-independent and is now the #1 data interchange format on the internet.' },
-            { title: 'CSV Predates Personal Computers', content: 'The comma-separated values format has been in use since the early 1970s, predating personal computers. Its simplicity is its strength — any text editor, spreadsheet app, or programming language can read CSV files.' },
+            { title: 'CSV Predates Personal Computers', content: 'The comma-separated values format has been in use since the early 1970s, predating personal computers. Its simplicity is its strength - any text editor, spreadsheet app, or programming language can read CSV files.' },
         ]
     },
     {
         slug: 'csv-to-json',
-        title: 'Convert CSV to JSON Free — Instant Online Tool',
-        description: 'Convert CSV to JSON free online. Transform spreadsheet data into structured JSON instantly. No upload — private browser conversion.',
-        h1: 'Convert CSV to JSON — Free & Private',
+        title: 'Convert CSV to JSON Free - Instant Online Tool',
+        description: 'Convert CSV to JSON free online. Transform spreadsheet data into structured JSON instantly. No upload - private browser conversion.',
+        h1: 'Convert CSV to JSON - Free & Private',
         intro: 'Transform CSV files into structured JSON data instantly. Perfect for developers, data analysts, and anyone who needs to convert spreadsheet data into JSON format for APIs, databases, or applications.',
         sourceFormat: 'CSV',
         targetFormat: 'JSON',
@@ -615,9 +615,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'json-to-excel',
-        title: 'Convert JSON to Excel Free — Instant XLSX Output',
-        description: 'Convert JSON to Excel (XLSX) free. Transform JSON data into formatted spreadsheets. No upload — instant browser conversion.',
-        h1: 'Convert JSON to Excel — Free XLSX Converter',
+        title: 'Convert JSON to Excel Free - Instant XLSX Output',
+        description: 'Convert JSON to Excel (XLSX) free. Transform JSON data into formatted spreadsheets. No upload - instant browser conversion.',
+        h1: 'Convert JSON to Excel - Free XLSX Converter',
         intro: 'Convert JSON files to Excel (XLSX) spreadsheets instantly. Our converter transforms JSON data into properly formatted Excel workbooks that open in Microsoft Excel, Google Sheets, and LibreOffice.',
         sourceFormat: 'JSON',
         targetFormat: 'Excel (XLSX)',
@@ -635,16 +635,16 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'csv-to-excel',
-        title: 'Convert CSV to Excel Free — Proper XLSX Formatting',
-        description: 'Convert CSV to Excel (XLSX) free. Get properly formatted spreadsheets. No upload — instant, private browser conversion.',
-        h1: 'Convert CSV to Excel — Formatted Spreadsheets',
+        title: 'Convert CSV to Excel Free - Proper XLSX Formatting',
+        description: 'Convert CSV to Excel (XLSX) free. Get properly formatted spreadsheets. No upload - instant, private browser conversion.',
+        h1: 'Convert CSV to Excel - Formatted Spreadsheets',
         intro: 'Convert CSV files to properly formatted Excel spreadsheets (XLSX). Our converter preserves data types and creates clean, organized workbooks ready for analysis.',
         sourceFormat: 'CSV',
         targetFormat: 'Excel (XLSX)',
         converterType: 'data',
         converterMode: 'csv_to_xlsx',
         faqItems: [
-            { question: 'Why not just open CSV in Excel?', answer: 'While Excel can open CSV files, the formatting is often lost — numbers may be treated as text, dates may not be recognized, and special characters can cause issues. Our converter creates a proper XLSX file with correct data types.' },
+            { question: 'Why not just open CSV in Excel?', answer: 'While Excel can open CSV files, the formatting is often lost - numbers may be treated as text, dates may not be recognized, and special characters can cause issues. Our converter creates a proper XLSX file with correct data types.' },
         ],
         relatedConversions: ['csv-to-json', 'excel-to-csv', 'json-to-excel'],
         keywords: ['csv to excel', 'convert csv to xlsx', 'csv to xlsx', 'csv to excel converter', 'csv to excel free'],
@@ -655,9 +655,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'excel-to-csv',
-        title: 'Convert Excel to CSV Free — Extract Spreadsheet Data',
-        description: 'Convert Excel (XLSX) to CSV free. Extract spreadsheet data as plain text. No upload — instant, private browser conversion.',
-        h1: 'Convert Excel to CSV — Extract Data',
+        title: 'Convert Excel to CSV Free - Extract Spreadsheet Data',
+        description: 'Convert Excel (XLSX) to CSV free. Extract spreadsheet data as plain text. No upload - instant, private browser conversion.',
+        h1: 'Convert Excel to CSV - Extract Data',
         intro: 'Convert Excel spreadsheets to plain CSV text. CSV is universally compatible and perfect for data import, analysis, and sharing across different platforms.',
         sourceFormat: 'Excel (XLSX)',
         targetFormat: 'CSV',
@@ -675,10 +675,10 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     },
     {
         slug: 'excel-to-json',
-        title: 'Convert Excel to JSON Free — Structured Data Output',
-        description: 'Convert Excel (XLSX) to JSON free. Transform spreadsheet rows into structured JSON. No upload — instant browser conversion.',
-        h1: 'Convert Excel to JSON — Structured Data',
-        intro: 'Convert Excel spreadsheets to structured JSON data. Each row becomes a JSON object with column headers as keys — perfect for APIs, databases, and web applications.',
+        title: 'Convert Excel to JSON Free - Structured Data Output',
+        description: 'Convert Excel (XLSX) to JSON free. Transform spreadsheet rows into structured JSON. No upload - instant browser conversion.',
+        h1: 'Convert Excel to JSON - Structured Data',
+        intro: 'Convert Excel spreadsheets to structured JSON data. Each row becomes a JSON object with column headers as keys - perfect for APIs, databases, and web applications.',
         sourceFormat: 'Excel (XLSX)',
         targetFormat: 'JSON',
         converterType: 'data',
@@ -690,7 +690,7 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         keywords: ['excel to json', 'xlsx to json', 'convert excel to json', 'excel to json converter', 'excel to json free'],
         funFacts: [
             { title: 'The Developer Bridge', content: 'Excel to JSON conversion bridges the gap between business teams (who live in spreadsheets) and development teams (who need structured data for APIs and databases). It\'s one of the most common data pipeline operations.' },
-            { title: 'Headers Become Keys', content: 'Our converter intelligently uses the first row of your spreadsheet as JSON property names. So a column called "Email" in Excel becomes the key "Email" in each JSON object — clean, structured, and ready for code.' },
+            { title: 'Headers Become Keys', content: 'Our converter intelligently uses the first row of your spreadsheet as JSON property names. So a column called "Email" in Excel becomes the key "Email" in each JSON object - clean, structured, and ready for code.' },
         ]
     },
 
@@ -699,9 +699,9 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
     // ============================================================
     {
         slug: 'webp-to-jpeg',
-        title: 'Convert WebP to JPEG Free — Universal Compatibility',
-        description: 'Convert WebP to JPEG free online. Universal format, instant conversion. No upload — runs in your browser. High quality output.',
-        h1: 'Convert WebP to JPEG — Universal Format',
+        title: 'Convert WebP to JPEG Free - Universal Compatibility',
+        description: 'Convert WebP to JPEG free online. Universal format, instant conversion. No upload - runs in your browser. High quality output.',
+        h1: 'Convert WebP to JPEG - Universal Format',
         intro: 'Convert WebP images to JPEG for universal compatibility across all devices and platforms. JPEG (JPG) is the most widely supported image format in the world.',
         sourceFormat: 'WebP',
         targetFormat: 'JPEG',
@@ -713,27 +713,27 @@ export const SEO_CONVERSIONS: ConversionSEOData[] = [
         relatedConversions: ['webp-to-png', 'webp-to-jpg', 'jpg-to-webp'],
         keywords: ['webp to jpeg', 'convert webp to jpeg', 'webp to jpeg converter', 'webp to jpeg free'],
         funFacts: [
-            { title: 'Right-Click Problem', content: 'When you right-click and "Save Image As" from most modern websites, you\'ll get a WebP file. But many older programs, email clients, and print services can\'t open WebP — making WebP to JPEG conversion a daily necessity for millions.' },
+            { title: 'Right-Click Problem', content: 'When you right-click and "Save Image As" from most modern websites, you\'ll get a WebP file. But many older programs, email clients, and print services can\'t open WebP - making WebP to JPEG conversion a daily necessity for millions.' },
             { title: 'JPEG/JPG Identical', content: 'JPEG and JPG are literally the same format with different file extension lengths. The .jpg extension was created because early Windows versions required 3-character extensions. Our converter outputs standard .jpg files.' },
         ]
     },
     {
         slug: 'heif-to-jpg',
-        title: 'Convert HEIF to JPG Free — Instant Online Converter',
-        description: 'Convert HEIF to JPG free online. Same as HEIC conversion — instant, high quality, no upload needed. Compatible with iPhone photos.',
-        h1: 'Convert HEIF to JPG — Free & Instant',
-        intro: 'Convert HEIF files to JPG format instantly. HEIF and HEIC are the same format — both are used by iPhones and iPads for photos. Our converter handles both seamlessly with maximum quality preservation.',
+        title: 'Convert HEIF to JPG Free - Instant Online Converter',
+        description: 'Convert HEIF to JPG free online. Same as HEIC conversion - instant, high quality, no upload needed. Compatible with iPhone photos.',
+        h1: 'Convert HEIF to JPG - Free & Instant',
+        intro: 'Convert HEIF files to JPG format instantly. HEIF and HEIC are the same format - both are used by iPhones and iPads for photos. Our converter handles both seamlessly with maximum quality preservation.',
         sourceFormat: 'HEIF',
         targetFormat: 'JPG',
         converterType: 'image',
         converterMode: 'jpeg',
         faqItems: [
-            { question: 'What is the difference between HEIF and HEIC?', answer: 'HEIF is the format name (High Efficiency Image Format) and HEIC is the file extension. They refer to the same thing — Apple photos saved in HEIC are HEIF images.' },
+            { question: 'What is the difference between HEIF and HEIC?', answer: 'HEIF is the format name (High Efficiency Image Format) and HEIC is the file extension. They refer to the same thing - Apple photos saved in HEIC are HEIF images.' },
         ],
         relatedConversions: ['heic-to-jpg', 'heic-to-png', 'jpg-to-png'],
         keywords: ['heif to jpg', 'convert heif to jpg', 'heif converter', 'heif to jpeg', 'heif to jpg free'],
         funFacts: [
-            { title: 'HEIF vs HEIC: Same Thing', content: 'HEIF stands for High Efficiency Image Format (the standard), while HEIC stands for High Efficiency Image Container (Apple\'s specific implementation). They refer to the exact same thing — your iPhone photos.' },
+            { title: 'HEIF vs HEIC: Same Thing', content: 'HEIF stands for High Efficiency Image Format (the standard), while HEIC stands for High Efficiency Image Container (Apple\'s specific implementation). They refer to the exact same thing - your iPhone photos.' },
             { title: 'Beyond Photos', content: 'HEIF isn\'t just for still images. The format can also store image sequences, depth maps, and audio alongside images. This is the underlying technology behind Apple\'s Portrait Mode depth data and Live Photos.' },
         ]
     },

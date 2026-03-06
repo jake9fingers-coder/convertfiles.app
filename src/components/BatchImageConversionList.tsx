@@ -189,7 +189,7 @@ export default function BatchImageConversionList({
                     const outputExt = profile.outputExtension.toUpperCase()
                     const isSameFormat = inputExt === outputExt
 
-                    // Size comparison — only meaningful for same-format compression
+                    // Size comparison - only meaningful for same-format compression
                     const originalSize = item.file.size
                     const outputSize = isDone ? item.result!.blob.size : 0
                     const savings = isDone && isSameFormat && originalSize > 0

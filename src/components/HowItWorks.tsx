@@ -7,7 +7,7 @@ export default function HowItWorks() {
             icon: <Upload className="w-6 h-6 text-brand-500" />,
             number: '01',
             title: 'Drop your file',
-            description: 'Drag and drop any video or audio file. Any size — there are no upload limits because nothing ever leaves your device.',
+            description: 'Drag and drop any video or audio file. Any size - there are no upload limits because nothing ever leaves your device.',
         },
         {
             icon: <Sliders className="w-6 h-6 text-brand-500" />,

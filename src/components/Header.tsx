@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom'
-import { ChevronDown, Menu, X, Sun, Moon, User, Shield, HelpCircle, Settings } from 'lucide-react'
+import { NavLink, Link, useLocation } from 'react-router-dom'
+import { ChevronDown, Menu, X, Sun, Moon } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
-import { ExpandableTabs } from '@/components/ui/expandable-tabs'
 
 const MAIN_LINKS = [
     { to: '/', label: 'Video & Audio' },
@@ -22,7 +21,6 @@ export default function Header() {
     const moreRef = useRef<HTMLDivElement>(null)
     const location = useLocation()
     const { isDark, toggle } = useDarkMode()
-    const navigate = useNavigate()
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -60,13 +58,10 @@ export default function Header() {
                 }`}
         >
             <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-                <Link
-                    to="/"
-                    className="text-lg font-bold text-dark-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity"
-                >
+                <a href="/" className="text-lg font-bold text-dark-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <img src="/favicon.svg" alt="Logo" className="w-5 h-5 object-contain" />
                     convertfiles.app
-                </Link>
+                </a>
 
                 <div className="hidden md:flex items-center gap-1 bg-white p-1 rounded-lg border border-dark-200 shadow-sm">
                     {MAIN_LINKS.map(link => (
@@ -107,35 +102,19 @@ export default function Header() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    {/* Expandable Tabs Toolbar */}
-                    <div className="hidden md:block">
-                        <ExpandableTabs
-                            tabs={[
-                                { title: "Profile", icon: User },
-                                { title: "Security", icon: Shield },
-                                { type: "separator" as const },
-                                { id: "theme", title: isDark ? "Light Mode" : "Dark Mode", icon: isDark ? Sun : Moon },
-                                { title: "Help", icon: HelpCircle },
-                                { title: "Settings", icon: Settings },
-                            ]}
-                            activeColor="text-brand-500"
-                            className="border-dark-200 bg-white shadow-sm"
-                            onTabClick={(index) => {
-                                const routes = ['/profile', '/security', null, null, '/help', '/settings']
-                                if (index === 3) {
-                                    toggle()
-                                } else if (routes[index]) {
-                                    navigate(routes[index])
-                                }
-                            }}
-                        />
-                    </div>
+                <div className="flex items-center gap-4">
+                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-soft-100 border border-soft-300 text-xs font-semibold text-brand-700">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                        </span>
+                        100% Private
+                    </span>
 
-                    {/* Mobile: just the dark mode toggle + hamburger */}
+                    {/* Dark Mode Toggle */}
                     <button
                         onClick={toggle}
-                        className="md:hidden p-1.5 text-dark-500 hover:text-dark-900 transition-colors"
+                        className="p-1.5 text-dark-500 hover:text-dark-900 transition-colors"
                         aria-label="Toggle dark mode"
                     >
                         {isDark ? <Sun className="w-5 h-5 text-brand-500" /> : <Moon className="w-5 h-5" />}

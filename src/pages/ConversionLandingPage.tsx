@@ -10,12 +10,11 @@ import ScrollReveal from '../components/ScrollReveal'
 import Features from '../components/Features'
 import { ArrowRight, ChevronDown, ChevronUp, Zap, Shield, Clock } from 'lucide-react'
 import { useState } from 'react'
-import { TextRoll } from '@/components/ui/text-roll'
+import { TextRoll } from '../components/ui/text-roll'
 
 export default function ConversionLandingPage() {
     const { slug } = useParams<{ slug: string }>()
     const data = slug ? SEO_CONVERSION_MAP[slug] : undefined
-    const [heroKey, setHeroKey] = useState(0)
 
     if (!data) {
         return (
@@ -85,11 +84,8 @@ export default function ConversionLandingPage() {
                     <div className="inline-flex items-center justify-center mb-4">
                         <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                     </div>
-                    <div
-                        className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                        onMouseEnter={() => setHeroKey(k => k + 1)}
-                    >
-                        <TextRoll key={heroKey}>
+                    <div className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
+                        <TextRoll>
                             convertfiles.app
                         </TextRoll>
                     </div>
@@ -97,7 +93,7 @@ export default function ConversionLandingPage() {
                         {data.sourceFormat} to {data.targetFormat} Converter
                     </p>
                     <p className="text-base text-dark-500 max-w-sm">
-                        Free, instant, private — runs entirely in your browser
+                        Free, instant, private - runs entirely in your browser
                     </p>
                 </div>
 
