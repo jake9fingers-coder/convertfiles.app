@@ -136,7 +136,6 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
     const [fromUnit, setFromUnit] = useState<string>(initialFrom)
 
     const [toVal, setToVal] = useState<string>('')
-    const [heroKey, setHeroKey] = useState(0)
     const [toUnit, setToUnit] = useState<string>(initialTo)
 
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -223,10 +222,9 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
                         <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
                         >
-                            <TextRoll key={heroKey}>
+                            <TextRoll>
                                 convertfiles.app
                             </TextRoll>
                         </h1>

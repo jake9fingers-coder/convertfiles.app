@@ -24,6 +24,14 @@ export default function BatchDataConversionList({
     const globalMode = firstPendingItem?.mode
 
     const allProfilesList = Object.values(DATA_PROFILES)
+    const availableProfilesList = firstPendingItem
+        ? allProfilesList.filter(p => {
+            const ext = firstPendingItem.file.name.toLowerCase().match(/\.[^.]+$/)?.[0] || ''
+            return p.acceptedInputs.includes(ext) || p.acceptedInputs.includes(firstPendingItem.file.type)
+        })
+        : allProfilesList
+
+    const displayProfiles = availableProfilesList.length > 0 ? availableProfilesList : allProfilesList
 
     const downloadResult = async (result: any, profile: any) => {
         if ('showSaveFilePicker' in window) {
@@ -82,7 +90,7 @@ export default function BatchDataConversionList({
                             <span className="text-sm font-medium text-dark-700">Output Format:</span>
 
                             <div className="flex flex-wrap items-center gap-2">
-                                {allProfilesList.map(p => (
+                                {displayProfiles.map(p => (
                                     <button
                                         key={p.id}
                                         onClick={() => updateAllItems({ mode: p.id })}
@@ -171,7 +179,7 @@ export default function BatchDataConversionList({
                                             <RefreshCw className="w-4 h-4 animate-spin" />
                                             {item.progress}%
                                         </span>
-                                    ) : item.status === 'done' && item.result && batch.length > 1 ? (
+                                    ) : item.status === 'done' && item.result ? (
                                         <button
                                             onClick={() => downloadResult(item.result!, profile)}
                                             className="text-sm font-medium text-white bg-accent-500 hover:bg-accent-600 px-4 py-1.5 rounded-lg transition-colors"

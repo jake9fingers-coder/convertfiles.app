@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Play, RefreshCw, FileVideo, Music, CheckCircle } from 'lucide-react'
+import { X, Play, RefreshCw, FileVideo, Music, CheckCircle, ArrowRight } from 'lucide-react'
 import { PROFILES } from '../lib/conversionProfiles'
 import type { ConversionResult } from '../hooks/useFFmpeg'
 import type { BatchItem } from '../pages/VideoConverter'
@@ -199,29 +199,34 @@ export default function BatchConversionList({
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative ${item.status === 'done' ? 'bg-transparent border border-dark-200 shadow-sm' : 'bg-dark-50 text-dark-400'}`}>
-                                        {item.status === 'done' && item.result ? (
-                                            item.mode === 'mp3' ? (
-                                                <div className="w-full h-full flex items-center justify-center bg-dark-50 border border-dark-100 text-dark-400">
-                                                    <Music className="w-5 h-5" />
-                                                </div>
-                                            ) : (
-                                                <img
-                                                    src={item.result.url}
-                                                    alt="Preview"
-                                                    className="absolute inset-0 w-full h-full object-cover"
-                                                />
-                                            )
-                                        ) : (
-                                            <FileThumbnail file={item.file} />
-                                        )}
-
-                                        {item.status === 'done' && (
-                                            <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center">
-                                                <CheckCircle className="w-5 h-5 text-success-500 drop-shadow-md" />
+                                    {item.status === 'done' && item.result ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative bg-transparent border border-dark-200 shadow-sm">
+                                                <FileThumbnail file={item.file} />
                                             </div>
-                                        )}
-                                    </div>
+                                            <ArrowRight className="w-4 h-4 text-dark-300" />
+                                            <div className="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative bg-transparent border border-dark-200 shadow-sm">
+                                                {item.mode === 'mp3' ? (
+                                                    <div className="w-full h-full flex items-center justify-center bg-dark-50 border border-dark-100 text-dark-400">
+                                                        <Music className="w-5 h-5" />
+                                                    </div>
+                                                ) : (
+                                                    <img
+                                                        src={item.result.url}
+                                                        alt="Preview"
+                                                        className="absolute inset-0 w-full h-full object-cover"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center">
+                                                    <CheckCircle className="w-5 h-5 text-success-500 drop-shadow-md" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0 overflow-hidden relative bg-dark-50 text-dark-400">
+                                            <FileThumbnail file={item.file} />
+                                        </div>
+                                    )}
                                     <div className={`min-w-0 ${item.status === 'error' ? 'max-w-[300px]' : 'max-w-[200px]'}`}>
                                         <p className="text-sm font-medium text-dark-900 truncate" title={item.file.name}>
                                             {item.file.name}

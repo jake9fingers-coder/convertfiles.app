@@ -28,7 +28,6 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [history, setHistory] = useState<BatchDataItem[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
-    const [heroKey, setHeroKey] = useState(0)
 
     // Load history on mount
     useEffect(() => {
@@ -46,15 +45,27 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     }, [history, isHistoryLoaded])
 
     const handleFiles = useCallback((incomingFiles: File[]) => {
-        const newBatch = incomingFiles.map(f => ({
-            id: crypto.randomUUID(),
-            file: f,
-            mode: 'json_to_csv' as DataConversionMode,
-            status: 'pending' as const,
-            progress: 0,
-            result: null,
-            error: null
-        }))
+        const newBatch = incomingFiles.map(f => {
+            const ext = f.name.toLowerCase().match(/\.[^.]+$/)?.[0] || ''
+            const type = f.type || ''
+
+            let initialMode: DataConversionMode = 'json_to_csv'
+            if (ext === '.csv' || type === 'text/csv') {
+                initialMode = 'csv_to_json'
+            } else if (ext === '.xlsx' || ext === '.xls' || type.includes('spreadsheetml') || type.includes('ms-excel')) {
+                initialMode = 'xlsx_to_csv'
+            }
+
+            return {
+                id: crypto.randomUUID(),
+                file: f,
+                mode: initialMode,
+                status: 'pending' as const,
+                progress: 0,
+                result: null,
+                error: null
+            }
+        })
         setBatch(newBatch)
     }, [])
 
@@ -108,10 +119,9 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
                         <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
                         >
-                            <TextRoll key={heroKey}>
+                            <TextRoll>
                                 convertfiles.app
                             </TextRoll>
                         </h1>

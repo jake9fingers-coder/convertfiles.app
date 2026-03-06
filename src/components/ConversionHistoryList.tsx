@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { FileVideo, Music, Download, Trash2, RefreshCw } from 'lucide-react'
+import { FileVideo, Music, Download, Trash2, RefreshCw, ArrowRight, CheckCircle } from 'lucide-react'
 
 function formatBytes(bytes: number) {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
@@ -104,8 +104,8 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                             }
                         }}
                         className={`text-xs font-medium transition-colors px-2 py-1 rounded ${confirmClear
-                                ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                                : 'text-dark-500 hover:text-red-600'
+                            ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                            : 'text-dark-500 hover:text-red-600'
                             }`}
                     >
                         {confirmClear ? 'Confirm Clear' : 'Clear All'}
@@ -120,9 +120,34 @@ export default function ConversionHistoryList({ history, onReuse, onRemove, onCl
                         return (
                             <div key={item.id} className="p-4 hover:bg-dark-50 transition-colors flex items-center justify-between group">
                                 <div className="flex items-center gap-4 min-w-0">
-                                    <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-dark-100 relative shrink-0 border border-dark-200">
-                                        <FileThumbnail file={item.file} />
-                                    </div>
+                                    {isSuccess ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-dark-100 relative shrink-0 border border-dark-200">
+                                                <FileThumbnail file={item.file} />
+                                            </div>
+                                            <ArrowRight className="w-4 h-4 text-dark-300 shrink-0" />
+                                            <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-transparent relative shrink-0 border border-dark-200 shadow-sm">
+                                                {item.mode === 'mp3' ? (
+                                                    <div className="w-full h-full flex items-center justify-center bg-dark-50 border border-dark-100 text-dark-400">
+                                                        <Music className="w-5 h-5" />
+                                                    </div>
+                                                ) : (
+                                                    <img
+                                                        src={item.result.url}
+                                                        alt="Preview"
+                                                        className="absolute inset-0 w-full h-full object-cover"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] flex items-center justify-center">
+                                                    <CheckCircle className="w-5 h-5 text-success-500 drop-shadow-md" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden bg-dark-100 relative shrink-0 border border-dark-200">
+                                            <FileThumbnail file={item.file} />
+                                        </div>
+                                    )}
                                     <div className="min-w-0">
                                         <p className="text-sm font-medium text-dark-900 truncate" title={item.file.name}>
                                             {item.file.name}

@@ -25,7 +25,6 @@ export default function DocumentConverter({ embedded = false }: { embedded?: boo
     const [progress, setProgress] = useState(0)
     const [result, setResult] = useState<DocumentConversionResult | null>(null)
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
-    const [heroKey, setHeroKey] = useState(0)
 
     const [history, setHistory] = useState<DocumentHistoryItem[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
@@ -142,10 +141,9 @@ export default function DocumentConverter({ embedded = false }: { embedded?: boo
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
                         <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
                         >
-                            <TextRoll key={heroKey}>
+                            <TextRoll>
                                 convertfiles.app
                             </TextRoll>
                         </h1>

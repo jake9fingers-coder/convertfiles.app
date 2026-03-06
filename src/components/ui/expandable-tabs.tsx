@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useOnClickOutside } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
@@ -29,18 +28,10 @@ interface ExpandableTabsProps {
     onTabClick?: (index: number) => void;
 }
 
-const spanVariants = {
-    initial: { opacity: 0, y: -5, scale: 0.95 },
-    animate: { opacity: 1, y: 0, scale: 1 },
-    exit: { opacity: 0, y: -5, scale: 0.95 },
-};
-
-const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 } as const;
-
 export function ExpandableTabs({
     tabs,
     className,
-    activeColor = "text-primary",
+    activeColor = "text-brand-600",
     onChange,
     onTabClick,
 }: ExpandableTabsProps) {
@@ -57,14 +48,14 @@ export function ExpandableTabs({
     };
 
     const Separator = () => (
-        <div className="mx-1 h-[24px] w-[1.2px] bg-border" aria-hidden="true" />
+        <div className="mx-1 h-[24px] w-[1px] bg-dark-200 mt-2 transition-all duration-300" aria-hidden="true" />
     );
 
     return (
         <div
             ref={outsideClickRef}
             className={cn(
-                "flex flex-wrap items-center gap-2 rounded-2xl border bg-background p-1 shadow-sm",
+                "flex items-start gap-2 rounded-2xl border border-dark-200 bg-white p-1 shadow-sm transition-all duration-300 ease-out overflow-hidden relative",
                 className
             )}
         >
@@ -75,6 +66,7 @@ export function ExpandableTabs({
 
                 const Icon = tab.icon;
                 const isHovered = hovered === index;
+
                 return (
                     <div
                         key={tab.id ?? tab.title}
@@ -86,34 +78,49 @@ export function ExpandableTabs({
                             setHovered(null);
                             onChange?.(null);
                         }}
-                        className="relative flex items-center justify-center w-10 h-10"
+                        onClick={() => handleClick(index)}
+                        className={cn(
+                            "relative flex flex-col items-center shrink-0 z-10 hover:z-50 cursor-pointer transition-all duration-300 bg-transparent rounded-xl",
+                            // Keep width fixed at 40px so no sideways layout shift happens
+                            "w-10",
+                            // Animate height dynamically directly in css
+                            isHovered ? "h-[62px]" : "h-10"
+                        )}
                     >
-                        <button
-                            onClick={() => handleClick(index)}
+                        {/* Interactive Pill Overlay */}
+                        <div
                             className={cn(
-                                "relative z-20 flex items-center justify-center rounded-xl w-full h-full text-sm font-medium transition-colors duration-200 cursor-pointer text-muted-foreground",
-                                isHovered ? cn("bg-muted", activeColor) : "hover:bg-muted hover:text-foreground"
+                                "absolute inset-0 rounded-xl transition-colors duration-300 pointer-events-none",
+                                isHovered ? "bg-dark-50" : "bg-transparent"
+                            )}
+                        />
+
+                        {/* Icon */}
+                        <div
+                            className={cn(
+                                "relative w-10 h-10 flex shrink-0 items-center justify-center transition-colors duration-300 pointer-events-none",
+                                isHovered ? activeColor : "text-dark-500"
                             )}
                         >
                             <Icon size={20} />
-                        </button>
+                        </div>
 
-                        <AnimatePresence>
-                            {isHovered && (
-                                <motion.div
-                                    variants={spanVariants}
-                                    initial="initial"
-                                    animate="animate"
-                                    exit="exit"
-                                    transition={transition}
-                                    className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 whitespace-nowrap bg-background text-foreground px-4 py-2 rounded-b-xl border border-t-0 border-dark-200 shadow-sm z-10 pointer-events-none flex items-center justify-center font-bold text-xs"
-                                >
-                                    {tab.title}
-                                    {/* Mask to erase the parent border and create the seamless effect */}
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] -mt-[1px] bg-background z-30" />
-                                </motion.div>
+                        {/* Text Label Below Extends Horizontally Out Of Element Boundaries */}
+                        <div
+                            className={cn(
+                                "absolute top-[38px] left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none transition-all duration-300 flex justify-center",
+                                isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
                             )}
-                        </AnimatePresence>
+                        >
+                            <span
+                                className={cn(
+                                    "text-[11px] font-bold tracking-wide",
+                                    activeColor
+                                )}
+                            >
+                                {tab.title}
+                            </span>
+                        </div>
                     </div>
                 );
             })}

@@ -128,7 +128,6 @@ export default function CurrencyConverter({ embedded = false, initialFrom = 'usd
     const [amount, setAmount] = useState<string>('1')
     const [fromCurrency, setFromCurrency] = useState(initialFrom)
     const [toCurrency, setToCurrency] = useState(initialTo)
-    const [heroKey, setHeroKey] = useState(0)
     const [timeframe, setTimeframe] = useState<number>(30)
 
     const { rates, lastUpdate, loading, error } = useCurrencyRates(fromCurrency)
@@ -234,10 +233,9 @@ export default function CurrencyConverter({ embedded = false, initialFrom = 'usd
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
                         <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
                         >
-                            <TextRoll key={heroKey}>
+                            <TextRoll>
                                 convertfiles.app
                             </TextRoll>
                         </h1>

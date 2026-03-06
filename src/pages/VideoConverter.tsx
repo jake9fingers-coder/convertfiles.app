@@ -36,7 +36,6 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [isZipping, setIsZipping] = useState(false)
-    const [heroKey, setHeroKey] = useState(0)
 
     // Load history on mount
     useEffect(() => {
@@ -197,10 +196,9 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
                         <h1
-                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
-                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2"
                         >
-                            <TextRoll key={heroKey}>
+                            <TextRoll>
                                 convertfiles.app
                             </TextRoll>
                         </h1>
