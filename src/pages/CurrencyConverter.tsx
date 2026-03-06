@@ -6,6 +6,7 @@ import { useCurrencyRates } from '../hooks/useCurrencyRates'
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
 import GenericSEOContent from '../components/GenericSEOContent'
+import { TextRoll } from '@/components/ui/text-roll'
 
 // Expanded list of global currencies for the searchable dropdown
 const ALL_CURRENCIES = [
@@ -127,6 +128,7 @@ export default function CurrencyConverter({ embedded = false, initialFrom = 'usd
     const [amount, setAmount] = useState<string>('1')
     const [fromCurrency, setFromCurrency] = useState(initialFrom)
     const [toCurrency, setToCurrency] = useState(initialTo)
+    const [heroKey, setHeroKey] = useState(0)
     const [timeframe, setTimeframe] = useState<number>(30)
 
     const { rates, lastUpdate, loading, error } = useCurrencyRates(fromCurrency)
@@ -231,8 +233,13 @@ export default function CurrencyConverter({ embedded = false, initialFrom = 'usd
                         <div className="inline-flex items-center justify-center mb-4">
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                            convertfiles.app
+                        <h1
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
+                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                        >
+                            <TextRoll key={heroKey}>
+                                convertfiles.app
+                            </TextRoll>
                         </h1>
                         <p className="text-xl font-semibold text-brand-500 mb-2">
                             Currency Converter

@@ -1,5 +1,6 @@
 import { HelpCircle, FileVideo, Image, Database, ArrowRightLeft, Mail } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
+import PageBackground from '../components/PageBackground'
 
 const FAQ_ITEMS = [
     {
@@ -33,7 +34,8 @@ const TOOL_CARDS = [
 
 export default function HelpPage() {
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="relative w-full flex flex-col items-center">
+            <PageBackground />
             <SEOHead
                 title="Help & FAQ — convertfiles.app"
                 description="Get help with convertfiles.app. Find answers to frequently asked questions about file conversions."

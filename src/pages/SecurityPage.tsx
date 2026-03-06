@@ -1,5 +1,6 @@
 import { Shield, Wifi, HardDrive, Eye } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
+import PageBackground from '../components/PageBackground'
 
 const SECURITY_POINTS = [
     {
@@ -26,7 +27,8 @@ const SECURITY_POINTS = [
 
 export default function SecurityPage() {
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="relative w-full flex flex-col items-center">
+            <PageBackground />
             <SEOHead
                 title="Security & Privacy — convertfiles.app"
                 description="Learn how convertfiles.app keeps your data secure. All conversions happen locally in your browser."

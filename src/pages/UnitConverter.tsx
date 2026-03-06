@@ -4,9 +4,10 @@ import { SITE_URL } from '../lib/seoConversionData'
 import { convert } from 'convert'
 import { Search, ArrowRightLeft, Ruler, Scale, Droplet, Thermometer, Database } from 'lucide-react'
 import Select from 'react-select'
-import Features from '../components/Features'
-import RelatedTools from '../components/RelatedTools'
-import GenericSEOContent from '../components/GenericSEOContent'
+import Features from '@/components/Features';
+import RelatedTools from '@/components/RelatedTools';
+import GenericSEOContent from '@/components/GenericSEOContent';
+import { TextRoll } from '@/components/ui/text-roll';
 
 export const customSelectStyles = {
     control: (base: any, state: any) => ({
@@ -135,6 +136,7 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
     const [fromUnit, setFromUnit] = useState<string>(initialFrom)
 
     const [toVal, setToVal] = useState<string>('')
+    const [heroKey, setHeroKey] = useState(0)
     const [toUnit, setToUnit] = useState<string>(initialTo)
 
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -220,8 +222,13 @@ export default function UnitConverter({ embedded = false, initialFrom = 'm', ini
                         <div className="inline-flex items-center justify-center mb-4">
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                            convertfiles.app
+                        <h1
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
+                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                        >
+                            <TextRoll key={heroKey}>
+                                convertfiles.app
+                            </TextRoll>
                         </h1>
                         <p className="text-xl font-semibold text-brand-500 mb-2">
                             Unit Converter

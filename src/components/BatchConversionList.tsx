@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { X, Play, RefreshCw, FileVideo, Music, CheckCircle } from 'lucide-react'
-import type { ConversionMode } from '../lib/conversionProfiles'
 import { PROFILES } from '../lib/conversionProfiles'
 import type { ConversionResult } from '../hooks/useFFmpeg'
 import type { BatchItem } from '../pages/VideoConverter'
@@ -115,18 +114,23 @@ export default function BatchConversionList({
 
                 {/* Global Settings Panel */}
                 {pendingCount > 0 && !isConvertingBatch && globalMode && (
-                    <div className="p-4 bg-white flex flex-col sm:flex-row gap-6 sm:items-center">
-                        <div className="flex items-center gap-3 shrink-0">
+                    <div className="p-4 bg-white flex flex-col gap-4">
+                        <div className="flex flex-col gap-3">
                             <span className="text-sm font-medium text-dark-700">Output Format:</span>
-                            <select
-                                value={globalMode}
-                                onChange={e => updateAllItems({ mode: e.target.value as ConversionMode })}
-                                className="text-sm border border-dark-200 rounded-lg px-3 py-1.5 focus:ring-1 focus:ring-brand-400 outline-none shadow-sm"
-                            >
+                            <div className="flex flex-wrap items-center gap-2">
                                 {Object.values(PROFILES).map(p => (
-                                    <option key={p.id} value={p.id}>{p.label}</option>
+                                    <button
+                                        key={p.id}
+                                        onClick={() => updateAllItems({ mode: p.id })}
+                                        className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all border shadow-sm cursor-pointer
+                                            ${globalMode === p.id
+                                                ? 'bg-brand-500 text-white border-brand-500 shadow-brand-500/20'
+                                                : 'bg-white text-dark-900 border-dark-200 hover:border-brand-400 hover:bg-dark-50'}`}
+                                    >
+                                        {p.label}
+                                    </button>
                                 ))}
-                            </select>
+                            </div>
                         </div>
 
                         <div className="flex-1 w-full max-w-md sm:border-l sm:border-dark-100 sm:pl-6">
@@ -157,7 +161,7 @@ export default function BatchConversionList({
                                         />
                                     </div>
                                 </div>
-                            ) : globalMode !== 'mp3' ? (
+                            ) : globalMode === 'compress' ? (
                                 <div className="space-y-1 w-full">
                                     <div className="flex justify-between text-xs text-dark-500">
                                         <span>Smaller File</span>
@@ -170,9 +174,7 @@ export default function BatchConversionList({
                                         className="w-full accent-brand-500"
                                     />
                                 </div>
-                            ) : (
-                                <span className="text-sm text-dark-400 italic">No additional settings for audio extraction.</span>
-                            )}
+                            ) : null}
                         </div>
                     </div>
                 )}

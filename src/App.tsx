@@ -7,6 +7,10 @@ import UnitConverter from './pages/UnitConverter'
 import DataConverter from './pages/DataConverter'
 import CurrencyConverter from './pages/CurrencyConverter'
 import ConversionLandingPage from './pages/ConversionLandingPage'
+import ProfilePage from './pages/ProfilePage'
+import SecurityPage from './pages/SecurityPage'
+import HelpPage from './pages/HelpPage'
+import SettingsPage from './pages/SettingsPage'
 import ScrollToTop from './components/ScrollToTop'
 
 export default function App() {
@@ -22,9 +26,14 @@ export default function App() {
             <Route path="data-converter" element={<DataConverter />} />
             <Route path="currency-converter" element={<CurrencyConverter />} />
             <Route path="convert/:slug" element={<ConversionLandingPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="security" element={<SecurityPage />} />
+            <Route path="help" element={<HelpPage />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
   )
 }
+

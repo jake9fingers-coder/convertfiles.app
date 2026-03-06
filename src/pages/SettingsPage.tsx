@@ -1,12 +1,14 @@
 import { Settings, Sun, Moon, Trash2, Download } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import SEOHead from '../components/SEOHead'
+import PageBackground from '../components/PageBackground'
 
 export default function SettingsPage() {
     const { isDark, toggle } = useDarkMode()
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="relative w-full flex flex-col items-center">
+            <PageBackground />
             <SEOHead
                 title="Settings — convertfiles.app"
                 description="Configure your convertfiles.app preferences including dark mode, history, and default formats."

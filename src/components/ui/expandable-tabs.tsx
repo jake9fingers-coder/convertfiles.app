@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 
 interface Tab {
+    id?: string;
     title: string;
     icon: LucideIcon;
     type?: never;
@@ -28,26 +29,13 @@ interface ExpandableTabsProps {
     onTabClick?: (index: number) => void;
 }
 
-const buttonVariants = {
-    initial: {
-        gap: 0,
-        paddingLeft: ".5rem",
-        paddingRight: ".5rem",
-    },
-    animate: (isHovered: boolean) => ({
-        gap: isHovered ? ".5rem" : 0,
-        paddingLeft: isHovered ? "1rem" : ".5rem",
-        paddingRight: isHovered ? "1rem" : ".5rem",
-    }),
-};
-
 const spanVariants = {
-    initial: { width: 0, opacity: 0 },
-    animate: { width: "auto", opacity: 1 },
-    exit: { width: 0, opacity: 0 },
+    initial: { opacity: 0, y: -5, scale: 0.95 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: -5, scale: 0.95 },
 };
 
-const transition = { delay: 0.05, type: "spring", bounce: 0, duration: 0.4 } as const;
+const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 } as const;
 
 export function ExpandableTabs({
     tabs,
@@ -88,13 +76,8 @@ export function ExpandableTabs({
                 const Icon = tab.icon;
                 const isHovered = hovered === index;
                 return (
-                    <motion.button
-                        key={tab.title}
-                        variants={buttonVariants}
-                        initial={false}
-                        animate="animate"
-                        custom={isHovered}
-                        onClick={() => handleClick(index)}
+                    <div
+                        key={tab.id ?? tab.title}
                         onMouseEnter={() => {
                             setHovered(index);
                             onChange?.(index);
@@ -103,30 +86,35 @@ export function ExpandableTabs({
                             setHovered(null);
                             onChange?.(null);
                         }}
-                        transition={transition}
-                        className={cn(
-                            "relative flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300 cursor-pointer",
-                            isHovered
-                                ? cn("bg-muted", activeColor)
-                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        )}
+                        className="relative flex items-center justify-center w-10 h-10"
                     >
-                        <Icon size={20} />
-                        <AnimatePresence initial={false}>
+                        <button
+                            onClick={() => handleClick(index)}
+                            className={cn(
+                                "relative z-20 flex items-center justify-center rounded-xl w-full h-full text-sm font-medium transition-colors duration-200 cursor-pointer text-muted-foreground",
+                                isHovered ? cn("bg-muted", activeColor) : "hover:bg-muted hover:text-foreground"
+                            )}
+                        >
+                            <Icon size={20} />
+                        </button>
+
+                        <AnimatePresence>
                             {isHovered && (
-                                <motion.span
+                                <motion.div
                                     variants={spanVariants}
                                     initial="initial"
                                     animate="animate"
                                     exit="exit"
                                     transition={transition}
-                                    className="overflow-hidden whitespace-nowrap"
+                                    className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 whitespace-nowrap bg-background text-foreground px-4 py-2 rounded-b-xl border border-t-0 border-dark-200 shadow-sm z-10 pointer-events-none flex items-center justify-center font-bold text-xs"
                                 >
                                     {tab.title}
-                                </motion.span>
+                                    {/* Mask to erase the parent border and create the seamless effect */}
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] -mt-[1px] bg-background z-30" />
+                                </motion.div>
                             )}
                         </AnimatePresence>
-                    </motion.button>
+                    </div>
                 );
             })}
         </div>

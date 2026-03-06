@@ -28,6 +28,7 @@ export interface BatchImageItem {
 import Features from '../components/Features'
 import RelatedTools from '../components/RelatedTools'
 import GenericSEOContent from '../components/GenericSEOContent'
+import { TextRoll } from '@/components/ui/text-roll'
 
 export default function ImageConverter({ embedded = false }: { embedded?: boolean }) {
     // --- Magick engine for pro formats (TIFF, PSD, etc.) ---
@@ -38,6 +39,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [isZipping, setIsZipping] = useState(false)
+    const [heroKey, setHeroKey] = useState(0)
 
     // Load history on mount
     useEffect(() => {
@@ -273,8 +275,13 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                         <div className="inline-flex items-center justify-center mb-4">
                             <img src="/favicon.svg" alt="Logo" className="w-12 h-12 object-contain" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2">
-                            convertfiles.app
+                        <h1
+                            className="text-4xl md:text-5xl font-bold text-dark-900 tracking-tight mb-2 cursor-pointer"
+                            onMouseEnter={() => setHeroKey(k => k + 1)}
+                        >
+                            <TextRoll key={heroKey}>
+                                convertfiles.app
+                            </TextRoll>
                         </h1>
                         <p className="text-xl font-semibold text-brand-500 mb-2">
                             Image Converter

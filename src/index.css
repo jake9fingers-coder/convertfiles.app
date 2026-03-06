@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ── Tailwind v4: class-based dark mode ── */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-family-sans: 'Inter', system-ui, sans-serif;
 
@@ -78,6 +81,7 @@
   --animate-slide-up: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-slide-up-delayed: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
   --animate-pulse-glow: pulseGlow 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.5s linear infinite;
 
   @keyframes fadeIn {
     0% {
@@ -114,12 +118,222 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Dark Mode  —  applied when <html> has the `dark` class
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* ── Base layer ── */
+html.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* ── Layout container ── */
+html.dark .bg-fluid-gradient {
+  background: #0f172a !important;
+}
+
+/* ── Navigation ── */
+html.dark nav {
+  background-color: rgba(15, 23, 42, 0.92) !important;
+  border-color: #1e293b !important;
+}
+
+/* Nav pill (desktop link container) */
+html.dark nav .bg-white {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Active nav link stays the same (brand colour) */
+html.dark nav a[class*="bg-brand-500"] {
+  background-color: #457B9D !important;
+  color: #ffffff !important;
+}
+
+/* Inactive nav links */
+html.dark nav a:not([class*="bg-brand-500"]),
+html.dark nav button:not([class*="bg-brand-500"]) {
+  color: #94a3b8 !important;
+}
+
+html.dark nav a:not([class*="bg-brand-500"]):hover,
+html.dark nav button:not([class*="bg-brand-500"]):hover {
+  background-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+/* More dropdown */
+html.dark nav .absolute.bg-white {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* ── Logo text ── */
+html.dark nav .text-dark-900 {
+  color: #e2e8f0 !important;
+}
+
+/* ── Footer ── */
+html.dark footer {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+html.dark footer .text-dark-900 {
+  color: #e2e8f0 !important;
+}
+
+html.dark footer .text-dark-500,
+html.dark footer .text-dark-400 {
+  color: #64748b !important;
+}
+
+html.dark footer .border-dark-100 {
+  border-color: #1e293b !important;
+}
+
+/* ── Cards / Panels (bg-white, bg-dark-50, bg-dark-100) ── */
+html.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+html.dark .bg-dark-50 {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-dark-100 {
+  background-color: #1e293b !important;
+}
+
+/* ── Borders ── */
+html.dark .border-dark-200,
+html.dark .border-dark-100,
+html.dark [class*="border-dark-"] {
+  border-color: #334155 !important;
+}
+
+/* ── Text colours ── */
+html.dark .text-dark-900 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-dark-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-dark-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-dark-500 {
+  color: #64748b !important;
+}
+
+html.dark .text-dark-400 {
+  color: #475569 !important;
+}
+
+/* Keep brand / accent colours readable */
+html.dark .text-brand-600 {
+  color: #88B9CF !important;
+}
+
+html.dark .text-brand-500 {
+  color: #5798B6 !important;
+}
+
+/* ── Inputs & Textareas ── */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #475569 !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #457B9D !important;
+  outline-color: #457B9D !important;
+}
+
+/* ── Dropzone ── */
+html.dark .dropzone-active {
+  border-color: #457B9D;
+}
+
+/* ── Buttons (generic) ── */
+html.dark .bg-dark-100:not([class*="bg-brand-"]) {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-dark-200:hover {
+  background-color: #334155 !important;
+}
+
+html.dark .text-dark-700 {
+  color: #cbd5e1 !important;
+}
+
+/* ── Shadows ── */
+html.dark .shadow-sm,
+html.dark .shadow,
+html.dark .shadow-lg,
+html.dark .shadow-xl {
+  --tw-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* ── Scrollbar ── */
+html.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #457B9D;
+}
+
+/* ── ExpandableTabs component ── */
+html.dark [class*="expandable"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* ── Settings page card ── */
+html.dark .ring-dark-50 {
+  --tw-ring-color: #0f172a !important;
+}
+
+/* ── Transition for all elements ── */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color;
+  transition-timing-function: ease;
+  transition-duration: 200ms;
+}
+
 html {
   overflow-x: hidden;
 }
 
 body {
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Lenis smooth scroll */
@@ -189,4 +403,22 @@ html.lenis body {
 /* Smooth section transitions */
 section {
   will-change: transform;
+}
+
+/* Global Button Tactile Interactions */
+button,
+[role="button"]:not(.dropzone-active) {
+  cursor: pointer;
+  transition-property: transform, background-color, border-color, color, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+button:active:not(:disabled),
+[role="button"]:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

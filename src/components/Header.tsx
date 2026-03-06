@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom'
 import { ChevronDown, Menu, X, Sun, Moon, User, Shield, HelpCircle, Settings } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { ExpandableTabs } from '@/components/ui/expandable-tabs'
@@ -22,6 +22,7 @@ export default function Header() {
     const moreRef = useRef<HTMLDivElement>(null)
     const location = useLocation()
     const { isDark, toggle } = useDarkMode()
+    const navigate = useNavigate()
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -59,7 +60,10 @@ export default function Header() {
                 }`}
         >
             <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-                <Link to="/" className="text-lg font-bold text-dark-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Link
+                    to="/"
+                    className="text-lg font-bold text-dark-900 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
                     <img src="/favicon.svg" alt="Logo" className="w-5 h-5 object-contain" />
                     convertfiles.app
                 </Link>
@@ -111,18 +115,19 @@ export default function Header() {
                                 { title: "Profile", icon: User },
                                 { title: "Security", icon: Shield },
                                 { type: "separator" as const },
-                                { title: isDark ? "Light Mode" : "Dark Mode", icon: isDark ? Sun : Moon },
+                                { id: "theme", title: isDark ? "Light Mode" : "Dark Mode", icon: isDark ? Sun : Moon },
                                 { title: "Help", icon: HelpCircle },
                                 { title: "Settings", icon: Settings },
                             ]}
                             activeColor="text-brand-500"
                             className="border-dark-200 bg-white shadow-sm"
-                            onChange={(index) => {
-                                // Dark mode toggle is at index 3 (after separator)
+                            onTabClick={(index) => {
+                                const routes = ['/profile', '/security', null, null, '/help', '/settings']
                                 if (index === 3) {
                                     toggle()
+                                } else if (routes[index]) {
+                                    navigate(routes[index])
                                 }
-                                // Profile, Security, Help, Settings can be wired up later
                             }}
                         />
                     </div>

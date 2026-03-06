@@ -70,55 +70,67 @@ export default function ConversionPanel({
             </div>
 
             {/* Quality slider */}
-            <div>
-                <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-semibold text-dark-500 uppercase tracking-wider">Quality</p>
-                    <span className="text-xs text-dark-400">{options.quality}%</span>
+            {mode === 'compress' && (
+                <div>
+                    <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs font-semibold text-dark-500 uppercase tracking-wider">Quality</p>
+                        <span className="text-xs text-dark-400">{options.quality}%</span>
+                    </div>
+                    <input
+                        type="range"
+                        min={10}
+                        max={100}
+                        step={5}
+                        value={options.quality}
+                        onChange={e => onOptionsChange({ quality: Number(e.target.value) })}
+                        className="w-full accent-brand-500 h-1.5 rounded-full"
+                        aria-label="Quality setting"
+                    />
+                    <div className="flex justify-between text-xs text-dark-400 mt-1">
+                        <span>Smaller file</span>
+                        <span>Better quality</span>
+                    </div>
                 </div>
-                <input
-                    type="range"
-                    min={10}
-                    max={100}
-                    step={5}
-                    value={options.quality}
-                    onChange={e => onOptionsChange({ quality: Number(e.target.value) })}
-                    className="w-full accent-brand-500 h-1.5 rounded-full"
-                    aria-label="Quality setting"
-                />
-                <div className="flex justify-between text-xs text-dark-400 mt-1">
-                    <span>Smaller file</span>
-                    <span>Better quality</span>
-                </div>
-            </div>
+            )}
 
             {/* GIF-specific options */}
             {mode === 'gif' && (
                 <div className="grid grid-cols-2 gap-4 pt-2 border-t border-dark-100">
                     <div>
                         <label className="block text-xs font-semibold text-dark-500 uppercase tracking-wider mb-2">Frame Rate</label>
-                        <select
-                            value={options.gifFps}
-                            onChange={e => onOptionsChange({ gifFps: Number(e.target.value) })}
-                            className="w-full text-sm border border-dark-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                            aria-label="GIF frame rate"
-                        >
+                        <div className="flex flex-wrap gap-1.5">
                             {[10, 15, 20, 24, 30].map(fps => (
-                                <option key={fps} value={fps}>{fps} fps</option>
+                                <button
+                                    key={fps}
+                                    onClick={() => onOptionsChange({ gifFps: fps })}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border cursor-pointer
+                                        ${options.gifFps === fps
+                                            ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
+                                            : 'bg-white text-dark-700 border-dark-200 hover:border-brand-400 hover:bg-dark-50'}`}
+                                    aria-label={`${fps} frames per second`}
+                                >
+                                    {fps} fps
+                                </button>
                             ))}
-                        </select>
+                        </div>
                     </div>
                     <div>
                         <label className="block text-xs font-semibold text-dark-500 uppercase tracking-wider mb-2">Max Width</label>
-                        <select
-                            value={options.gifWidth}
-                            onChange={e => onOptionsChange({ gifWidth: Number(e.target.value) })}
-                            className="w-full text-sm border border-dark-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
-                            aria-label="GIF max width"
-                        >
+                        <div className="flex flex-wrap gap-1.5">
                             {[320, 480, 640, 800, 1080].map(w => (
-                                <option key={w} value={w}>{w}px</option>
+                                <button
+                                    key={w}
+                                    onClick={() => onOptionsChange({ gifWidth: w })}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border cursor-pointer
+                                        ${options.gifWidth === w
+                                            ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
+                                            : 'bg-white text-dark-700 border-dark-200 hover:border-brand-400 hover:bg-dark-50'}`}
+                                    aria-label={`${w} pixels wide`}
+                                >
+                                    {w}px
+                                </button>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 </div>
             )}

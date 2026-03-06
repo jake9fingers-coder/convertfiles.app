@@ -57,15 +57,12 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         outputExtension: 'webm',
         mimeType: 'video/webm',
         acceptedInputs: ['video/*'],
-        buildArgs: ({ quality }) => {
-            // Quality mapping: 100% -> 720p, <50% -> 480p max to preserve memory
+        buildArgs: () => {
             // Using libvpx (VP8) instead of libvpx-vp9 to heavily reduce memory footprint and avoid OOM
-            const scale = quality > 50 ? '-2:720' : '-2:480'
-            const q = Math.round(30 - (quality / 100) * 20) // map 0-100 to crf 30-10
+            // Max quality (crf=10) without scale reduction
             return [
-                '-c:v', 'libvpx', '-crf', String(q), '-b:v', '1M',
+                '-c:v', 'libvpx', '-crf', '10', '-b:v', '1M',
                 '-deadline', 'realtime', '-cpu-used', '8', '-threads', '4',
-                '-vf', `scale=${scale}`,
                 '-c:a', 'libvorbis',
             ]
         },
@@ -77,10 +74,9 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         outputExtension: 'm4a',
         mimeType: 'audio/mp4',
         acceptedInputs: ['video/*', 'audio/*'],
-        buildArgs: ({ quality }) => {
-            // Extraction uses universally supported AAC (.m4a)
-            const b = Math.round(64 + (quality / 100) * 192) // 64k to 256k
-            return ['-vn', '-c:a', 'aac', '-b:a', `${b}k`]
+        buildArgs: () => {
+            // Extraction uses universally supported AAC (.m4a) at max quality (256k)
+            return ['-vn', '-c:a', 'aac', '-b:a', '256k']
         },
     },
     mp4: {
@@ -90,12 +86,10 @@ export const PROFILES: Record<ConversionMode, ConversionProfile> = {
         outputExtension: 'mp4',
         mimeType: 'video/mp4',
         acceptedInputs: ['video/*'],
-        buildArgs: ({ quality }) => {
-            const q = Math.round(8 - (quality / 100) * 6) // map 0-100 to q:v 8-2
-            const filters = quality === 100 ? [] : ['-vf', quality > 50 ? 'scale=-2:720' : 'scale=-2:480']
+        buildArgs: () => {
+            // Constant high quality (q:v = 2) without scale reduction
             return [
-                '-c:v', 'mpeg4', '-q:v', String(q),
-                ...filters,
+                '-c:v', 'mpeg4', '-q:v', '2',
                 '-c:a', 'aac',
                 '-movflags', '+faststart',
             ]
