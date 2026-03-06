@@ -8,12 +8,9 @@ export function useDarkMode() {
         if (saved === 'dark') {
             setIsDark(true)
             document.documentElement.classList.add('dark')
-        } else if (saved === 'light') {
+        } else {
             setIsDark(false)
             document.documentElement.classList.remove('dark')
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setIsDark(true)
-            document.documentElement.classList.add('dark')
         }
     }, [])
 
