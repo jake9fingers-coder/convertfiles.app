@@ -1,4 +1,4 @@
-import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { DropdownMenu } from "./dropdown-menu"
 import { Pencil, Trash, Copy } from "lucide-react"
 
 const DropdownMenuDemo = () => {

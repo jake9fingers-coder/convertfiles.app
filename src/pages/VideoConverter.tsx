@@ -35,6 +35,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
     const [history, setHistory] = useState<BatchItem[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
+    const [isZipping, setIsZipping] = useState(false)
 
     // Load history on mount
     useEffect(() => {
