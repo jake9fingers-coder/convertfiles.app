@@ -70,10 +70,10 @@ export default function Dropzone({
         relative cursor-pointer rounded-xl border-2 border-dashed p-12 text-center transition-all duration-300
         ${disabled ? 'opacity-40 cursor-not-allowed' : ''}
         ${dragging
-                    ? 'border-brand-500 bg-soft-100 scale-[1.05] shadow-xl shadow-brand-500/20 dropzone-active'
+                    ? 'border-brand-500 bg-soft-100 dark:bg-dark-50/50 scale-[1.05] shadow-xl shadow-brand-500/20 dropzone-active'
                     : dragError
-                        ? 'border-red-400 bg-red-50 hover:scale-[1.02] transform'
-                        : 'border-dark-300 bg-white hover:border-brand-400 hover:bg-brand-50 hover:shadow-xl hover:-translate-y-1 transform'
+                        ? 'border-red-400 bg-red-50 dark:bg-red-900/20 hover:scale-[1.02] transform'
+                        : 'border-dark-300 bg-white dark:bg-dark-100 hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-dark-50 hover:shadow-xl dark:hover:shadow-brand-500/10 hover:-translate-y-1 transform'
                 }
       `}
             role="button"

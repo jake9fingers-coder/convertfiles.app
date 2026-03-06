@@ -103,7 +103,7 @@ export default function Header() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-soft-100 border border-soft-300 text-xs font-semibold text-brand-700">
+                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-soft-100 border border-soft-300 text-xs font-semibold text-brand-700 dark:bg-dark-100 dark:border-dark-200 dark:text-dark-900">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>

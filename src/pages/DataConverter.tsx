@@ -27,11 +27,13 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     const [batch, setBatch] = useState<BatchDataItem[]>([])
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [history, setHistory] = useState<BatchDataItem[]>([])
+    const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
 
     // Load history on mount
     useEffect(() => {
         loadDataHistory().then(data => {
             setHistory(data)
+            setIsHistoryLoaded(true)
         })
     }, [])
 
