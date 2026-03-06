@@ -134,7 +134,8 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                     </div>
                 )}
 
-                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 relative z-20">
+                {/* The Converter Tool */}
+                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 relative z-20 px-4 sm:px-0">
                     {!hasFiles && (
                         <Dropzone
                             onFiles={handleFiles}

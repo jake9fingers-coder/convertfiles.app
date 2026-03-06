@@ -151,7 +151,7 @@ export default function DocumentConverter({ embedded = false }: { embedded?: boo
                     </div>
                 )}
 
-                <div className="w-full max-w-2xl mx-auto space-y-4 relative z-20">
+                <div className="w-full max-w-2xl mx-auto space-y-4 relative z-20 px-4 sm:px-0">
 
                     {state === 'idle' && (
                         <Dropzone

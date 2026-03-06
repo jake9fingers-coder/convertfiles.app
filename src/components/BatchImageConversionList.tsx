@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, Play, RefreshCw, ImageIcon, CheckCircle } from 'lucide-react'
+import { X, Play, RefreshCw, ImageIcon, CheckCircle, SlidersHorizontal } from 'lucide-react'
 import { IMAGE_PROFILES } from '../lib/imageConversionProfiles'
 import type { BatchImageItem } from '../pages/ImageConverter'
 
@@ -157,6 +157,43 @@ export default function BatchImageConversionList({
                                 </div>
                             )}
                         </div>
+
+                        {['jpeg', 'webp', 'avif', 'jxl'].includes(globalMode) && (
+                            <div className="flex flex-col gap-3 mt-2 pt-3 border-t border-dark-100">
+                                <button
+                                    onClick={() => updateAllItems({ compress: !(firstPendingItem?.compress) })}
+                                    className={`self-start flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border shadow-sm ${firstPendingItem?.compress
+                                        ? 'bg-brand-50 text-brand-700 border-brand-200'
+                                        : 'bg-white text-dark-700 border-dark-200 hover:bg-dark-50'
+                                        }`}
+                                >
+                                    <SlidersHorizontal className="w-4 h-4" />
+                                    Compress Image
+                                </button>
+
+                                {firstPendingItem?.compress && (
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-slide-up bg-dark-50 p-4 rounded-xl border border-dark-100">
+                                        <div className="flex-1">
+                                            <p className="text-sm font-semibold text-dark-900 mb-0.5">Compression Quality</p>
+                                            <p className="text-xs text-dark-500">Lower quality reduces file size.</p>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                type="range"
+                                                min="1"
+                                                max="100"
+                                                value={firstPendingItem?.quality ?? 80}
+                                                onChange={(e) => updateAllItems({ quality: parseInt(e.target.value, 10) })}
+                                                className="w-32 sm:w-48 accent-brand-500"
+                                            />
+                                            <span className="text-sm font-semibold text-brand-600 min-w-[2.5rem] text-right">
+                                                {firstPendingItem?.quality ?? 80}%
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {batch.length === 1 && (
                             <div className="flex justify-end mt-2 pt-4 border-t border-dark-50">

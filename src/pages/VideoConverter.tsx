@@ -212,7 +212,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                 )}
 
                 {/* The Converter Tool */}
-                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4">
+                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 px-4 sm:px-0">
 
                     {/* Error */}
                     {globalError && (

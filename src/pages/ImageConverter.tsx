@@ -23,6 +23,8 @@ export interface BatchImageItem {
     progress: number
     result: ConversionResult | MagickConversionResult | CanvasConversionResult | null
     error: string | null
+    quality?: number
+    compress?: boolean
 }
 
 import Features from '../components/Features'
@@ -85,7 +87,9 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             status: 'pending' as const,
             progress: 0,
             result: null,
-            error: null
+            error: null,
+            quality: 80,
+            compress: false
         }))
 
         setBatch(newBatch)
@@ -201,10 +205,13 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     // Route to the correct engine
                     if (profile.engine === 'canvas') {
                         // Instant browser-native conversion via Canvas API
-                        res = await convertImageWithCanvas(fileToConvert, profile.outputExtension, profile.mimeType)
+                        // Pass quality (0.0 to 1.0) for canvas
+                        const canvasQuality = item.compress && item.quality ? item.quality / 100 : 1.0;
+                        res = await convertImageWithCanvas(fileToConvert, profile.outputExtension, profile.mimeType, canvasQuality)
                     } else {
                         // Pro formats via ImageMagick WASM
-                        res = await magick.convert(fileToConvert, profile.outputExtension, profile.mimeType)
+                        const magickQuality = item.compress && item.quality ? item.quality : 100;
+                        res = await magick.convert(fileToConvert, profile.outputExtension, profile.mimeType, magickQuality)
                     }
 
                     // Mark done
@@ -243,7 +250,9 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                 status: 'pending',
                 progress: 0,
                 result: null,
-                error: null
+                error: null,
+                quality: item.quality ?? 80,
+                compress: item.compress ?? false
             },
             ...prev
         ])
@@ -289,7 +298,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                 )}
 
                 {/* The Converter Tool */}
-                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4">
+                <div id="converter-tool" className="w-full max-w-xl mx-auto space-y-4 px-4 sm:px-0">
 
                     {/* Error */}
                     {hasGlobalError && (

@@ -48,7 +48,8 @@ export function useMagick() {
     const convert = useCallback(async (
         file: File,
         targetExtension: string,
-        targetMimeType: string
+        targetMimeType: string,
+        quality?: number
     ): Promise<MagickConversionResult> => {
 
         if (!magickInitialized) {
@@ -98,8 +99,8 @@ export function useMagick() {
                     throw new Error('Cancelled')
                 }
 
-                // Preserve maximum quality for all conversions where applicable
-                image.quality = 100;
+                // Preserve maximum quality for all conversions where applicable, unless specified
+                image.quality = quality ?? 100;
 
                 // .write() also takes a callback and returns what the callback returns (or Promise)
                 return image.write(targetFormatEnum, (data) => {
