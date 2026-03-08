@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "generate:seo": "node scripts/generateSeoData.js",
-    "build": "npm run generate:seo && tsc -b && vite build",
+    "build": "npm run generate:seo && tsc -b && vite build && npm run prerender",
+    "prerender": "node scripts/prerender.js",
+    "indexnow": "node scripts/submitIndexNow.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

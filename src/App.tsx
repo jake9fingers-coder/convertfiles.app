@@ -7,6 +7,7 @@ import UnitConverter from './pages/UnitConverter'
 import DataConverter from './pages/DataConverter'
 import CurrencyConverter from './pages/CurrencyConverter'
 import ConversionLandingPage from './pages/ConversionLandingPage'
+import ConversionHistory from './pages/ConversionHistory'
 import ScrollToTop from './components/ScrollToTop'
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="units" element={<UnitConverter />} />
             <Route path="data-converter" element={<DataConverter />} />
             <Route path="currency-converter" element={<CurrencyConverter />} />
+            <Route path="history" element={<ConversionHistory />} />
             <Route path="convert/:slug" element={<ConversionLandingPage />} />
           </Route>
         </Routes>

@@ -26,7 +26,7 @@ export interface BatchDataItem {
 export default function DataConverter({ embedded = false }: { embedded?: boolean }) {
     const [batch, setBatch] = useState<BatchDataItem[]>([])
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
-    const [history, setHistory] = useState<BatchDataItem[]>([])
+    const [history, setHistory] = useState<any[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
 
     // Load history on mount
@@ -66,7 +66,7 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                 error: null
             }
         })
-        setBatch(newBatch)
+        setBatch(prev => [...prev, ...newBatch])
     }, [])
 
     const updateAllItems = useCallback((updates: Partial<BatchDataItem>) => {
@@ -91,12 +91,25 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                     const res = await convertDataFile(item.file, item.mode)
                     const doneItem = { ...item, status: 'done', progress: 100, result: res } as BatchDataItem
                     setBatch(prev => prev.map(p => p.id === item.id ? doneItem : p))
-                    setHistory(h => [doneItem, ...h])
                 } catch (err: any) {
                     setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'error', error: err.message || String(err), progress: 0 } : p))
                 }
             }
         } finally {
+            setBatch(currentBatch => {
+                const justFinished = currentBatch.filter(i =>
+                    (i.status === 'done' || i.status === 'error') &&
+                    batch.some(b => b.id === i.id && b.status !== 'done' && b.status !== 'error')
+                );
+                if (justFinished.length > 0) {
+                    if (currentBatch.length > 1 || justFinished.length > 1) {
+                        setHistory(h => [[...justFinished].reverse(), ...h]);
+                    } else {
+                        setHistory(h => [...[...justFinished].reverse(), ...h]);
+                    }
+                }
+                return currentBatch;
+            });
             setIsConvertingBatch(false)
         }
     }, [batch])
@@ -153,6 +166,8 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                             removeItem={removeItem}
                             onConvertAll={handleConvertBatch}
                             isConvertingBatch={isConvertingBatch}
+                            onAddMore={handleFiles}
+                            onClearBatch={() => setBatch([])}
                         />
                     )}
                 </div>
@@ -167,6 +182,7 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                     onRemove={(id) => setHistory(prev => prev.filter(i => i.id !== id))}
                     onClearAll={() => setHistory([])}
                     getProfile={(mode) => DATA_PROFILES[mode as DataConversionMode]}
+                    type="data"
                 />
             </div>
 

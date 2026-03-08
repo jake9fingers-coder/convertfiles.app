@@ -37,11 +37,10 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     const magick = useMagick()
 
     const [batch, setBatch] = useState<BatchImageItem[]>([])
-    const [history, setHistory] = useState<BatchImageItem[]>([])
+    const [history, setHistory] = useState<any[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
     const [isZipping, setIsZipping] = useState(false)
-
     // Load history on mount
     useEffect(() => {
         loadImageHistory().then(data => {
@@ -73,11 +72,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     }, [magick.progress, isConvertingBatch])
 
     const handleFiles = useCallback((incomingFiles: File[]) => {
-        const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
-        if (finishedItems.length > 0) {
-            setHistory(h => [...finishedItems, ...h])
-        }
-
         magick.reset()
 
         const newBatch = incomingFiles.map(f => ({
@@ -92,7 +86,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             compress: false
         }))
 
-        setBatch(newBatch)
+        setBatch(prev => [...prev, ...newBatch])
 
         // Prewarm magick engine for pro formats
         magick.load()
@@ -109,23 +103,35 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     const handleConvertBatch = useCallback(async () => {
         setIsConvertingBatch(true)
 
+        // Pre-validate pending files to prevent O(N^2) state updates & UI freeze
+        const instantErrors = new Map<string, string>()
+        batch.forEach(item => {
+            if (item.status === 'done' || item.status === 'converting') return
+            const profile = IMAGE_PROFILES[item.mode]
+            const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+            const outputExt = profile.outputExtension.toLowerCase()
+
+            if (inputExt === outputExt) {
+                instantErrors.set(item.id, `Already a .${outputExt.toUpperCase()} file`)
+            }
+        })
+
+        if (instantErrors.size > 0) {
+            setBatch(prev => prev.map(p => instantErrors.has(p.id) ? {
+                ...p,
+                status: 'error',
+                error: instantErrors.get(p.id)!
+            } : p))
+        }
+
         try {
             for (let i = 0; i < batch.length; i++) {
                 const item = batch[i]
-                if (item.status === 'done' || item.status === 'converting') continue
+                if (item.status === 'done' || item.status === 'converting' || instantErrors.has(item.id)) continue
 
                 const profile = IMAGE_PROFILES[item.mode]
                 const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
-                const outputExt = profile.outputExtension.toLowerCase()
-
-                if (inputExt === outputExt) {
-                    setBatch(prev => prev.map(p => p.id === item.id ? {
-                        ...p,
-                        status: 'error',
-                        error: `Already a .${outputExt.toUpperCase()} file`
-                    } : p))
-                    continue
-                }
+                // Skipped files are handled by the pre-pass above
 
                 setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'converting', error: null } : p))
 
@@ -154,8 +160,8 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                     originalSize: item.file.size,
                                     outputSize: blob.size,
                                 } as CanvasConversionResult;
-
-                                setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'done', progress: 100, result: res! } : p));
+                                const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res! };
+                                setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p));
                                 continue;
                             }
 
@@ -185,7 +191,8 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                         outputSize: finalFile.size
                                     } as CanvasConversionResult;
 
-                                    setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'done', progress: 100, result: res! } : p));
+                                    const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res };
+                                    setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p));
                                     continue;
                                 }
 
@@ -206,40 +213,50 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     if (profile.engine === 'canvas') {
                         // Instant browser-native conversion via Canvas API
                         // Pass quality (0.0 to 1.0) for canvas
-                        const canvasQuality = item.compress && item.quality ? item.quality / 100 : 1.0;
+                        const canvasQuality = item.compress && item.quality ? item.quality / 100 : undefined;
                         res = await convertImageWithCanvas(fileToConvert, profile.outputExtension, profile.mimeType, canvasQuality)
                     } else {
                         // Pro formats via ImageMagick WASM
-                        const magickQuality = item.compress && item.quality ? item.quality : 100;
+                        const magickQuality = item.compress && item.quality ? item.quality : undefined;
                         res = await magick.convert(fileToConvert, profile.outputExtension, profile.mimeType, magickQuality)
                     }
 
                     // Mark done
-                    setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'done', progress: 100, result: res! } : p))
+                    const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res! };
+                    setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p))
                 } catch (err) {
                     const msg = err instanceof Error ? err.message : String(err)
                     if (msg === 'Cancelled') {
-                        setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'pending', progress: 0 } : p))
+                        setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'pending' as const, progress: 0 } : p))
                         break
                     }
-                    setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'error', error: msg } : p))
+                    const errorItem = { ...item, status: 'error' as const, error: msg };
+                    setBatch(prev => prev.map(p => p.id === item.id ? errorItem : p))
                 }
             }
         } finally {
-            setIsConvertingBatch(false)
+            // Push newly finished items to history using fresh batch state
+            setBatch(currentBatch => {
+                const justFinished = currentBatch.filter(i =>
+                    (i.status === 'done' || i.status === 'error') &&
+                    batch.some(b => b.id === i.id && b.status !== 'done' && b.status !== 'error')
+                );
+                if (justFinished.length > 0) {
+                    // Reverse to maintain chronological order in the stack
+                    setHistory(h => [...[...justFinished].reverse(), ...h]);
+                }
+                return currentBatch;
+            });
+            setIsConvertingBatch(false);
         }
     }, [batch, magick])
 
     const handleReset = useCallback(() => {
-        const finishedItems = batch.filter(i => i.status === 'done' || i.status === 'error')
-        if (finishedItems.length > 0) {
-            setHistory(h => [...finishedItems, ...h])
-        }
         magick.cancel()
         magick.reset()
         setBatch([])
         setIsConvertingBatch(false)
-    }, [batch, magick])
+    }, [magick])
 
     const handleReuse = useCallback((item: BatchImageItem) => {
         setBatch(prev => [
@@ -256,10 +273,10 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             },
             ...prev
         ])
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
 
     const hasFiles = batch.length > 0
-    const allDone = hasFiles && batch.every(i => i.status === 'done')
     const hasGlobalError = !!magick.error
 
     const handleCancel = useCallback(() => {
@@ -342,6 +359,83 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                             removeItem={removeItem}
                             onConvertAll={handleConvertBatch}
                             isConvertingBatch={isConvertingBatch}
+                            onAddMore={handleFiles}
+                            onClearBatch={handleReset}
+                            onDownloadAll={async () => {
+                                let writable: any = null;
+                                let useFallback = true;
+                                if ('showSaveFilePicker' in window) {
+                                    try {
+                                        let defaultName = 'batch_images_convertfiles-app.zip';
+                                        if (batch.length === 1 && batch[0].result) {
+                                            const nameParts = batch[0].result.filename.split('.');
+                                            const ext = nameParts.pop() || '';
+                                            const base = nameParts.join('.');
+                                            defaultName = `${base}_convertfiles-app.${ext}`;
+                                        }
+                                        const handle = await (window as any).showSaveFilePicker({
+                                            suggestedName: defaultName,
+                                            types: [{
+                                                description: batch.length === 1 ? 'Image File' : 'ZIP Archive',
+                                                accept: batch.length === 1 && batch[0].result ? { [batch[0].result.blob.type]: [`.${batch[0].result.filename.split('.').pop()}`] } : { 'application/zip': ['.zip'] },
+                                            }],
+                                        });
+                                        writable = await handle.createWritable();
+                                        useFallback = false;
+                                    } catch (err: any) {
+                                        if (err.name === 'AbortError') return;
+                                    }
+                                }
+                                setIsZipping(true);
+                                try {
+                                    const zip = new JSZip();
+                                    const usedNames = new Set<string>();
+                                    batch.forEach((item) => {
+                                        if (item.result) {
+                                            let finalName = item.result.filename;
+                                            let counter = 1;
+                                            while (usedNames.has(finalName)) {
+                                                const nameParts = item.result.filename.split('.');
+                                                const ext = nameParts.pop();
+                                                const base = nameParts.join('.');
+                                                finalName = `${base} (${counter}).${ext}`;
+                                                counter++;
+                                            }
+                                            usedNames.add(finalName);
+                                            zip.file(finalName, item.result.blob);
+                                        }
+                                    });
+                                    const zipBlob = await zip.generateAsync({ type: 'blob' });
+                                    if (!useFallback && writable) {
+                                        if (batch.length === 1 && batch[0].result) {
+                                            await writable.write(batch[0].result.blob);
+                                        } else {
+                                            await writable.write(zipBlob);
+                                        }
+                                        await writable.close();
+                                    } else {
+                                        const url = URL.createObjectURL(batch.length === 1 && batch[0].result ? batch[0].result.blob : zipBlob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        let defaultName = 'batch_images_convertfiles-app.zip';
+                                        if (batch.length === 1 && batch[0].result) {
+                                            const nameParts = batch[0].result.filename.split('.');
+                                            const ext = nameParts.pop() || '';
+                                            const base = nameParts.join('.');
+                                            defaultName = `${base}_convertfiles-app.${ext}`;
+                                        }
+                                        a.download = defaultName;
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                    }
+                                } catch (e) {
+                                    console.error("Zipping failed:", e);
+                                    alert("Oops, failed to build ZIP file.");
+                                } finally {
+                                    setIsZipping(false);
+                                }
+                            }}
                         />
                     )}
 
@@ -352,88 +446,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                             logMessages={[]}
                             onCancel={handleCancel}
                         />
-                    )}
-
-                    {/* Done Actions */}
-                    {allDone && (
-                        <div className="w-full flex justify-center gap-4 mt-4 pt-4 border-t border-dark-100">
-                            <button
-                                onClick={async () => {
-                                    // 1. Ask user for file location IMMEDIATELY to preserve transient user activation
-                                    let writable: any = null;
-                                    let useFallback = true;
-
-                                    if ('showSaveFilePicker' in window) {
-                                        try {
-                                            const handle = await (window as any).showSaveFilePicker({
-                                                suggestedName: batch.length === 1 ? batch[0].result?.filename : 'converted_images.zip',
-                                                types: [{
-                                                    description: batch.length === 1 ? 'Image File' : 'ZIP Archive',
-                                                    accept: batch.length === 1 && batch[0].result ? { [batch[0].result.blob.type]: [`.${batch[0].result.filename.split('.').pop()}`] } : { 'application/zip': ['.zip'] },
-                                                }],
-                                            });
-                                            writable = await handle.createWritable();
-                                            useFallback = false;
-                                        } catch (err: any) {
-                                            // User cancelled the prompt, abort completely
-                                            if (err.name === 'AbortError') return;
-                                            // Otherwise security error etc., let it gracefully fallback
-                                        }
-                                    }
-
-                                    // 2. Begin zipping.
-                                    setIsZipping(true);
-                                    try {
-                                        const zip = new JSZip();
-                                        batch.forEach((item) => {
-                                            if (item.result) {
-                                                zip.file(item.result.filename, item.result.blob);
-                                            }
-                                        });
-                                        const zipBlob = await zip.generateAsync({ type: 'blob' });
-
-                                        // 3. Write data.
-                                        if (!useFallback && writable) {
-                                            if (batch.length === 1 && batch[0].result) {
-                                                await writable.write(batch[0].result.blob);
-                                            } else {
-                                                await writable.write(zipBlob);
-                                            }
-                                            await writable.close();
-                                        } else {
-                                            // Fallback for browsers without showSaveFilePicker
-                                            const url = URL.createObjectURL(batch.length === 1 && batch[0].result ? batch[0].result.blob : zipBlob);
-                                            const a = document.createElement('a');
-                                            a.href = url;
-                                            a.download = batch.length === 1 && batch[0].result ? batch[0].result.filename : 'converted_images.zip';
-                                            document.body.appendChild(a);
-                                            a.click();
-                                            document.body.removeChild(a);
-                                            setTimeout(() => URL.revokeObjectURL(url), 1000);
-                                        }
-                                    } catch (err) {
-                                        console.error('Failed to zip/save files:', err);
-                                        alert('Failed to create or save zip file.');
-                                        if (writable) {
-                                            // Ensure we don't leave lingering open files on error
-                                            try { await writable.abort(); } catch (e) { }
-                                        }
-                                    } finally {
-                                        setIsZipping(false);
-                                    }
-                                }}
-                                disabled={isZipping}
-                                className={`text-sm font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md ${isZipping ? 'bg-dark-300 text-dark-600 cursor-not-allowed' : 'bg-brand-500 text-white hover:bg-brand-600'}`}
-                            >
-                                {isZipping ? 'Saving...' : batch.length === 1 ? 'Download Target File' : 'Download All as ZIP'}
-                            </button>
-                            <button
-                                onClick={handleReset}
-                                className="text-sm font-semibold text-dark-600 hover:text-dark-900 border border-dark-200 hover:border-dark-300 bg-dark-50 px-6 py-2.5 rounded-lg transition-all"
-                            >
-                                Convert Another File
-                            </button>
-                        </div>
                     )}
 
                     {/* Subtle trust line */}
@@ -452,6 +464,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                         onRemove={(id) => setHistory(prev => prev.filter(i => i.id !== id))}
                         onClearAll={() => setHistory([])}
                         getProfile={(mode) => IMAGE_PROFILES[mode as ImageConversionMode]}
+                        type="image"
                     />
                 </div>
             </div>

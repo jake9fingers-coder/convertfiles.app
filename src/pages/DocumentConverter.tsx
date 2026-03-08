@@ -285,6 +285,7 @@ export default function DocumentConverter({ embedded = false }: { embedded?: boo
                         onRemove={(id) => setHistory(prev => prev.filter(i => i.id !== id))}
                         onClearAll={() => setHistory([])}
                         getProfile={(m) => DOCUMENT_PROFILES[m as DocumentConversionMode]}
+                        type="document"
                     />
                 </div>
 

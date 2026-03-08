@@ -100,7 +100,9 @@ export function useMagick() {
                 }
 
                 // Preserve maximum quality for all conversions where applicable, unless specified
-                image.quality = quality ?? 100;
+                if (quality !== undefined) {
+                    image.quality = quality;
+                }
 
                 // .write() also takes a callback and returns what the callback returns (or Promise)
                 return image.write(targetFormatEnum, (data) => {

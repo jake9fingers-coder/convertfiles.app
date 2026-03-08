@@ -56,6 +56,9 @@ export default function Footer() {
                             <Link to="/currency-converter" className="text-sm font-medium text-dark-500 hover:text-brand-600 transition-colors w-fit">
                                 Currency Converter
                             </Link>
+                            <Link to="/history" className="text-sm font-medium text-dark-500 hover:text-brand-600 transition-colors w-fit mt-2 border-t border-dark-100 pt-2">
+                                Conversion History
+                            </Link>
                         </div>
                     </div>
                 </div>
