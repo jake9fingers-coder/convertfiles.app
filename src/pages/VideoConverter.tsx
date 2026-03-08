@@ -136,6 +136,19 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
             } : p))
         }
 
+        const newlyFinished: BatchItem[] = [];
+        if (instantErrors.size > 0) {
+            batch.forEach(item => {
+                if (instantErrors.has(item.id)) {
+                    newlyFinished.push({
+                        ...item,
+                        status: 'error',
+                        error: instantErrors.get(item.id)!
+                    });
+                }
+            });
+        }
+
         // Loop through all pending or errored sequentially
         // Cannot use forEach with async smoothly inside React state closures if we want to read fresh state,
         // so we just rely on the batch array from closures but step through sequentially.
@@ -154,6 +167,7 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                     // Mark done
                     const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res! };
                     setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p))
+                    newlyFinished.push(updatedItem);
                 } catch (err) {
                     const msg = err instanceof Error ? err.message : String(err)
                     // Stop entirely if user clicked cancel (it throws 'Cancelled')
@@ -163,24 +177,17 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
                     }
                     const errorItem = { ...item, status: 'error' as const, error: msg };
                     setBatch(prev => prev.map(p => p.id === item.id ? errorItem : p))
+                    newlyFinished.push(errorItem);
                 }
             }
         } finally {
-            // Push newly finished items to history using fresh batch state
-            setBatch(currentBatch => {
-                const justFinished = currentBatch.filter(i =>
-                    (i.status === 'done' || i.status === 'error') &&
-                    batch.some(b => b.id === i.id && b.status !== 'done' && b.status !== 'error')
-                );
-                if (justFinished.length > 0) {
-                    if (currentBatch.length > 1 || justFinished.length > 1) {
-                        setHistory(h => [[...justFinished].reverse(), ...h]);
-                    } else {
-                        setHistory(h => [...[...justFinished].reverse(), ...h]);
-                    }
+            if (newlyFinished.length > 0) {
+                if (batch.length > 1 || newlyFinished.length > 1) {
+                    setHistory(h => [[...newlyFinished].reverse(), ...h]);
+                } else {
+                    setHistory(h => [...[...newlyFinished].reverse(), ...h]);
                 }
-                return currentBatch;
-            });
+            }
             setIsConvertingBatch(false);
         }
     }, [batch, convert])

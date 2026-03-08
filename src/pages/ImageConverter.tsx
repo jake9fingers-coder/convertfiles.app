@@ -139,7 +139,18 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             }
         })
 
+        const newlyFinished: BatchImageItem[] = [];
+
         if (instantErrors.size > 0) {
+            batch.forEach(item => {
+                if (instantErrors.has(item.id)) {
+                    newlyFinished.push({
+                        ...item,
+                        status: 'error',
+                        error: instantErrors.get(item.id)!
+                    });
+                }
+            });
             setBatch(prev => prev.map(p => instantErrors.has(p.id) ? {
                 ...p,
                 status: 'error',
@@ -185,6 +196,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                 } as CanvasConversionResult;
                                 const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res! };
                                 setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p));
+                                newlyFinished.push(updatedItem);
                                 continue;
                             }
 
@@ -216,6 +228,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
 
                                     const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res };
                                     setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p));
+                                    newlyFinished.push(updatedItem);
                                     continue;
                                 }
 
@@ -247,6 +260,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     // Mark done
                     const updatedItem = { ...item, status: 'done' as const, progress: 100, result: res! };
                     setBatch(prev => prev.map(p => p.id === item.id ? updatedItem : p))
+                    newlyFinished.push(updatedItem);
                 } catch (err) {
                     const msg = err instanceof Error ? err.message : String(err)
                     if (msg === 'Cancelled') {
@@ -255,21 +269,17 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                     }
                     const errorItem = { ...item, status: 'error' as const, error: msg };
                     setBatch(prev => prev.map(p => p.id === item.id ? errorItem : p))
+                    newlyFinished.push(errorItem);
                 }
             }
         } finally {
-            // Push newly finished items to history using fresh batch state
-            setBatch(currentBatch => {
-                const justFinished = currentBatch.filter(i =>
-                    (i.status === 'done' || i.status === 'error') &&
-                    batch.some(b => b.id === i.id && b.status !== 'done' && b.status !== 'error')
-                );
-                if (justFinished.length > 0) {
-                    // Reverse to maintain chronological order in the stack
-                    setHistory(h => [...[...justFinished].reverse(), ...h]);
+            if (newlyFinished.length > 0) {
+                if (batch.length > 1 || newlyFinished.length > 1) {
+                    setHistory(h => [[...newlyFinished].reverse(), ...h]);
+                } else {
+                    setHistory(h => [...[...newlyFinished].reverse(), ...h]);
                 }
-                return currentBatch;
-            });
+            }
             setIsConvertingBatch(false);
         }
     }, [batch, magick])

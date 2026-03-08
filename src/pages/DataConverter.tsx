@@ -91,6 +91,8 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     const handleConvertBatch = useCallback(async () => {
         setIsConvertingBatch(true)
 
+        const newlyFinished: BatchDataItem[] = [];
+
         try {
             for (let i = 0; i < batch.length; i++) {
                 const item = batch[i]
@@ -102,25 +104,21 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
                     const res = await convertDataFile(item.file, item.mode)
                     const doneItem = { ...item, status: 'done', progress: 100, result: res } as BatchDataItem
                     setBatch(prev => prev.map(p => p.id === item.id ? doneItem : p))
+                    newlyFinished.push(doneItem);
                 } catch (err: any) {
-                    setBatch(prev => prev.map(p => p.id === item.id ? { ...p, status: 'error', error: err.message || String(err), progress: 0 } : p))
+                    const errorItem = { ...item, status: 'error' as const, error: err.message || String(err), progress: 0 } as BatchDataItem;
+                    setBatch(prev => prev.map(p => p.id === item.id ? errorItem : p))
+                    newlyFinished.push(errorItem);
                 }
             }
         } finally {
-            setBatch(currentBatch => {
-                const justFinished = currentBatch.filter(i =>
-                    (i.status === 'done' || i.status === 'error') &&
-                    batch.some(b => b.id === i.id && b.status !== 'done' && b.status !== 'error')
-                );
-                if (justFinished.length > 0) {
-                    if (currentBatch.length > 1 || justFinished.length > 1) {
-                        setHistory(h => [[...justFinished].reverse(), ...h]);
-                    } else {
-                        setHistory(h => [...[...justFinished].reverse(), ...h]);
-                    }
+            if (newlyFinished.length > 0) {
+                if (batch.length > 1 || newlyFinished.length > 1) {
+                    setHistory(h => [[...newlyFinished].reverse(), ...h]);
+                } else {
+                    setHistory(h => [...[...newlyFinished].reverse(), ...h]);
                 }
-                return currentBatch;
-            });
+            }
             setIsConvertingBatch(false)
         }
     }, [batch])
