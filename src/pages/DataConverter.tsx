@@ -70,7 +70,18 @@ export default function DataConverter({ embedded = false }: { embedded?: boolean
     }, [])
 
     const updateAllItems = useCallback((updates: Partial<BatchDataItem>) => {
-        setBatch(prev => prev.map(p => ({ ...p, ...updates })))
+        setBatch(prev => {
+            const updated = prev.map(p => ({ ...p, ...updates }))
+            return updated.filter(item => {
+                const profile = DATA_PROFILES[item.mode]
+                const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+                const outputExt = profile.outputExtension.toLowerCase()
+                if (inputExt === outputExt) {
+                    return false;
+                }
+                return true;
+            })
+        })
     }, [])
 
     const removeItem = useCallback((id: string) => {

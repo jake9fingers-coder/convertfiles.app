@@ -40,7 +40,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     const [history, setHistory] = useState<any[]>([])
     const [isHistoryLoaded, setIsHistoryLoaded] = useState(false)
     const [isConvertingBatch, setIsConvertingBatch] = useState(false)
-    const [isZipping, setIsZipping] = useState(false)
     // Load history on mount
     useEffect(() => {
         loadImageHistory().then(data => {
@@ -74,26 +73,50 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
     const handleFiles = useCallback((incomingFiles: File[]) => {
         magick.reset()
 
-        const newBatch = incomingFiles.map(f => ({
-            id: crypto.randomUUID(),
-            file: f,
-            mode: 'webp' as ImageConversionMode, // Default
-            status: 'pending' as const,
-            progress: 0,
-            result: null,
-            error: null,
-            quality: 80,
-            compress: false
-        }))
+        setBatch(prev => {
+            const currentMode = prev.length > 0 ? (prev.find(b => b.status === 'pending' || b.status === 'error')?.mode || prev[0].mode) : 'webp' as ImageConversionMode;
+            const currentCompress = prev.length > 0 ? (prev.find(b => b.status === 'pending' || b.status === 'error')?.compress || false) : false;
 
-        setBatch(prev => [...prev, ...newBatch])
+            const newBatch = incomingFiles.map(f => ({
+                id: crypto.randomUUID(),
+                file: f,
+                mode: currentMode,
+                status: 'pending' as const,
+                progress: 0,
+                result: null,
+                error: null,
+                quality: 80,
+                compress: currentCompress
+            })).filter(item => {
+                const profile = IMAGE_PROFILES[item.mode]
+                const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+                const outputExt = profile.outputExtension.toLowerCase()
+                if (inputExt === outputExt && !item.compress) {
+                    return false;
+                }
+                return true;
+            })
+
+            return [...prev, ...newBatch];
+        })
 
         // Prewarm magick engine for pro formats
         magick.load()
-    }, [batch, magick.reset, magick.load])
+    }, [magick.reset, magick.load])
 
     const updateAllItems = useCallback((updates: Partial<BatchImageItem>) => {
-        setBatch(prev => prev.map(p => ({ ...p, ...updates })))
+        setBatch(prev => {
+            const updated = prev.map(p => ({ ...p, ...updates }))
+            return updated.filter(item => {
+                const profile = IMAGE_PROFILES[item.mode]
+                const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+                const outputExt = profile.outputExtension.toLowerCase()
+                if (inputExt === outputExt && !item.compress) {
+                    return false;
+                }
+                return true;
+            })
+        })
     }, [])
 
     const removeItem = useCallback((id: string) => {
@@ -111,7 +134,7 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
             const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
             const outputExt = profile.outputExtension.toLowerCase()
 
-            if (inputExt === outputExt) {
+            if (inputExt === outputExt && !item.compress) {
                 instantErrors.set(item.id, `Already a .${outputExt.toUpperCase()} file`)
             }
         })
@@ -386,7 +409,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                         if (err.name === 'AbortError') return;
                                     }
                                 }
-                                setIsZipping(true);
                                 try {
                                     const zip = new JSZip();
                                     const usedNames = new Set<string>();
@@ -432,8 +454,6 @@ export default function ImageConverter({ embedded = false }: { embedded?: boolea
                                 } catch (e) {
                                     console.error("Zipping failed:", e);
                                     alert("Oops, failed to build ZIP file.");
-                                } finally {
-                                    setIsZipping(false);
                                 }
                             }}
                         />

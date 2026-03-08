@@ -61,23 +61,47 @@ export default function VideoConverter({ embedded = false }: { embedded?: boolea
     const handleFiles = useCallback((incomingFiles: File[]) => {
         reset()
 
-        const newBatch = incomingFiles.map(f => ({
-            id: crypto.randomUUID(),
-            file: f,
-            mode: 'gif' as ConversionMode,
-            options: { quality: 75, gifFps: 15, gifWidth: 480 },
-            status: 'pending' as const,
-            progress: 0,
-            result: null,
-            error: null
-        }))
+        setBatch(prev => {
+            const currentMode = prev.length > 0 ? (prev.find(b => b.status === 'pending' || b.status === 'error')?.mode || prev[0].mode) : 'gif' as ConversionMode;
+            const currentOptions = prev.length > 0 ? (prev.find(b => b.status === 'pending' || b.status === 'error')?.options || prev[0].options) : { quality: 75, gifFps: 15, gifWidth: 480 };
 
-        setBatch(prev => [...prev, ...newBatch])
+            const newBatch = incomingFiles.map(f => ({
+                id: crypto.randomUUID(),
+                file: f,
+                mode: currentMode,
+                options: currentOptions,
+                status: 'pending' as const,
+                progress: 0,
+                result: null,
+                error: null
+            })).filter(item => {
+                const profile = PROFILES[item.mode]
+                const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+                const outputExt = profile.outputExtension.toLowerCase()
+                if (inputExt === outputExt && item.mode !== 'compress') {
+                    return false;
+                }
+                return true;
+            })
+
+            return [...prev, ...newBatch];
+        })
         load() // prewarm
-    }, [batch, reset, load])
+    }, [reset, load])
 
     const updateAllItems = useCallback((updates: Partial<BatchItem>) => {
-        setBatch(prev => prev.map(p => ({ ...p, ...updates })))
+        setBatch(prev => {
+            const updated = prev.map(p => ({ ...p, ...updates }))
+            return updated.filter(item => {
+                const profile = PROFILES[item.mode]
+                const inputExt = (item.file.name.split('.').pop() || '').toLowerCase()
+                const outputExt = profile.outputExtension.toLowerCase()
+                if (inputExt === outputExt && item.mode !== 'compress') {
+                    return false;
+                }
+                return true;
+            })
+        })
     }, [])
 
     const removeItem = useCallback((id: string) => {
