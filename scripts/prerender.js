@@ -16,30 +16,30 @@ console.log('Generating static HTML files for SPA SEO...');
 
 function injectSEO(html, title, description, keywords, canonical, headerContent) {
     // Replace Title
-    let output = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
+    let output = html.replace(/<title>.*?<\/title>/, () => `<title>${title}</title>`);
 
     // Replace Meta Description
     output = output.replace(
         /<meta name="description"\s+content=".*?"\s*\/>/s,
-        `<meta name="description" content="${description}" />`
+        () => `<meta name="description" content="${description}" />`
     );
 
     // Replace Meta Keywords (handling multiline since it's formatted in index.html)
     output = output.replace(
         /<meta name="keywords"\s+content=".*?"\s*\/>/s,
-        `<meta name="keywords" content="${keywords}" />`
+        () => `<meta name="keywords" content="${keywords}" />`
     );
 
     // Replace Canonical
     output = output.replace(
         /<link rel="canonical" href=".*?"\s*\/>/,
-        `<link rel="canonical" href="${canonical}" />`
+        () => `<link rel="canonical" href="${canonical}" />`
     );
 
     // Inject Static HTML into root for bots (Bing relies on this to see content without JS)
     output = output.replace(
         '<div id="root"></div>',
-        `<div id="root">\n    <!-- SEO Static Fallback for Bingbot -->\n    <div style="padding: 2rem;">\n      ${headerContent}\n    </div>\n  </div>`
+        () => `<div id="root">\n    <!-- SEO Static Fallback for Bingbot -->\n    <div style="padding: 2rem;">\n      ${headerContent}\n    </div>\n  </div>`
     );
 
     return output;
